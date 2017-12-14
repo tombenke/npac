@@ -24,7 +24,11 @@
     "node": "^6.11.2"
   },
   "main": "dist/index.js",
-  "dependencies": {},
+  "dependencies": {
+    "datafile": "^3.2.0",
+    "lodash": "^4.17.4",
+    "winston": "^2.4.0"
+  },
   "devDependencies": {
     "babel-cli": "6.16.0",
     "babel-core": "6.17.0",

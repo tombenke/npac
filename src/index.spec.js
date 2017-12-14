@@ -2,7 +2,7 @@ import expect from 'expect'
 import fs from 'fs'
 import path from 'path'
 import rimraf from 'rimraf'
-import { testMe } from './index'
+import npac from './index'
 
 const destCleanup = function(cb) {
     const dest = path.resolve('./tmp/')
@@ -21,10 +21,18 @@ after(function(done) {
     destCleanup(done)
 })
 
+const cliMock = (cmdName, cmdArgs, cliConfig) => ({
+    parse: (defaults, argv) => ({ command: {name: cmdName, args: cmdArgs}, cliConfig: cliConfig })
+})
 
-describe('{{package_name}}', () => {
+describe('npac', () => {
 
-    it('#testMe', () => {
-        expect(testMe('Hello')).toBeA('string').toEqual('Hello testMe!')
+    it('#start', () => {
+        const defaults = {}
+        const commands = {}
+        const cli = cliMock('unknown', {}, {})
+        const app = npac(defaults, cli, commands)
+        app.start()
+        //expect(testMe('Hello')).toBeA('string').toEqual('Hello testMe!')
     })
 })
