@@ -27,7 +27,7 @@
   "dependencies": {
     "datafile": "^3.2.0",
     "lodash": "^4.17.4",
-    "winston": "^2.4.0"
+    "winston": "^3.0.0-rc1"
   },
   "devDependencies": {
     "babel-cli": "6.16.0",

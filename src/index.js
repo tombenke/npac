@@ -6,36 +6,33 @@
  * @module npac
  */
 
-import _ from 'lodash'
 import { loadJsonFileSync } from 'datafile'
+import { makeConfig } from './config'
+import { makeLogger } from './logger'
+import { makeComm } from './comm'
 
-const execNotDefined = (context, commandArgs) => console.log('executive is not defined')
-
-const makeConfig = (defaults, cliConfig) => {
-    const configFile = _.merge({},
-            _.has(defaults, 'configFileName') ? loadJsonFileSync(defaults.configFileName, false) : {},
-            _.has(cliConfig, 'configFileName') ? loadJsonFileSync(cliConfig.configFileName, false) : {})
-    const config = _.merge({}, defaults, configFile, cliConfig)
-    return config
-}
+const execNotDefined = (container, commandArgs) => container.logger.warn('executive is not defined')
 
 module.exports = (defaults, cli, exec, startup=[], shutdown=[]) => {
     const { cliConfig, command } = cli.parse(defaults)
+    const config = makeConfig(defaults, cliConfig)
+
     const container = {
-        config: makeConfig(defaults, cliConfig),
-        logger: console
+        config: config,
+        logger: makeLogger(config),
+        comm: makeComm(config)
     }
 
     return ({
         start: () => {
-            console.log('app is starting...', container, command.args)
+            container.logger.info('app is starting...', container.config, command.args)
             //TODO: startup
             const executive = exec[command.name] || execNotDefined
             executive(container, command)
         },
         stop: () => {
             // TODO: shutdown
-            console.log('app is stopping...')
+            container.logger.info('app is stopping...')
         }
     })
 }
