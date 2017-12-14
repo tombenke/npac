@@ -1,0 +1,21 @@
+{
+    "opts": {
+       "template": "templates/default",
+        "encoding": "utf8",
+        "destination": "./docs/",
+        "recurse": true,
+        "readme": "./README.md"
+    },
+    "sourceType": "module",
+    "source": {
+        "include": [ "./src/" ]
+    },
+    "plugins": ["plugins/markdown"],
+    "templates": {
+        "cleverLinks": true,
+        "default": {
+            "outputSourceFiles": false,
+            "includeDate": false
+        }
+    }
+}
