@@ -1,0 +1,22 @@
+# Config parameters for logger
+#
+# config:
+#   logger:
+#       level: info                   # error | warn | info | verbose | debug | silly
+#       transports:
+#         - type: console           # console | file | http
+#           filename: output.log    # used only if `type is file`
+#           level: debug
+#           format: text            # text | json
+#         - ...
+config:
+    logger:
+        level: 'debug'
+        transports:
+            - type: console # console | file | http
+              level: 'debug'
+              format: 'text' # text | json
+            - type: file
+              filename: ./tmp/output.log
+              level: 'debug'
+              format: 'json'

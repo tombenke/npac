@@ -5,7 +5,13 @@
 [![Build Status][travis-badge]][travis-url]
 [![Coveralls][BadgeCoveralls]][Coveralls]
 
-A lightweight Ports and Adapters Container for Node
+`npac` is a lightweight Ports and Adapters Container for applications running on Node.js platform.
+
+This module provides a framework for applications to:
+- clearly separate the infrastructure code from business domain code,
+- centrally manage configuration (defaults, environment, config file, cli),
+- make application life-cycle management (startup, shutdown, signal handling),
+- provide built-in, configurable logging and monitoring capabilities.
 
 Read the [API documentation](https://tombenke.github.io/npac/index.html)
 for further details on how to use this library.
@@ -50,6 +56,13 @@ Gain test coverage report:
 ```bash
     npm run coverage
 ```
+
+## References and further readings
+
+- [Hexagonal Architecture (a.k.a. Ports and Adapters) by Alistair Cockburn](http://alistair.cockburn.us/Hexagonal+architecture)
+- [The Clean Architecture](https://8thlight.com/blog/uncle-bob/2012/08/13/the-clean-architecture.html)
+- [Clean Architecture design in NodeJS](https://solidgeargroup.com/clean-architecture-in-nodejs)
+- [Ports-And-Adapters / Hexagonal Architecture by Garfixia software Architectures](http://www.dossier-andreas.net/software_architecture/ports_and_adapters.html)
 
 ---
 

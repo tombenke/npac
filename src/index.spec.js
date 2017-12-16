@@ -1,8 +1,13 @@
+import _ from 'lodash'
 import expect from 'expect'
+import app from './index'
+import npacDefaultConfig from './defaultConfig'
+import { makeConfig, mergeConfig } from './config/'
+
+/*
 import fs from 'fs'
 import path from 'path'
 import rimraf from 'rimraf'
-import npac from './index'
 
 const destCleanup = function(cb) {
     const dest = path.resolve('./tmp/')
@@ -20,19 +25,36 @@ before(function(done) {
 after(function(done) {
     destCleanup(done)
 })
+*/
+//    const { cliConfig, command } = cli.parse(defaults)
+//    const config = makeConfig(defaults, cliConfig)
 
-const cliMock = (cmdName, cmdArgs, cliConfig) => ({
-    parse: (defaults, argv) => ({ command: {name: cmdName, args: cmdArgs}, cliConfig: cliConfig })
-})
+//const cliMock = (cmdName, cmdArgs, cliConfig) => ({
+//    parse: (defaults, argv) => ({ command: {name: cmdName, args: cmdArgs}, cliConfig: cliConfig })
+//})
+
 
 describe('npac', () => {
 
-    it('#start', () => {
-        const defaults = {}
-        const commands = {}
-        const cli = cliMock('unknown', {}, {})
-        const app = npac(defaults, cli, commands)
-        app.start()
-        //expect(testMe('Hello')).toBeA('string').toEqual('Hello testMe!')
+    const checkCtx = (checkFun) => (ctx, next) => {
+        console.log('checkCtx: ', ctx)
+        checkFun(ctx)
+        next(null, ctx)
+    }
+
+    it('#startup - check default config', () => {
+        const expectedConfig = npacDefaultConfig
+        app.startup([checkCtx(ctx => expect(ctx.config).toEqual(expectedConfig))])
     })
+
+    it('#startup - #makeConfig, #mergeConfig', () => {
+        const configToMerge = makeConfig({ logger: { level: "debug" }, projectPath: "/home/testuser/testproject" })
+        const expectedCtx = { config: _.merge({}, npacDefaultConfig, configToMerge ) }
+
+        app.startup([
+            mergeConfig(configToMerge),
+            checkCtx(ctx => expect(ctx.config).toEqual(expectedCtx.config))
+        ])
+    })
+
 })

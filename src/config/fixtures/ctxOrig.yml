@@ -1,0 +1,5 @@
+# Original context
+config:
+    app:
+        name: npac
+        version: 1.0.0

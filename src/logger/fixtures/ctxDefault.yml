@@ -1,0 +1,5 @@
+# Default context for logger
+config:
+    app:
+        name: loggerTest
+        version: 3.4.5

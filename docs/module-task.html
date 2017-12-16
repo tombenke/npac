@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Module: {{package_name}}</title>
+    <title>JSDoc: Module: task</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Module: {{package_name}}</h1>
+    <h1 class="page-title">Module: task</h1>
 
     
 
@@ -38,7 +38,7 @@
     <div class="container-overview">
     
         
-            <div class="description"><p>{{package_description}}</p></div>
+            <div class="description"><p>Task runner for npac</p></div>
         
 
         
@@ -137,7 +137,7 @@
     
 
     
-    <h4 class="name" id=".testMe"><span class="type-signature">(static) </span>testMe<span class="signature">(input)</span><span class="type-signature"> &rarr; {String}</span></h4>
+    <h4 class="name" id="~runTasks"><span class="type-signature">(inner) </span>runTasks<span class="signature">(task)</span><span class="type-signature"> &rarr; {function}</span></h4>
     
 
     
@@ -145,7 +145,12 @@
 
 
 <div class="description">
-    <p>Boilerplate test function</p>
+    <p>Run a task defined under the <code>executives</code>.</p>
+<p>Required ctx properties:</p>
+<ul>
+<li>logger</li>
+<li>executives</li>
+</ul>
 </div>
 
 
@@ -181,13 +186,13 @@
 
         <tr>
             
-                <td class="name"><code>input</code></td>
+                <td class="name"><code>task</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">String</span>
+<span class="param-type">Object</span>
 
 
             
@@ -197,7 +202,11 @@
 
             
 
-            <td class="description last"><p>An input argument for testing</p></td>
+            <td class="description last"><p>An object, that describe the task to run:
+  {
+     name: {String} // The name of he executive
+     args: {Object} // A dictionary object which holds the actual arguments of the executive to run
+  }</p></td>
         </tr>
 
     
@@ -261,7 +270,9 @@
         
 <div class="param-desc">
     <ul>
-<li>The result</li>
+<li>A function that the <code>npac.startup()</code> will call, during the startup process.
+It has the standard signature of startup functions: <code>(ctx: {Object} , next: {Function})</code>
+see also: the <code>npac.startup</code> process description.</li>
 </ul>
 </div>
 
@@ -273,7 +284,7 @@
     </dt>
     <dd>
         
-<span class="param-type">String</span>
+<span class="param-type">function</span>
 
 
     </dd>
@@ -301,7 +312,7 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-%257B%257Bpackage_name%257D%257D.html">{{package_name}}</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-config.html">config</a></li><li><a href="module-core.html">core</a></li><li><a href="module-logger.html">logger</a></li><li><a href="module-task.html">task</a></li></ul>
 </nav>
 
 <br class="clear">

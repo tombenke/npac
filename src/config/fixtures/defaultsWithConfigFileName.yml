@@ -1,0 +1,5 @@
+# cliConfig
+logger:
+    level: info
+projectPath: /home/testuser/projects/testproject
+configFileName: src/config/fixtures/configFile.yml

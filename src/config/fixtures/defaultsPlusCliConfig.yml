@@ -1,0 +1,7 @@
+# defaults plus cliConfig
+app:
+    name: testApp
+    version: 1.2.3
+projectPath: /home/testuser/projects/otherproject
+logger:
+    level: debug

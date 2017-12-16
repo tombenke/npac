@@ -1,24 +1,16 @@
 'use strict';
 
-/**
- * {{package_description}}
- *
- * @module {{package_name}}
- */
+var _config = require('./config/');
 
-/**
- * Boilerplate test function
- *
- * @arg {String} input - An input argument for testing
- *
- * @return {String} - The result
- *
- * @function
- */
+var _core = require('./core');
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-var testMe = exports.testMe = function testMe(input) {
-  return input + ' testMe!';
+var _core2 = _interopRequireDefault(_core);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+module.exports = {
+    startup: _core2.default.startup,
+
+    makeConfig: _config.makeConfig,
+    mergeConfig: _config.mergeConfig
 };

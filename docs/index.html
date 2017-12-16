@@ -47,7 +47,14 @@
 <a href="https://badge.fury.io/js/npac"><img src="https://badge.fury.io/js/npac.svg" alt="npm version"></a>
 <a href="https://travis-ci.org/tombenke/npac"><img src="https://api.travis-ci.org/tombenke/npac.svg" alt="Build Status"></a>
 <a href="https://coveralls.io/github/tombenke/npac?branch=master"><img src="https://coveralls.io/repos/github/tombenke/npac/badge.svg?branch=master" alt="Coveralls"></a></p>
-<p>A lightweight Ports and Adapters Container for Node</p>
+<p><code>npac</code> is a lightweight Ports and Adapters Container for applications running on Node.js platform.</p>
+<p>This module provides a framework for applications to:</p>
+<ul>
+<li>clearly separate the infrastructure code from business domain code,</li>
+<li>centrally manage configuration (defaults, environment, config file, cli),</li>
+<li>make application life-cycle management (startup, shutdown, signal handling),</li>
+<li>provide built-in, configurable logging and monitoring capabilities.</li>
+</ul>
 <p>Read the <a href="https://tombenke.github.io/npac/index.html">API documentation</a>
 for further details on how to use this library.</p>
 <h2>Installation</h2><p>Run the install command:</p>
@@ -57,7 +64,13 @@ for further details on how to use this library.</p>
 <pre class="prettyprint source lang-bash"><code>    npm run docs</code></pre><p>Check the source code:</p>
 <pre class="prettyprint source lang-bash"><code>    npm run test
     npm run lint</code></pre><p>Gain test coverage report:</p>
-<pre class="prettyprint source lang-bash"><code>    npm run coverage</code></pre><hr>
+<pre class="prettyprint source lang-bash"><code>    npm run coverage</code></pre><h2>References and further readings</h2><ul>
+<li><a href="http://alistair.cockburn.us/Hexagonal+architecture">Hexagonal Architecture (a.k.a. Ports and Adapters) by Alistair Cockburn</a></li>
+<li><a href="https://8thlight.com/blog/uncle-bob/2012/08/13/the-clean-architecture.html">The Clean Architecture</a></li>
+<li><a href="https://solidgeargroup.com/clean-architecture-in-nodejs">Clean Architecture design in NodeJS</a></li>
+<li><a href="http://www.dossier-andreas.net/software_architecture/ports_and_adapters.html">Ports-And-Adapters / Hexagonal Architecture by Garfixia software Architectures</a></li>
+</ul>
+<hr>
 <p>This project was generated from the <a href="https://github.com/tombenke/seneca-plugin-archetype">seneca-plugin-archetype</a>
 by the <a href="https://github.com/tombenke/kickoff">kickoff</a> utility.</p></article>
     </section>
@@ -70,7 +83,7 @@ by the <a href="https://github.com/tombenke/kickoff">kickoff</a> utility.</p></a
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-%257B%257Bpackage_name%257D%257D.html">{{package_name}}</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-config.html">config</a></li><li><a href="module-core.html">core</a></li><li><a href="module-logger.html">logger</a></li><li><a href="module-task.html">task</a></li></ul>
 </nav>
 
 <br class="clear">

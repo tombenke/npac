@@ -1,0 +1,4 @@
+filesToProcess:
+    - file_1.yml
+    - file_2.yml
+    - file_n.yml
