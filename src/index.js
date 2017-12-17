@@ -2,7 +2,7 @@ import { makeConfig, mergeConfig } from './config/'
 import core from './core'
 
 module.exports = {
-    startup: core.startup,
+    start: core.start,
 
     makeConfig: makeConfig,
     mergeConfig: mergeConfig

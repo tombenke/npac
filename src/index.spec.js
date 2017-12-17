@@ -42,16 +42,16 @@ describe('npac', () => {
         next(null, ctx)
     }
 
-    it('#startup - check default config', () => {
+    it('#start - check default config', () => {
         const expectedConfig = npacDefaultConfig
-        app.startup([checkCtx(ctx => expect(ctx.config).toEqual(expectedConfig))])
+        app.start([checkCtx(ctx => expect(ctx.config).toEqual(expectedConfig))])
     })
 
-    it('#startup - #makeConfig, #mergeConfig', () => {
+    it('#start - #makeConfig, #mergeConfig', () => {
         const configToMerge = makeConfig({ logger: { level: "debug" }, projectPath: "/home/testuser/testproject" })
         const expectedCtx = { config: _.merge({}, npacDefaultConfig, configToMerge ) }
 
-        app.startup([
+        app.start([
             mergeConfig(configToMerge),
             checkCtx(ctx => expect(ctx.config).toEqual(expectedCtx.config))
         ])

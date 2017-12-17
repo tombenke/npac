@@ -15,10 +15,8 @@ const initialCtx = {
     logger: console
 }
 
-let ctx = initialCtx
-
 /**
- * Execute the startup process of an `npac` application
+ * Setup the adapters
  *
  * The function calls the adapter functions in the order they are defined by the `adapters` argument.
  * Each adapter function gets the context object, and can use all the APIs that are available through it.
@@ -33,13 +31,13 @@ let ctx = initialCtx
  * The `startup()` function will merge the original context object with the `ctxExtension`,
  * and the next adapter function in the pipeline will be called with this extended context object.
  *
+ * @arg {Object} ctx - The initial context
  * @arg {Array} adapters - The array of adapter functions
  * @arg {Function} endCb - An error-first callback function to call when the startup process finished.
  *
  * @function
  */
-const startup = (adapters=[], endCb=null) => {
-
+const setupAdapters = (ctx, adapters=[], endCb) => {
     ctx.logger.info('app is starting up...', ctx.config)
     async.reduce(adapters, initialCtx, (memoCtx, adapter, callback) => {
         if (_.isFunction(adapter)) {
@@ -65,9 +63,8 @@ const startup = (adapters=[], endCb=null) => {
         }
     }, function(err, resultCtx) {
         if (_.isNull(err)) {
-            ctx = resultCtx
             if (! _.isNull(endCb)) {
-                endCb(null, ctx)
+                endCb(null, resultCtx)
             }
         } else {
             if (_.isNull(endCb)) {
@@ -79,6 +76,26 @@ const startup = (adapters=[], endCb=null) => {
     })
 }
 
+const runTasks = (ctx, tasks, endCb) => {
+    if (! _.isNull(endCb)) {
+        endCb(null, ctx)
+    }
+}
+
+/**
+ * Run an `npac` application
+ *
+ * First setup the adapters, then run the tasks if they are available.
+ *
+ * @arg {Array} adapters    - The list of adapters that make the context, inlcuding the executives
+ * @arg {Array} tasks       - The list of tasks to execute
+ * @arg {Function} endCb    - An error-first callback to call when the function finished
+ *
+ * @function
+ */
+const start = (adapters=[], tasks=[], endCb=null) =>
+    setupAdapters(initialCtx, adapters, (err, ctx) => runTasks(ctx, tasks, endCb))
+
 module.exports = {
-    startup: startup
+    start: start
 }

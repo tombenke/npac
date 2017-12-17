@@ -15,53 +15,53 @@ describe('core', () => {
         config: { testAdapter: { name: "testAdapter", port: 4444 } }
     }
 
-    it('#startup - check default config', () => {
+    it('#start - check default config', () => {
         const expectedConfig = npacDefaultConfig
-        app.startup([checkConfig(expectedConfig)])
+        app.start([checkConfig(expectedConfig)])
     })
 
-    it('#startup - check default config with endCallback', () => {
+    it('#start - check default config with endCallback', () => {
         const expectedConfig = npacDefaultConfig
-        app.startup([checkConfig(expectedConfig)],
+        app.start([checkConfig(expectedConfig)],
             (err, ctx) => expect(ctx.config).toEqual(expectedConfig))
     })
 
-    it('#startup - use config object', () => {
+    it('#start - use config object', () => {
         const expectedConfig = _.merge(npacDefaultConfig, testAdapter.config)
-        app.startup([
+        app.start([
             testAdapter,
             checkConfig(expectedConfig)
         ])
     })
 
-    it('#startup - use adapter function that returns NO ctxExtension', () => {
+    it('#start - use adapter function that returns NO ctxExtension', () => {
         const expectedConfig = _.merge(npacDefaultConfig)
-        app.startup([
+        app.start([
             (ctx, next) => next(null),
             checkConfig(expectedConfig)
         ])
     })
 
-    it('#startup - use adapter function that returns `null` as ctxExtension', () => {
+    it('#start - use adapter function that returns `null` as ctxExtension', () => {
         const expectedConfig = _.merge(npacDefaultConfig)
-        app.startup([
+        app.start([
             (ctx, next) => next(null, null),
             checkConfig(expectedConfig)
         ])
     })
 
-    it('#startup - use adapter function that returns ctxExtension', () => {
+    it('#start - use adapter function that returns ctxExtension', () => {
         const expectedConfig = _.merge(npacDefaultConfig, testAdapter.config)
-        app.startup([
+        app.start([
             (ctx, next) => next(null, testAdapter),
             checkConfig(expectedConfig)
         ])
     })
 
-    it('#startup - use adapter function with exception on error', () => {
+    it('#start - use adapter function with exception on error', () => {
         const expectedConfig = _.merge(npacDefaultConfig, testAdapter.config)
         try {
-            app.startup([
+            app.start([
                 (ctx, next) => next(new Error("Wrong adapter init")),
                 checkConfig(expectedConfig)
             ])
@@ -70,8 +70,8 @@ describe('core', () => {
         }
     })
 
-    it('#startup - use adapter function with error on callback', () => {
-        app.startup([(ctx, next) => next(new Error("Wrong adapter init"), null)],
+    it('#start - use adapter function with error on callback', () => {
+        app.start([(ctx, next) => next(new Error("Wrong adapter init"), null)],
             (err, ctx) => expect(err).toEqual('Error: Wrong adapter init'))
     })
 })

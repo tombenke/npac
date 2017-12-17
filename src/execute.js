@@ -5,13 +5,13 @@
  *
  * @module task
  */
+import _ from 'lodash'
 
 /**
- * Run a task defined under the `executives`.
+ * Run an API endpoint available in the context 
  *
  * Required ctx properties:
  *   - logger
- *   - executives
  *
  * @arg {Object} task - An object, that describe the task to run:
  *   {
@@ -25,17 +25,16 @@
  *
  * @function
  */
-const runTasks = (task) => {
+const execute = (task, resCb) => {
 
     const execNotDefined = (ctx, args) => ctx.logger.error('executive is not defined')
+    const contFun = (next) => (err, result, cb) 
 
     return (ctx, next) => {
-        const executive = _.hasIn(ctx, `executives.${task.name}`) ? ctx.executives[task.name] : execNotDefined
-        executive(ctx, task.args)
-        next(null, ctx)
+        console.log('execute: ', ctx, next)
+        const executive = _.hasIn(ctx, task.name) ? ctx[task.name] : execNotDefined
+        executive(ctx, task.args, contFun(next))
     }
 }
 
-module.exports = {
-    runTasks
-}
+module.exports = execute
