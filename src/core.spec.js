@@ -34,7 +34,23 @@ describe('core', () => {
         ])
     })
 
-    it('#startup - use adapter function', () => {
+    it('#startup - use adapter function that returns NO ctxExtension', () => {
+        const expectedConfig = _.merge(npacDefaultConfig)
+        app.startup([
+            (ctx, next) => next(null),
+            checkConfig(expectedConfig)
+        ])
+    })
+
+    it('#startup - use adapter function that returns `null` as ctxExtension', () => {
+        const expectedConfig = _.merge(npacDefaultConfig)
+        app.startup([
+            (ctx, next) => next(null, null),
+            checkConfig(expectedConfig)
+        ])
+    })
+
+    it('#startup - use adapter function that returns ctxExtension', () => {
         const expectedConfig = _.merge(npacDefaultConfig, testAdapter.config)
         app.startup([
             (ctx, next) => next(null, testAdapter),

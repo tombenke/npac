@@ -49,7 +49,7 @@ describe('config', () => {
             'src/logger/fixtures/ctxDefault.yml',
             'src/logger/fixtures/consoleAndFileTransport.yml'
         ])
-        console.log('ctx: ', JSON.stringify(ctx, null, '  '))
+        //console.log('ctx: ', JSON.stringify(ctx, null, '  '))
         addLogger(ctx, (err, ctxExtension) => {
             expect(err).toEqual(null)
             writeLog(ctxExtension)

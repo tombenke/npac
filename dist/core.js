@@ -59,14 +59,21 @@ var startup = function startup() {
     _async2.default.reduce(adapters, initialCtx, function (memoCtx, adapter, callback) {
         if (_lodash2.default.isFunction(adapter)) {
             memoCtx.logger.debug('call adapter registration function');
-            adapter(memoCtx, function (err, ctxExtension) {
+            adapter(memoCtx, function (err) {
+                var ctxExtension = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+
                 if (err) {
                     memoCtx.logger.error('Adapter registration function returned: ', err);
                     callback(err, null);
                 } else {
                     // Merge the adapter extensions to the context
-                    memoCtx.logger.debug('Merge adapter extensions to the context: ', ctxExtension);
-                    callback(null, _lodash2.default.merge({}, memoCtx, ctxExtension));
+                    if (_lodash2.default.isNull(ctxExtension)) {
+                        memoCtx.logger.debug('Adapter extensions is null. Do not merge.');
+                        callback(null, memoCtx);
+                    } else {
+                        memoCtx.logger.debug('Merge adapter extensions to the context: ', ctxExtension);
+                        callback(null, _lodash2.default.merge({}, memoCtx, ctxExtension));
+                    }
                 }
             });
         } else {

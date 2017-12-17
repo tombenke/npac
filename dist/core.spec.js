@@ -49,7 +49,21 @@ describe('core', function () {
         _core2.default.startup([testAdapter, checkConfig(expectedConfig)]);
     });
 
-    it('#startup - use adapter function', function () {
+    it('#startup - use adapter function that returns NO ctxExtension', function () {
+        var expectedConfig = _lodash2.default.merge(_defaultConfig2.default);
+        _core2.default.startup([function (ctx, next) {
+            return next(null);
+        }, checkConfig(expectedConfig)]);
+    });
+
+    it('#startup - use adapter function that returns `null` as ctxExtension', function () {
+        var expectedConfig = _lodash2.default.merge(_defaultConfig2.default);
+        _core2.default.startup([function (ctx, next) {
+            return next(null, null);
+        }, checkConfig(expectedConfig)]);
+    });
+
+    it('#startup - use adapter function that returns ctxExtension', function () {
         var expectedConfig = _lodash2.default.merge(_defaultConfig2.default, testAdapter.config);
         _core2.default.startup([function (ctx, next) {
             return next(null, testAdapter);

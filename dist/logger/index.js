@@ -45,7 +45,7 @@ var makeFormatter = function makeFormatter(config, format) {
 
 var makeTransport = function makeTransport(config) {
     return function (transConfig) {
-        console.log('makeTransport: ', config, transConfig);
+        //console.log('makeTransport: ', config, transConfig)
         if (transConfig.type === 'file') {
             return new _winston.transports.File({
                 filename: './tmp/output.log',
@@ -92,7 +92,7 @@ var makeLogger = function makeLogger(config) {
  */
 var addLogger = function addLogger(ctx, next) {
     var loggerConfig = _lodash2.default.merge({}, _defaultConfig2.default, ctx.config);
-    console.log('addLogger: ', JSON.stringify(loggerConfig, null, ' '));
+    //console.log('addLogger: ', JSON.stringify(loggerConfig, null, ' '))
     next(null, { logger: makeLogger(loggerConfig) });
 };
 

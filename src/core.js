@@ -44,14 +44,19 @@ const startup = (adapters=[], endCb=null) => {
     async.reduce(adapters, initialCtx, (memoCtx, adapter, callback) => {
         if (_.isFunction(adapter)) {
             memoCtx.logger.debug('call adapter registration function')
-            adapter(memoCtx, (err, ctxExtension) => {
+            adapter(memoCtx, (err, ctxExtension=null) => {
                 if (err) {
                     memoCtx.logger.error('Adapter registration function returned: ', err)
                     callback(err, null)
                 } else {
                     // Merge the adapter extensions to the context
-                    memoCtx.logger.debug('Merge adapter extensions to the context: ', ctxExtension)
-                    callback(null, _.merge({}, memoCtx, ctxExtension))
+                    if (_.isNull(ctxExtension)) {
+                        memoCtx.logger.debug('Adapter extensions is null. Do not merge.')
+                        callback(null, memoCtx)
+                    } else {
+                        memoCtx.logger.debug('Merge adapter extensions to the context: ', ctxExtension)
+                        callback(null, _.merge({}, memoCtx, ctxExtension))
+                    }
                 }
             })
         } else {

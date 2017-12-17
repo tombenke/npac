@@ -40,13 +40,11 @@ before(function (done) {
 });
 
 after(function (done) {
-    //    destCleanup(done)
-    done();
+    destCleanup(done);
+    //    done()
 });
 
 describe('config', function () {
-    var ctxDefault = (0, _datafile.loadJsonFileSync)('src/logger/fixtures/ctxDefault.yml');
-    //    const defaults = loadTextFileSync('src/logger/fixtures/defaults.log')
 
     var writeLog = function writeLog(ctx) {
         ctx.logger.info('Hello logger!');
@@ -56,6 +54,7 @@ describe('config', function () {
     };
 
     it('#addLogger - with defaults config', function (done) {
+        var ctxDefault = (0, _datafile.loadJsonFileSync)('src/logger/fixtures/ctxDefault.yml');
         (0, _index.addLogger)(ctxDefault, function (err, ctxExtension) {
             (0, _expect2.default)(err).toEqual(null);
             writeLog(ctxExtension);
@@ -65,11 +64,17 @@ describe('config', function () {
 
     it('#addLogger - with console and file transports', function (done) {
         var ctx = (0, _datafile.mergeJsonFilesSync)(['src/logger/fixtures/ctxDefault.yml', 'src/logger/fixtures/consoleAndFileTransport.yml']);
-        console.log('ctx: ', JSON.stringify(ctx, null, '  '));
+        //console.log('ctx: ', JSON.stringify(ctx, null, '  '))
         (0, _index.addLogger)(ctx, function (err, ctxExtension) {
             (0, _expect2.default)(err).toEqual(null);
             writeLog(ctxExtension);
-            done();
+            setTimeout(function () {
+                (0, _expect2.default)((0, _datafile.findFilesSync)('./tmp', /.*/)).toEqual(['tmp/output.log']);
+                var logs = (0, _datafile.loadTextFileSync)('tmp/output.log');
+                // TODO: parse and check
+                //                console.log('logs', logs)
+                done();
+            }, 100);
         });
     });
 });
