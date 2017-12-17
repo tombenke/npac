@@ -1,7 +1,7 @@
 import _ from 'lodash'
 import expect from 'expect'
 import { addLogger } from './index'
-import { loadJsonFileSync, loadTextFileSync, mergeJsonFilesSync } from 'datafile'
+import { loadJsonFileSync, loadTextFileSync, findFilesSync, mergeJsonFilesSync } from 'datafile'
 
 import fs from 'fs'
 import path from 'path'
@@ -21,23 +21,22 @@ before(function(done) {
 })
 
 after(function(done) {
-//    destCleanup(done)
-    done()
+    destCleanup(done)
+//    done()
 })
 
 
 describe('config', () => {
-    const ctxDefault = loadJsonFileSync('src/logger/fixtures/ctxDefault.yml')
-//    const defaults = loadTextFileSync('src/logger/fixtures/defaults.log')
 
-const writeLog = ctx => {
-    ctx.logger.info('Hello logger!')
-    ctx.logger.debug('This is a JSON object', { id: '121324231412', payload: { message: 'Some debug info...' }})
-    ctx.logger.warn('And another JSON object', { id: '724543275671', payload: { message: 'Some warning!' }})
-    ctx.logger.info('Good Bye logger!')
-}
+    const writeLog = ctx => {
+        ctx.logger.info('Hello logger!')
+        ctx.logger.debug('This is a JSON object', { id: '121324231412', payload: { message: 'Some debug info...' }})
+        ctx.logger.warn('And another JSON object', { id: '724543275671', payload: { message: 'Some warning!' }})
+        ctx.logger.info('Good Bye logger!')
+    }
 
     it('#addLogger - with defaults config', (done) => {
+        const ctxDefault = loadJsonFileSync('src/logger/fixtures/ctxDefault.yml')
         addLogger(ctxDefault, (err, ctxExtension) => {
             expect(err).toEqual(null)
             writeLog(ctxExtension)
@@ -54,7 +53,13 @@ const writeLog = ctx => {
         addLogger(ctx, (err, ctxExtension) => {
             expect(err).toEqual(null)
             writeLog(ctxExtension)
-            done()
+            setTimeout(() => {
+                expect(findFilesSync('./tmp', /.*/)).toEqual(['tmp/output.log'])
+                const logs = loadTextFileSync('tmp/output.log')
+                // TODO: parse and check
+//                console.log('logs', logs)
+                done()
+            }, 100)
         })
     })
 
