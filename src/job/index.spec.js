@@ -4,10 +4,10 @@ import { loadJsonFileSync } from 'datafile'
 import execute from './index'
 
 const executives = {
-    add: (ctx, args, next) =>
-        _.has(args, ['a', 'b']) ? next(null, a + b) : next(new Error('Wrong or missing arguments')),
-    mul: (ctx, args, next) =>
-        _.has(args, ['a', 'b']) ? next(null, a * b) : next(new Error('Wrong or missing arguments'))
+    add: (ctx, args, cb) =>
+        _.has(args, ['a', 'b']) ? cb(null, a + b) : cb(new Error('Wrong or missing arguments')),
+    mul: (ctx, args, cb) =>
+        _.has(args, ['a', 'b']) ? cb(null, a * b) : cb(new Error('Wrong or missing arguments'))
 }
 
 describe('config', () => {

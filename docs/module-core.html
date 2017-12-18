@@ -137,7 +137,7 @@
     
 
     
-    <h4 class="name" id="~startup"><span class="type-signature">(inner) </span>startup<span class="signature">(adapters, endCb)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="~setupAdapters"><span class="type-signature">(inner) </span>setupAdapters<span class="signature">(ctx, adapters, endCb)</span><span class="type-signature"></span></h4>
     
 
     
@@ -145,7 +145,7 @@
 
 
 <div class="description">
-    <p>Execute the startup process of an <code>npac</code> application</p>
+    <p>Setup the adapters</p>
 <p>The function calls the adapter functions in the order they are defined by the <code>adapters</code> argument.
 Each adapter function gets the context object, and can use all the APIs that are available through it.
 It means, each adapter that provides an API that is required by an other adapter function,
@@ -159,6 +159,183 @@ The <code>next</code> function has two arguments: next(err: {Object}, ctxExtensi
 The <code>startup()</code> function will merge the original context object with the <code>ctxExtension</code>,
 and the next adapter function in the pipeline will be called with this extended context object.</li>
 </ul>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>ctx</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The initial context</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>adapters</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The array of adapter functions</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>endCb</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>An error-first callback function to call when the startup process finished.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="~start"><span class="type-signature">(inner) </span>start<span class="signature">(adapters, jobs, endCb)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Run an <code>npac</code> application</p>
+<p>First setup the adapters, then run the jobs if they are available.</p>
 </div>
 
 
@@ -216,7 +393,34 @@ and the next adapter function in the pipeline will be called with this extended 
                 </td>
             
 
-            <td class="description last"><p>The array of adapter functions</p></td>
+            <td class="description last"><p>The list of adapters that make the context, inlcuding the executives</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>jobs</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+
+
+            
+            </td>
+
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>The list of jobs to execute</p></td>
         </tr>
 
     
@@ -245,7 +449,7 @@ and the next adapter function in the pipeline will be called with this extended 
                 </td>
             
 
-            <td class="description last"><p>An error-first callback function to call when the startup process finished.</p></td>
+            <td class="description last"><p>An error-first callback to call when the function finished</p></td>
         </tr>
 
     
@@ -325,7 +529,7 @@ and the next adapter function in the pipeline will be called with this extended 
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-config.html">config</a></li><li><a href="module-core.html">core</a></li><li><a href="module-logger.html">logger</a></li><li><a href="module-task.html">task</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-config.html">config</a></li><li><a href="module-core.html">core</a></li><li><a href="module-job.html">job</a></li><li><a href="module-logger.html">logger</a></li></ul>
 </nav>
 
 <br class="clear">

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Module: task</title>
+    <title>JSDoc: Module: job</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Module: task</h1>
+    <h1 class="page-title">Module: job</h1>
 
     
 
@@ -137,7 +137,7 @@
     
 
     
-    <h4 class="name" id="~runTasks"><span class="type-signature">(inner) </span>runTasks<span class="signature">(task)</span><span class="type-signature"> &rarr; {function}</span></h4>
+    <h4 class="name" id="~runJob"><span class="type-signature">(inner) </span>runJob<span class="signature">(jobDesc)</span><span class="type-signature"> &rarr; {function}</span></h4>
     
 
     
@@ -145,11 +145,10 @@
 
 
 <div class="description">
-    <p>Run a task defined under the <code>executives</code>.</p>
+    <p>Run an API endpoint available in the context </p>
 <p>Required ctx properties:</p>
 <ul>
 <li>logger</li>
-<li>executives</li>
 </ul>
 </div>
 
@@ -186,7 +185,7 @@
 
         <tr>
             
-                <td class="name"><code>task</code></td>
+                <td class="name"><code>jobDesc</code></td>
             
 
             <td class="type">
@@ -202,9 +201,9 @@
 
             
 
-            <td class="description last"><p>An object, that describe the task to run:
+            <td class="description last"><p>An object, that describe the job to run:
   {
-     name: {String} // The name of he executive
+     name: {String} // The name of the executive
      args: {Object} // A dictionary object which holds the actual arguments of the executive to run
   }</p></td>
         </tr>
@@ -270,8 +269,8 @@
         
 <div class="param-desc">
     <ul>
-<li>A function that the <code>npac.startup()</code> will call, during the startup process.
-It has the standard signature of startup functions: <code>(ctx: {Object} , next: {Function})</code>
+<li>A function that the <code>npac.startup()</code> will call, during the runJobs process.
+It has the standard signature of startup functions: <code>(ctx: {Object}, next: {Function})</code>
 see also: the <code>npac.startup</code> process description.</li>
 </ul>
 </div>
@@ -312,7 +311,7 @@ see also: the <code>npac.startup</code> process description.</li>
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-config.html">config</a></li><li><a href="module-core.html">core</a></li><li><a href="module-logger.html">logger</a></li><li><a href="module-task.html">task</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-config.html">config</a></li><li><a href="module-core.html">core</a></li><li><a href="module-job.html">job</a></li><li><a href="module-logger.html">logger</a></li></ul>
 </nav>
 
 <br class="clear">

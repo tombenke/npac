@@ -1,16 +1,26 @@
 'use strict';
 
-var _config = require('./config/');
-
 var _core = require('./core');
 
 var _core2 = _interopRequireDefault(_core);
 
+var _config = require('./config/');
+
+var _logger = require('./logger/');
+
+var _job = require('./job/');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 module.exports = {
-    startup: _core2.default.startup,
+    start: _core2.default.start,
 
+    // adapters
     makeConfig: _config.makeConfig,
-    mergeConfig: _config.mergeConfig
+    mergeConfig: _config.mergeConfig,
+    addLogger: _logger.addLogger,
+
+    // jobs
+    runJob: _job.runJob,
+    runJobSync: _job.runJobSync
 };

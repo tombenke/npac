@@ -32,48 +32,52 @@ describe('core', function () {
         config: { testAdapter: { name: "testAdapter", port: 4444 } }
     };
 
-    it('#startup - check default config', function () {
-        var expectedConfig = _defaultConfig2.default;
-        _core2.default.startup([checkConfig(expectedConfig)]);
+    it('#start - with no args', function () {
+        _core2.default.start();
     });
 
-    it('#startup - check default config with endCallback', function () {
+    it('#start - check default config', function () {
         var expectedConfig = _defaultConfig2.default;
-        _core2.default.startup([checkConfig(expectedConfig)], function (err, ctx) {
-            return (0, _expect2.default)(ctx.config).toEqual(expectedConfig);
+        _core2.default.start([checkConfig(expectedConfig)]);
+    });
+
+    it('#start - check default config with endCallback', function () {
+        var expectedConfig = _defaultConfig2.default;
+        _core2.default.start([checkConfig(expectedConfig)], [], function (err, results) {
+            return (0, _expect2.default)(err).toEqual(null);
         });
     });
 
-    it('#startup - use config object', function () {
+    it('#start - use config object', function () {
         var expectedConfig = _lodash2.default.merge(_defaultConfig2.default, testAdapter.config);
-        _core2.default.startup([testAdapter, checkConfig(expectedConfig)]);
+        _core2.default.start([testAdapter, checkConfig(expectedConfig)]);
     });
 
-    it('#startup - use adapter function that returns NO ctxExtension', function () {
+    it('#start - use adapter function that returns NO ctxExtension', function () {
         var expectedConfig = _lodash2.default.merge(_defaultConfig2.default);
-        _core2.default.startup([function (ctx, next) {
+        _core2.default.start([function (ctx, next) {
             return next(null);
         }, checkConfig(expectedConfig)]);
     });
 
-    it('#startup - use adapter function that returns `null` as ctxExtension', function () {
+    it('#start - use adapter function that returns `null` as ctxExtension', function () {
         var expectedConfig = _lodash2.default.merge(_defaultConfig2.default);
-        _core2.default.startup([function (ctx, next) {
+        _core2.default.start([function (ctx, next) {
             return next(null, null);
         }, checkConfig(expectedConfig)]);
     });
 
-    it('#startup - use adapter function that returns ctxExtension', function () {
+    it('#start - use adapter function that returns ctxExtension', function () {
         var expectedConfig = _lodash2.default.merge(_defaultConfig2.default, testAdapter.config);
-        _core2.default.startup([function (ctx, next) {
+        _core2.default.start([function (ctx, next) {
             return next(null, testAdapter);
         }, checkConfig(expectedConfig)]);
     });
 
-    it('#startup - use adapter function with exception on error', function () {
+    it('#start - use adapter function with exception on error', function () {
         var expectedConfig = _lodash2.default.merge(_defaultConfig2.default, testAdapter.config);
         try {
-            _core2.default.startup([function (ctx, next) {
+            _core2.default.start([function (ctx, next) {
                 return next(new Error("Wrong adapter init"));
             }, checkConfig(expectedConfig)]);
         } catch (err) {
@@ -81,10 +85,10 @@ describe('core', function () {
         }
     });
 
-    it('#startup - use adapter function with error on callback', function () {
-        _core2.default.startup([function (ctx, next) {
-            return next(new Error("Wrong adapter init"), null);
-        }], function (err, ctx) {
+    it('#start - use adapter function with error on callback', function () {
+        _core2.default.start([function (ctx, next) {
+            return next(new Error("Wrong adapter init"));
+        }], [], function (err, ctx) {
             return (0, _expect2.default)(err).toEqual('Error: Wrong adapter init');
         });
     });

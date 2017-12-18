@@ -33,11 +33,10 @@ after(function(done) {
 //    parse: (defaults, argv) => ({ command: {name: cmdName, args: cmdArgs}, cliConfig: cliConfig })
 //})
 
-
 describe('npac', () => {
 
     const checkCtx = (checkFun) => (ctx, next) => {
-        console.log('checkCtx: ', ctx)
+//        console.log('checkCtx: ', ctx)
         checkFun(ctx)
         next(null, ctx)
     }
@@ -55,6 +54,58 @@ describe('npac', () => {
             mergeConfig(configToMerge),
             checkCtx(ctx => expect(ctx.config).toEqual(expectedCtx.config))
         ])
+    })
+
+    it('#start - call sync executive function', (done) => {
+
+        app.start([
+            { addSync: (ctx, a, b) => a + b },
+        ], [
+            (ctx, cb) => {
+                const result = ctx.addSync(ctx, 1, 1)
+                expect(result).toEqual(2)
+                cb(null, result)
+            }
+        ], done)
+    })
+
+    it('#start - call async executive function', (done) => {
+
+        app.start([
+            { add: (ctx, a, b, cb) => cb(null, a + b) },
+        ], [
+            (ctx, cb) => {
+                ctx.add(ctx, 1, 1, (err, result) => {
+                    expect(result).toEqual(2)
+                    cb(null, result)
+                })
+            }
+        ], done)
+    })
+
+    it('#start - call sync job', (done) => {
+
+        app.start([
+            { addSync: (ctx, args) => args.a + args.b },
+        ], [
+            app.runJobSync({ name: 'addSync', args: { a: 1, b: 1 } })
+        ], (err, result) => {
+                expect(result).toEqual([2])
+                done()
+            })
+    })
+
+
+    it('#start - call async job', (done) => {
+
+        app.start([
+            { add: (ctx, args, cb) => cb(null, args.a + args.b) },
+        ], [
+            app.runJob({ name: 'add', args: { a: 1, b: 1 } })
+        ], (err, result) => {
+                expect(result).toEqual([2])
+                done()
+            })
     })
 
 })

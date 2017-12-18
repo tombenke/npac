@@ -15,6 +15,10 @@ describe('core', () => {
         config: { testAdapter: { name: "testAdapter", port: 4444 } }
     }
 
+    it('#start - with no args', () => {
+        app.start()
+    })
+
     it('#start - check default config', () => {
         const expectedConfig = npacDefaultConfig
         app.start([checkConfig(expectedConfig)])
@@ -22,8 +26,8 @@ describe('core', () => {
 
     it('#start - check default config with endCallback', () => {
         const expectedConfig = npacDefaultConfig
-        app.start([checkConfig(expectedConfig)],
-            (err, ctx) => expect(ctx.config).toEqual(expectedConfig))
+        app.start([checkConfig(expectedConfig)], [],
+            (err, results) => expect(err).toEqual(null))
     })
 
     it('#start - use config object', () => {
@@ -71,7 +75,7 @@ describe('core', () => {
     })
 
     it('#start - use adapter function with error on callback', () => {
-        app.start([(ctx, next) => next(new Error("Wrong adapter init"), null)],
+        app.start([(ctx, next) => next(new Error("Wrong adapter init"))], [],
             (err, ctx) => expect(err).toEqual('Error: Wrong adapter init'))
     })
 })
