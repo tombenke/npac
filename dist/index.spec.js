@@ -53,7 +53,6 @@ describe('npac', function () {
 
     var checkCtx = function checkCtx(checkFun) {
         return function (ctx, next) {
-            //        console.log('checkCtx: ', ctx)
             checkFun(ctx);
             next(null, ctx);
         };
@@ -102,7 +101,7 @@ describe('npac', function () {
 
         _index2.default.start([{ addSync: function addSync(ctx, args) {
                 return args.a + args.b;
-            } }], [_index2.default.runJobSync({ name: 'addSync', args: { a: 1, b: 1 } })], function (err, result) {
+            } }], [_index2.default.makeCallSync({ name: 'addSync', args: { a: 1, b: 1 } })], function (err, result) {
             (0, _expect2.default)(result).toEqual([2]);
             done();
         });
@@ -112,7 +111,7 @@ describe('npac', function () {
 
         _index2.default.start([{ add: function add(ctx, args, cb) {
                 return cb(null, args.a + args.b);
-            } }], [_index2.default.runJob({ name: 'add', args: { a: 1, b: 1 } })], function (err, result) {
+            } }], [_index2.default.makeCall({ name: 'add', args: { a: 1, b: 1 } })], function (err, result) {
             (0, _expect2.default)(result).toEqual([2]);
             done();
         });

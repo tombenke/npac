@@ -36,7 +36,6 @@ after(function(done) {
 describe('npac', () => {
 
     const checkCtx = (checkFun) => (ctx, next) => {
-//        console.log('checkCtx: ', ctx)
         checkFun(ctx)
         next(null, ctx)
     }
@@ -88,11 +87,11 @@ describe('npac', () => {
         app.start([
             { addSync: (ctx, args) => args.a + args.b },
         ], [
-            app.runJobSync({ name: 'addSync', args: { a: 1, b: 1 } })
+            app.makeCallSync({ name: 'addSync', args: { a: 1, b: 1 } })
         ], (err, result) => {
-                expect(result).toEqual([2])
-                done()
-            })
+            expect(result).toEqual([2])
+            done()
+        })
     })
 
 
@@ -101,11 +100,11 @@ describe('npac', () => {
         app.start([
             { add: (ctx, args, cb) => cb(null, args.a + args.b) },
         ], [
-            app.runJob({ name: 'add', args: { a: 1, b: 1 } })
+            app.makeCall({ name: 'add', args: { a: 1, b: 1 } })
         ], (err, result) => {
-                expect(result).toEqual([2])
-                done()
-            })
+            expect(result).toEqual([2])
+            done()
+        })
     })
 
 })

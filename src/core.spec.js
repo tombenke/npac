@@ -78,4 +78,19 @@ describe('core', () => {
         app.start([(ctx, next) => next(new Error("Wrong adapter init"))], [],
             (err, ctx) => expect(err).toEqual('Error: Wrong adapter init'))
     })
+
+    it('#start - with job returns error', (done) => {
+        app.start([], [(ctx, cb) => cb(new Error('Job returned error'), {})], (err, results) => {
+            expect(err).toEqual('Error: Job returned error')
+            done()
+        })
+    })
+
+    it('#start - with job as a non function object', (done) => {
+        app.start([], [{ /* It should be a function */ }], (err, results) => {
+            expect(err).toEqual('Error: Job must be a function')
+            done()
+        })
+    })
+
 })

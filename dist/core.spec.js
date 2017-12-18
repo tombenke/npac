@@ -92,4 +92,20 @@ describe('core', function () {
             return (0, _expect2.default)(err).toEqual('Error: Wrong adapter init');
         });
     });
+
+    it('#start - with job returns error', function (done) {
+        _core2.default.start([], [function (ctx, cb) {
+            return cb(new Error('Job returned error'), {});
+        }], function (err, results) {
+            (0, _expect2.default)(err).toEqual('Error: Job returned error');
+            done();
+        });
+    });
+
+    it('#start - with job as a non function object', function (done) {
+        _core2.default.start([], [{/* It should be a function */}], function (err, results) {
+            (0, _expect2.default)(err).toEqual('Error: Job must be a function');
+            done();
+        });
+    });
 });

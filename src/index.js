@@ -1,7 +1,7 @@
 import core from './core'
 import { makeConfig, mergeConfig } from './config/'
 import { addLogger } from './logger/'
-import { runJob, runJobSync } from './job/'
+import { makeCall, makeCallSync } from './job/'
 
 module.exports = {
     start: core.start,
@@ -12,6 +12,6 @@ module.exports = {
     addLogger,
 
     // jobs
-    runJob,
-    runJobSync
+    makeCall,
+    makeCallSync
 }

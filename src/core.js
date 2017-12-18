@@ -37,11 +37,11 @@ const initialCtx = {
  *
  * @function
  */
-const setupAdapters = (ctx, adapters=[], endCb) => {
-    ctx.logger.info('app is starting up...')
+const setupAdapters = (ctx, adapters=[]) => endCb => {
+    ctx.logger.info('App is starting up...')
     async.reduce(adapters, ctx, (memoCtx, adapter, callback) => {
         if (_.isFunction(adapter)) {
-            memoCtx.logger.debug('call adapter registration function')
+            memoCtx.logger.debug('Call adapter registration function')
             adapter(memoCtx, (err, ctxExtension=null) => {
                 if (err) {
                     memoCtx.logger.error('Adapter registration function returned: ', err)
@@ -58,49 +58,32 @@ const setupAdapters = (ctx, adapters=[], endCb) => {
                 }
             })
         } else {
-            memoCtx.logger.debug('merge adapter object to ctx')
+            memoCtx.logger.debug('Merge adapter object to ctx')
             callback(null, _.merge({}, memoCtx, adapter))
         }
     }, function(err, resultCtx) {
-        if (_.isNull(err)) {
-            endCb(null, resultCtx)
-        } else {
-            endCb(err, resultCtx)
-        }
+        endCb(err, resultCtx)
     })
 }
 
-const runJobs = (ctx, jobs, endCb) => {
-    ctx.logger.info('app runs the jobs...')
+const runJobs = jobs => (ctx, endCb) => {
+    ctx.logger.info('App runs the jobs...')
     async.mapSeries(jobs, (job, callback) => {
         if (_.isFunction(job)) {
-            ctx.logger.debug('call job function')
+            ctx.logger.debug('Call job function')
             job(ctx, (err, result) => {
                 if (err) {
-                    ctx.logger.error('Task call failed', err)
-                    callback(err, null)
+                    ctx.logger.error('Job call failed', err)
                 } else {
-                    ctx.logger.debug('Task call completed', result)
-                    callback(null, result)
+                    ctx.logger.debug('Job call completed', result)
                 }
+                callback(err, result)
             })
         } else {
-            ctx.logger.error('Task is not a function')
-            callback(new Error('Task must be a function'), null)
+            ctx.logger.error('Job is not a function')
+            callback(new Error('Job must be a function'), null)
         }
-    }, function(err, results) {
-        if (_.isNull(err)) {
-            if (! _.isNull(endCb)) {
-                endCb(null, results)
-            }
-        } else {
-            if (_.isNull(endCb)) {
-                throw(err)
-            } else {
-                endCb(err, results)
-            }
-        }
-    })
+    }, endCb)
 }
 
 /**
@@ -109,19 +92,25 @@ const runJobs = (ctx, jobs, endCb) => {
  * First setup the adapters, then run the jobs if they are available.
  *
  * @arg {Array} adapters    - The list of adapters that make the context, inlcuding the executives
- * @arg {Array} jobs       - The list of jobs to execute
+ * @arg {Array} jobs        - The list of jobs to execute
  * @arg {Function} endCb    - An error-first callback to call when the function finished
  *
  * @function
  */
-const start = (adapters=[], jobs=[], endCb=null) =>
-    setupAdapters(initialCtx, adapters, (err, ctx) => {
-        if (_.isNull(err)) {
-            runJobs(ctx, jobs, endCb)
-        } else if (! _.isNull(endCb)) {
-            endCb(err, ctx)
+const start = (adapters=[], jobs=[], endCb=null) => {
+    const errorHandler = (err, results) => {
+        if (! _.isNull(endCb)) {
+            endCb(err, results)
+        } else if (! _.isNull(err)) {
+            throw(err)
         }
-    })
+    }
+
+    async.seq(
+        setupAdapters(initialCtx, adapters),
+        runJobs(jobs)
+    )(errorHandler)
+}
 
 module.exports = {
     start: start

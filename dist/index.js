@@ -21,6 +21,6 @@ module.exports = {
     addLogger: _logger.addLogger,
 
     // jobs
-    runJob: _job.runJob,
-    runJobSync: _job.runJobSync
+    makeCall: _job.makeCall,
+    makeCallSync: _job.makeCallSync
 };

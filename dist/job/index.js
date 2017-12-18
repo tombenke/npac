@@ -31,7 +31,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  *
  * @function
  */
-var runJob = function runJob(jobDesc) {
+var makeCall = function makeCall(jobDesc) {
 
     var jobNotDefined = function jobNotDefined(ctx, args) {
         return ctx.logger.error('job is not defined');
@@ -45,7 +45,7 @@ var runJob = function runJob(jobDesc) {
     };
 };
 
-var runJobSync = function runJobSync(jobDesc) {
+var makeCallSync = function makeCallSync(jobDesc) {
 
     var jobNotDefined = function jobNotDefined(ctx, args) {
         return ctx.logger.error('job is not defined');
@@ -55,11 +55,11 @@ var runJobSync = function runJobSync(jobDesc) {
         ctx.logger.debug('execute: ', jobDesc);
         var job = _lodash2.default.hasIn(ctx, jobDesc.name) ? ctx[jobDesc.name] : execNotDefined;
         var args = jobDesc.args || {};
-        responseCb(null, job(ctx, args, responseCb));
+        responseCb(null, job(ctx, args));
     };
 };
 
 module.exports = {
-    runJob: runJob,
-    runJobSync: runJobSync
+    makeCall: makeCall,
+    makeCallSync: makeCallSync
 };

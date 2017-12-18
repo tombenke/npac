@@ -25,7 +25,7 @@ import _ from 'lodash'
  *
  * @function
  */
-const runJob = (jobDesc) => {
+const makeCall = (jobDesc) => {
 
     const jobNotDefined = (ctx, args) => ctx.logger.error('job is not defined')
 
@@ -37,7 +37,7 @@ const runJob = (jobDesc) => {
     }
 }
 
-const runJobSync = (jobDesc) => {
+const makeCallSync = (jobDesc) => {
 
     const jobNotDefined = (ctx, args) => ctx.logger.error('job is not defined')
 
@@ -45,11 +45,11 @@ const runJobSync = (jobDesc) => {
         ctx.logger.debug('execute: ', jobDesc)
         const job = _.hasIn(ctx, jobDesc.name) ? ctx[jobDesc.name] : execNotDefined
         const args = jobDesc.args || {}
-        responseCb(null, job(ctx, args, responseCb))
+        responseCb(null, job(ctx, args))
     }
 }
 
 module.exports = {
-    runJob,
-    runJobSync
+    makeCall,
+    makeCallSync
 }
