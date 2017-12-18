@@ -137,7 +137,7 @@
     
 
     
-    <h4 class="name" id="~makeConfig"><span class="type-signature">(inner) </span>makeConfig<span class="signature">(defaults, cliconfig, configFileProp)</span><span class="type-signature"> &rarr; {Object}</span></h4>
+    <h4 class="name" id=".makeConfig"><span class="type-signature">(static) </span>makeConfig<span class="signature">(defaults, cliConfig, configFileProp)</span><span class="type-signature"> &rarr; {Object}</span></h4>
     
 
     
@@ -209,7 +209,7 @@
 
         <tr>
             
-                <td class="name"><code>cliconfig</code></td>
+                <td class="name"><code>cliConfig</code></td>
             
 
             <td class="type">
@@ -342,7 +342,7 @@
     
 
     
-    <h4 class="name" id="~mergeConfig"><span class="type-signature">(inner) </span>mergeConfig<span class="signature">(config)</span><span class="type-signature"> &rarr; {function}</span></h4>
+    <h4 class="name" id=".mergeConfig"><span class="type-signature">(static) </span>mergeConfig<span class="signature">(config)</span><span class="type-signature"> &rarr; {function}</span></h4>
     
 
     
@@ -468,9 +468,9 @@ with the current content of the <code>config</code> member of the context.</p>
         
 <div class="param-desc">
     <ul>
-<li>The adapter function that can be executed during the startup process.
-It has the standard signature of startup functions: <code>(ctx: {Object} , next: {Function})</code>
-see also: the <code>npac.startup</code> process description.</li>
+<li>The adapter function that can be executed during the start process.
+It has the standard signature of adapter functions: <code>(ctx: {Object} , next: {Function})</code>
+see also: the <code>npac.start</code> process description.</li>
 </ul>
 </div>
 

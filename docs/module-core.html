@@ -137,6 +137,349 @@
     
 
     
+    <h4 class="name" id=".start"><span class="type-signature">(static) </span>start<span class="signature">(adapters, jobs, endCb)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Run an <code>npac</code> application</p>
+<p>First setup the adapters, then run the jobs if they are available.
+If any of the errors returns with error, then immediately stops the execution.
+If <code>endCb</code> defined, then calls it, with the list of results of every jobs.
+In case of error occured, and no <code>endCb</code> defined then it throws and error instead of returning.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>adapters</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The list of adapters, (including the executives) that make the context. Default: <code>[]</code>.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>jobs</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The list of job functions to execute. Default: <code>[]</code>.
+Every job function must have the following signature: <code>(ctx: {Object}, cb: {Function})</code>,
+where <code>ctx</code> is the context object, and <code>cb</code> is an error-first callback,
+with the results of the call as a second parameters.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>endCb</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>An error-first callback to call with the result of the call,
+when the function finished. Default: <code>null</code>.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="~runJobs"><span class="type-signature">(inner) </span>runJobs<span class="signature">(jobs)</span><span class="type-signature"> &rarr; {function}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Prepare jobs to run in series.</p>
+<p>Creates a function that will map through the list of jobs, and executes them one ofter the other,
+in series. The results will be collected into an array, that will be returned as a whole,
+after the execution of the last job.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>jobs</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>An array of job functions.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <ul>
+<li>An asynchronous function that has two parameters:
+<code>ctx: {Object}</code> that is the context object, and <code>endCb: {Function}</code>,
+that is an error-first callback to return with the results of the job execution.</li>
+</ul>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">function</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
     <h4 class="name" id="~setupAdapters"><span class="type-signature">(inner) </span>setupAdapters<span class="signature">(ctx, adapters, endCb)</span><span class="type-signature"></span></h4>
     
 
@@ -156,7 +499,7 @@ The <code>next</code> function has two arguments: next(err: {Object}, ctxExtensi
 <ul>
 <li><code>err</code> is an error object, or null, in case of successful execution,</li>
 <li><code>ctxExtension</code> is a partial context object, that the adapter would like to merge with the context.
-The <code>startup()</code> function will merge the original context object with the <code>ctxExtension</code>,
+The <code>start()</code> function will merge the original context object with the <code>ctxExtension</code>,
 and the next adapter function in the pipeline will be called with this extended context object.</li>
 </ul>
 </div>
@@ -256,200 +599,7 @@ and the next adapter function in the pipeline will be called with this extended 
 
             
 
-            <td class="description last"><p>An error-first callback function to call when the startup process finished.</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="~start"><span class="type-signature">(inner) </span>start<span class="signature">(adapters, jobs, endCb)</span><span class="type-signature"></span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    <p>Run an <code>npac</code> application</p>
-<p>First setup the adapters, then run the jobs if they are available.</p>
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-        <th>Default</th>
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>adapters</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Array</span>
-
-
-            
-            </td>
-
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>The list of adapters that make the context, inlcuding the executives</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>jobs</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Array</span>
-
-
-            
-            </td>
-
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"><p>The list of jobs to execute</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>endCb</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-
-
-            
-            </td>
-
-            
-
-            
-                <td class="default">
-                
-                    null
-                
-                </td>
-            
-
-            <td class="description last"><p>An error-first callback to call when the function finished</p></td>
+            <td class="description last"><p>An error-first callback function to call when the start process finished.</p></td>
         </tr>
 
     

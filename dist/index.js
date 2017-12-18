@@ -2,18 +2,14 @@
 
 var _core = require('./core');
 
-var _core2 = _interopRequireDefault(_core);
-
 var _config = require('./config/');
 
 var _logger = require('./logger/');
 
 var _job = require('./job/');
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
 module.exports = {
-    start: _core2.default.start,
+    start: _core.start,
 
     // adapters
     makeConfig: _config.makeConfig,

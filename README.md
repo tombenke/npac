@@ -66,7 +66,7 @@ Gain test coverage report:
 
 ---
 
-This project was generated from the [seneca-plugin-archetype](https://github.com/tombenke/seneca-plugin-archetype)
+This project was generated from the [es6-module-archetype](https://github.com/tombenke/es6-module-archetype)
 by the [kickoff](https://github.com/tombenke/kickoff) utility.
 
 [npm-badge]: https://badge.fury.io/js/npac.svg

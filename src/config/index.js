@@ -15,14 +15,14 @@ import { loadJsonFileSync } from 'datafile'
  * - command line config parameters
  *
  * @arg {Object} defaults - The dictionary of default parameters
- * @arg {Object} cliconfig - The dictionary of parameters parsed by the CLI
+ * @arg {Object} cliConfig - The dictionary of parameters parsed by the CLI
  * @arg {String} configFileProp - The property name of the config file, if it is used at all.
  *
  * @return {Object} - The configuration parameters merged into one object
  *
  * @function
  */
-const makeConfig = (defaults={}, cliConfig={}, configFileProp='configFile') => {
+export const makeConfig = (defaults={}, cliConfig={}, configFileProp='configFile') => {
     const configFileName = _.has(cliConfig, configFileProp) ?
         cliConfig[configFileProp] :
         _.has(defaults, configFileProp) ? defaults[configFileProp] : null
@@ -42,17 +42,12 @@ const makeConfig = (defaults={}, cliConfig={}, configFileProp='configFile') => {
  *
  * @arg {Object} config - The configuration object to merge with the context.
  *
- * @return {Function} - The adapter function that can be executed during the startup process.
- * It has the standard signature of startup functions: `(ctx: {Object} , next: {Function})`
- * see also: the `npac.startup` process description.
+ * @return {Function} - The adapter function that can be executed during the start process.
+ * It has the standard signature of adapter functions: `(ctx: {Object} , next: {Function})`
+ * see also: the `npac.start` process description.
  *
  * @function
  */
-const mergeConfig = (config={}) => (ctx, next) => {
+export const mergeConfig = (config={}) => (ctx, next) => {
     next(null, _.mergeWith({}, ctx, { config: config }))
-}
-
-module.exports = {
-    makeConfig,
-    mergeConfig
 }

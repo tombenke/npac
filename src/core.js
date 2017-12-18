@@ -28,12 +28,12 @@ const initialCtx = {
  * The `next` function has two arguments: next(err: {Object}, ctxExtension: {Object})
  * - `err` is an error object, or null, in case of successful execution,
  * - `ctxExtension` is a partial context object, that the adapter would like to merge with the context.
- * The `startup()` function will merge the original context object with the `ctxExtension`,
+ * The `start()` function will merge the original context object with the `ctxExtension`,
  * and the next adapter function in the pipeline will be called with this extended context object.
  *
  * @arg {Object} ctx - The initial context
  * @arg {Array} adapters - The array of adapter functions
- * @arg {Function} endCb - An error-first callback function to call when the startup process finished.
+ * @arg {Function} endCb - An error-first callback function to call when the start process finished.
  *
  * @function
  */
@@ -66,6 +66,21 @@ const setupAdapters = (ctx, adapters=[]) => endCb => {
     })
 }
 
+/**
+ * Prepare jobs to run in series.
+ *
+ * Creates a function that will map through the list of jobs, and executes them one ofter the other,
+ * in series. The results will be collected into an array, that will be returned as a whole,
+ * after the execution of the last job.
+ *
+ * @arg {Array} jobs  - An array of job functions.
+ *
+ * @return {Function} - An asynchronous function that has two parameters:
+ * `ctx: {Object}` that is the context object, and `endCb: {Function}`,
+ * that is an error-first callback to return with the results of the job execution.
+ *
+ * @function
+ */
 const runJobs = jobs => (ctx, endCb) => {
     ctx.logger.info('App runs the jobs...')
     async.mapSeries(jobs, (job, callback) => {
@@ -90,14 +105,23 @@ const runJobs = jobs => (ctx, endCb) => {
  * Run an `npac` application
  *
  * First setup the adapters, then run the jobs if they are available.
+ * If any of the errors returns with error, then immediately stops the execution.
+ * If `endCb` defined, then calls it, with the list of results of every jobs.
+ * In case of error occured, and no `endCb` defined then it throws and error instead of returning.
  *
- * @arg {Array} adapters    - The list of adapters that make the context, inlcuding the executives
- * @arg {Array} jobs        - The list of jobs to execute
- * @arg {Function} endCb    - An error-first callback to call when the function finished
+ * @arg {Array} adapters    - The list of adapters, (including the executives) that make the context. Default: `[]`.
+ *
+ * @arg {Array} jobs        - The list of job functions to execute. Default: `[]`.
+ * Every job function must have the following signature: `(ctx: {Object}, cb: {Function})`,
+ * where `ctx` is the context object, and `cb` is an error-first callback,
+ * with the results of the call as a second parameters.
+ *
+ * @arg {Function} endCb    - An error-first callback to call with the result of the call,
+ * when the function finished. Default: `null`.
  *
  * @function
  */
-const start = (adapters=[], jobs=[], endCb=null) => {
+export const start = (adapters=[], jobs=[], endCb=null) => {
     const errorHandler = (err, results) => {
         if (! _.isNull(endCb)) {
             endCb(err, results)
@@ -110,8 +134,4 @@ const start = (adapters=[], jobs=[], endCb=null) => {
         setupAdapters(initialCtx, adapters),
         runJobs(jobs)
     )(errorHandler)
-}
-
-module.exports = {
-    start: start
 }

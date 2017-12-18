@@ -7,6 +7,11 @@
  * @module config
  */
 
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.mergeConfig = exports.makeConfig = undefined;
+
 var _lodash = require('lodash');
 
 var _lodash2 = _interopRequireDefault(_lodash);
@@ -22,14 +27,14 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  * - command line config parameters
  *
  * @arg {Object} defaults - The dictionary of default parameters
- * @arg {Object} cliconfig - The dictionary of parameters parsed by the CLI
+ * @arg {Object} cliConfig - The dictionary of parameters parsed by the CLI
  * @arg {String} configFileProp - The property name of the config file, if it is used at all.
  *
  * @return {Object} - The configuration parameters merged into one object
  *
  * @function
  */
-var makeConfig = function makeConfig() {
+var makeConfig = exports.makeConfig = function makeConfig() {
     var defaults = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
     var cliConfig = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
     var configFileProp = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'configFile';
@@ -49,20 +54,15 @@ var makeConfig = function makeConfig() {
  *
  * @arg {Object} config - The configuration object to merge with the context.
  *
- * @return {Function} - The adapter function that can be executed during the startup process.
- * It has the standard signature of startup functions: `(ctx: {Object} , next: {Function})`
- * see also: the `npac.startup` process description.
+ * @return {Function} - The adapter function that can be executed during the start process.
+ * It has the standard signature of adapter functions: `(ctx: {Object} , next: {Function})`
+ * see also: the `npac.start` process description.
  *
  * @function
  */
-var mergeConfig = function mergeConfig() {
+var mergeConfig = exports.mergeConfig = function mergeConfig() {
     var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
     return function (ctx, next) {
         next(null, _lodash2.default.mergeWith({}, ctx, { config: config }));
     };
-};
-
-module.exports = {
-    makeConfig: makeConfig,
-    mergeConfig: mergeConfig
 };

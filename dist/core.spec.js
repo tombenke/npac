@@ -10,8 +10,6 @@ var _expect2 = _interopRequireDefault(_expect);
 
 var _core = require('./core');
 
-var _core2 = _interopRequireDefault(_core);
-
 var _defaultConfig = require('./defaultConfig');
 
 var _defaultConfig2 = _interopRequireDefault(_defaultConfig);
@@ -33,43 +31,43 @@ describe('core', function () {
     };
 
     it('#start - with no args', function () {
-        _core2.default.start();
+        (0, _core.start)();
     });
 
     it('#start - check default config', function () {
         var expectedConfig = _defaultConfig2.default;
-        _core2.default.start([checkConfig(expectedConfig)]);
+        (0, _core.start)([checkConfig(expectedConfig)]);
     });
 
     it('#start - check default config with endCallback', function () {
         var expectedConfig = _defaultConfig2.default;
-        _core2.default.start([checkConfig(expectedConfig)], [], function (err, results) {
+        (0, _core.start)([checkConfig(expectedConfig)], [], function (err, results) {
             return (0, _expect2.default)(err).toEqual(null);
         });
     });
 
     it('#start - use config object', function () {
         var expectedConfig = _lodash2.default.merge(_defaultConfig2.default, testAdapter.config);
-        _core2.default.start([testAdapter, checkConfig(expectedConfig)]);
+        (0, _core.start)([testAdapter, checkConfig(expectedConfig)]);
     });
 
     it('#start - use adapter function that returns NO ctxExtension', function () {
         var expectedConfig = _lodash2.default.merge(_defaultConfig2.default);
-        _core2.default.start([function (ctx, next) {
+        (0, _core.start)([function (ctx, next) {
             return next(null);
         }, checkConfig(expectedConfig)]);
     });
 
     it('#start - use adapter function that returns `null` as ctxExtension', function () {
         var expectedConfig = _lodash2.default.merge(_defaultConfig2.default);
-        _core2.default.start([function (ctx, next) {
+        (0, _core.start)([function (ctx, next) {
             return next(null, null);
         }, checkConfig(expectedConfig)]);
     });
 
     it('#start - use adapter function that returns ctxExtension', function () {
         var expectedConfig = _lodash2.default.merge(_defaultConfig2.default, testAdapter.config);
-        _core2.default.start([function (ctx, next) {
+        (0, _core.start)([function (ctx, next) {
             return next(null, testAdapter);
         }, checkConfig(expectedConfig)]);
     });
@@ -77,7 +75,7 @@ describe('core', function () {
     it('#start - use adapter function with exception on error', function () {
         var expectedConfig = _lodash2.default.merge(_defaultConfig2.default, testAdapter.config);
         try {
-            _core2.default.start([function (ctx, next) {
+            (0, _core.start)([function (ctx, next) {
                 return next(new Error("Wrong adapter init"));
             }, checkConfig(expectedConfig)]);
         } catch (err) {
@@ -86,7 +84,7 @@ describe('core', function () {
     });
 
     it('#start - use adapter function with error on callback', function () {
-        _core2.default.start([function (ctx, next) {
+        (0, _core.start)([function (ctx, next) {
             return next(new Error("Wrong adapter init"));
         }], [], function (err, ctx) {
             return (0, _expect2.default)(err).toEqual('Error: Wrong adapter init');
@@ -94,7 +92,7 @@ describe('core', function () {
     });
 
     it('#start - with job returns error', function (done) {
-        _core2.default.start([], [function (ctx, cb) {
+        (0, _core.start)([], [function (ctx, cb) {
             return cb(new Error('Job returned error'), {});
         }], function (err, results) {
             (0, _expect2.default)(err).toEqual('Error: Job returned error');
@@ -103,7 +101,7 @@ describe('core', function () {
     });
 
     it('#start - with job as a non function object', function (done) {
-        _core2.default.start([], [{/* It should be a function */}], function (err, results) {
+        (0, _core.start)([], [{/* It should be a function */}], function (err, results) {
             (0, _expect2.default)(err).toEqual('Error: Job must be a function');
             done();
         });

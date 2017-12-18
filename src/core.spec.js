@@ -1,6 +1,6 @@
 import _ from 'lodash'
 import expect from 'expect'
-import app from './core'
+import { start } from './core'
 import npacDefaultConfig from './defaultConfig'
 
 describe('core', () => {
@@ -16,23 +16,23 @@ describe('core', () => {
     }
 
     it('#start - with no args', () => {
-        app.start()
+        start()
     })
 
     it('#start - check default config', () => {
         const expectedConfig = npacDefaultConfig
-        app.start([checkConfig(expectedConfig)])
+        start([checkConfig(expectedConfig)])
     })
 
     it('#start - check default config with endCallback', () => {
         const expectedConfig = npacDefaultConfig
-        app.start([checkConfig(expectedConfig)], [],
+        start([checkConfig(expectedConfig)], [],
             (err, results) => expect(err).toEqual(null))
     })
 
     it('#start - use config object', () => {
         const expectedConfig = _.merge(npacDefaultConfig, testAdapter.config)
-        app.start([
+        start([
             testAdapter,
             checkConfig(expectedConfig)
         ])
@@ -40,7 +40,7 @@ describe('core', () => {
 
     it('#start - use adapter function that returns NO ctxExtension', () => {
         const expectedConfig = _.merge(npacDefaultConfig)
-        app.start([
+        start([
             (ctx, next) => next(null),
             checkConfig(expectedConfig)
         ])
@@ -48,7 +48,7 @@ describe('core', () => {
 
     it('#start - use adapter function that returns `null` as ctxExtension', () => {
         const expectedConfig = _.merge(npacDefaultConfig)
-        app.start([
+        start([
             (ctx, next) => next(null, null),
             checkConfig(expectedConfig)
         ])
@@ -56,7 +56,7 @@ describe('core', () => {
 
     it('#start - use adapter function that returns ctxExtension', () => {
         const expectedConfig = _.merge(npacDefaultConfig, testAdapter.config)
-        app.start([
+        start([
             (ctx, next) => next(null, testAdapter),
             checkConfig(expectedConfig)
         ])
@@ -65,7 +65,7 @@ describe('core', () => {
     it('#start - use adapter function with exception on error', () => {
         const expectedConfig = _.merge(npacDefaultConfig, testAdapter.config)
         try {
-            app.start([
+            start([
                 (ctx, next) => next(new Error("Wrong adapter init")),
                 checkConfig(expectedConfig)
             ])
@@ -75,22 +75,21 @@ describe('core', () => {
     })
 
     it('#start - use adapter function with error on callback', () => {
-        app.start([(ctx, next) => next(new Error("Wrong adapter init"))], [],
+        start([(ctx, next) => next(new Error("Wrong adapter init"))], [],
             (err, ctx) => expect(err).toEqual('Error: Wrong adapter init'))
     })
 
     it('#start - with job returns error', (done) => {
-        app.start([], [(ctx, cb) => cb(new Error('Job returned error'), {})], (err, results) => {
+        start([], [(ctx, cb) => cb(new Error('Job returned error'), {})], (err, results) => {
             expect(err).toEqual('Error: Job returned error')
             done()
         })
     })
 
     it('#start - with job as a non function object', (done) => {
-        app.start([], [{ /* It should be a function */ }], (err, results) => {
+        start([], [{ /* It should be a function */ }], (err, results) => {
             expect(err).toEqual('Error: Job must be a function')
             done()
         })
     })
-
 })

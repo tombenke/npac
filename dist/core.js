@@ -8,6 +8,11 @@
  * @module core
  */
 
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.start = undefined;
+
 var _lodash = require('lodash');
 
 var _lodash2 = _interopRequireDefault(_lodash);
@@ -39,12 +44,12 @@ var initialCtx = {
      * The `next` function has two arguments: next(err: {Object}, ctxExtension: {Object})
      * - `err` is an error object, or null, in case of successful execution,
      * - `ctxExtension` is a partial context object, that the adapter would like to merge with the context.
-     * The `startup()` function will merge the original context object with the `ctxExtension`,
+     * The `start()` function will merge the original context object with the `ctxExtension`,
      * and the next adapter function in the pipeline will be called with this extended context object.
      *
      * @arg {Object} ctx - The initial context
      * @arg {Array} adapters - The array of adapter functions
-     * @arg {Function} endCb - An error-first callback function to call when the startup process finished.
+     * @arg {Function} endCb - An error-first callback function to call when the start process finished.
      *
      * @function
      */
@@ -82,6 +87,21 @@ var initialCtx = {
     };
 };
 
+/**
+ * Prepare jobs to run in series.
+ *
+ * Creates a function that will map through the list of jobs, and executes them one ofter the other,
+ * in series. The results will be collected into an array, that will be returned as a whole,
+ * after the execution of the last job.
+ *
+ * @arg {Array} jobs  - An array of job functions.
+ *
+ * @return {Function} - An asynchronous function that has two parameters:
+ * `ctx: {Object}` that is the context object, and `endCb: {Function}`,
+ * that is an error-first callback to return with the results of the job execution.
+ *
+ * @function
+ */
 var runJobs = function runJobs(jobs) {
     return function (ctx, endCb) {
         ctx.logger.info('App runs the jobs...');
@@ -108,14 +128,23 @@ var runJobs = function runJobs(jobs) {
  * Run an `npac` application
  *
  * First setup the adapters, then run the jobs if they are available.
+ * If any of the errors returns with error, then immediately stops the execution.
+ * If `endCb` defined, then calls it, with the list of results of every jobs.
+ * In case of error occured, and no `endCb` defined then it throws and error instead of returning.
  *
- * @arg {Array} adapters    - The list of adapters that make the context, inlcuding the executives
- * @arg {Array} jobs        - The list of jobs to execute
- * @arg {Function} endCb    - An error-first callback to call when the function finished
+ * @arg {Array} adapters    - The list of adapters, (including the executives) that make the context. Default: `[]`.
+ *
+ * @arg {Array} jobs        - The list of job functions to execute. Default: `[]`.
+ * Every job function must have the following signature: `(ctx: {Object}, cb: {Function})`,
+ * where `ctx` is the context object, and `cb` is an error-first callback,
+ * with the results of the call as a second parameters.
+ *
+ * @arg {Function} endCb    - An error-first callback to call with the result of the call,
+ * when the function finished. Default: `null`.
  *
  * @function
  */
-var start = function start() {
+var start = exports.start = function start() {
     var adapters = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
     var jobs = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
     var endCb = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
@@ -129,8 +158,4 @@ var start = function start() {
     };
 
     _async2.default.seq(setupAdapters(initialCtx, adapters), runJobs(jobs))(errorHandler);
-};
-
-module.exports = {
-    start: start
 };

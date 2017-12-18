@@ -137,7 +137,7 @@
     
 
     
-    <h4 class="name" id="~makeCall"><span class="type-signature">(inner) </span>makeCall<span class="signature">(jobDesc)</span><span class="type-signature"> &rarr; {function}</span></h4>
+    <h4 class="name" id=".makeCall"><span class="type-signature">(static) </span>makeCall<span class="signature">(jobDesc)</span><span class="type-signature"> &rarr; {function}</span></h4>
     
 
     
@@ -145,11 +145,7 @@
 
 
 <div class="description">
-    <p>Run an API endpoint available in the context </p>
-<p>Required ctx properties:</p>
-<ul>
-<li>logger</li>
-</ul>
+    <p>Make a job function, that will call an asynchronous API endpoint available through the context.</p>
 </div>
 
 
@@ -201,11 +197,11 @@
 
             
 
-            <td class="description last"><p>An object, that describe the job to run:
-  {
+            <td class="description last"><p>An object, that describe the job to run:</p>
+<pre class="prettyprint source"><code> {
      name: {String} // The name of the executive
      args: {Object} // A dictionary object which holds the actual arguments of the executive to run
-  }</p></td>
+ }</code></pre></td>
         </tr>
 
     
@@ -269,9 +265,164 @@
         
 <div class="param-desc">
     <ul>
-<li>A function that the <code>npac.startup()</code> will call, during the runJobs process.
-It has the standard signature of startup functions: <code>(ctx: {Object}, next: {Function})</code>
-see also: the <code>npac.startup</code> process description.</li>
+<li>A function that the <code>npac.start()</code> will call, during the runJobs process.
+It has the standard signature of adapter functions: <code>(ctx: {Object}, next: {Function})</code></li>
+</ul>
+<p>see also: the <code>npac.start</code> process description.</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">function</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".makeCallSync"><span class="type-signature">(static) </span>makeCallSync<span class="signature">(jobDesc)</span><span class="type-signature"> &rarr; {function}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Make a job function, that will call an synchronous API endpoint available through the context.</p>
+<p>Similar to the makeCall, but the API endpoint is synchronous.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>jobDesc</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The job descriptor object.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <ul>
+<li>The job function.</li>
 </ul>
 </div>
 
