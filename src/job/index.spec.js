@@ -1,7 +1,7 @@
 import _ from 'lodash'
 import expect from 'expect'
 import { loadJsonFileSync } from 'datafile'
-import execute from './index'
+import { runJob, runJobSync } from './index'
 
 const executives = {
     add: (ctx, args, cb) =>
@@ -12,23 +12,30 @@ const executives = {
 
 describe('config', () => {
     const ctxOrig = loadJsonFileSync('src/config/fixtures/ctxOrig.yml')
-/*
-    it('#execute - executives found', (done) => {
-        const context = _.merge({}, ctxOrig, executives)
-        const taskToExecute = execute({ name: 'add', args: { a: 1, b: 1 } })
 
-        const nextAdapterFun = (err, next) => {
-            expect(err).toEqual(null)
+    it('#runJob - call sync job', (done) => {
+        const syncJobExecutive = { addSync: (ctx, args) => args.a + args.b }
+        const ctx = _.merge({}, ctxOrig, { logger: console }, syncJobExecutive)
+        const syncJob = runJobSync({ name: 'addSync', args: { a: 1, b: 1 } })
+        syncJob(ctx, (err, result) => {
+            expect(result).toEqual([2])
             done()
-        }
-
-        const resultHandler = (err, ctx, result, next) => {
-            expect(err).toEqual(null)
-            expect(result).toEqual(2)
-            next(null)
         })
-
-        taskToExecute(context, (err, (err, result, nextAdapterFun) => ) => 
     })
+
+/*
+
+    it('#start - call async job', (done) => {
+
+        app.start([
+            { add: (ctx, args, cb) => cb(null, args.a + args.b) },
+        ], [
+            app.runJob({ name: 'add', args: { a: 1, b: 1 } })
+        ], (err, result) => {
+                expect(result).toEqual([2])
+                done()
+            })
+    })
+
 */
 })
