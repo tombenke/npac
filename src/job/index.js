@@ -30,7 +30,7 @@ export const makeCall = (jobDesc) => {
 
     return (ctx, responseCb) => {
         ctx.logger.debug('execute: ', jobDesc)
-        const job = _.hasIn(ctx, jobDesc.name) ? ctx[jobDesc.name] : execNotDefined
+        const job = _.hasIn(ctx, jobDesc.name) ? ctx[jobDesc.name] : jobNotDefined
         const args = jobDesc.args || {}
         job(ctx, args, responseCb)
     }

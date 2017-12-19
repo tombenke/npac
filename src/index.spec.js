@@ -3,29 +3,19 @@ import expect from 'expect'
 import app from './index'
 import npacDefaultConfig from './defaultConfig'
 import { makeConfig, mergeConfig } from './config/'
+import { addLogger } from './logger/'
 
-/*
 import fs from 'fs'
 import path from 'path'
 import rimraf from 'rimraf'
 
+const testDirectory = path.resolve('./tmp')
 const destCleanup = function(cb) {
-    const dest = path.resolve('./tmp/')
+    const dest = testDirectory
     console.log('Remove: ', dest)
     rimraf(dest, cb)
 }
 
-before(function(done) {
-    destCleanup(function() {
-        fs.mkdirSync(path.resolve('./tmp'))
-        done()
-    })
-})
-
-after(function(done) {
-    destCleanup(done)
-})
-*/
 //    const { cliConfig, command } = cli.parse(defaults)
 //    const config = makeConfig(defaults, cliConfig)
 
@@ -34,6 +24,19 @@ after(function(done) {
 //})
 
 describe('npac', () => {
+
+    before(function(done) {
+        destCleanup(function() {
+            console.log('Create: ', testDirectory)
+            fs.mkdirSync(testDirectory)
+            done()
+        })
+    })
+
+    after(function(done) {
+//        destCleanup(done)
+        done()
+    })
 
     const checkCtx = (checkFun) => (ctx, next) => {
         checkFun(ctx)
@@ -53,6 +56,25 @@ describe('npac', () => {
             mergeConfig(configToMerge),
             checkCtx(ctx => expect(ctx.config).toEqual(expectedCtx.config))
         ])
+    })
+
+    it('#start - #makeConfig, #mergeConfig, #addLogger', () => {
+        const configToMerge = makeConfig({ logger: { level: "debug" }, projectPath: testDirectory })
+//        const expectedCtx = { config: _.merge({}, npacDefaultConfig, configToMerge ) }
+
+        app.start([
+            mergeConfig(configToMerge),
+            addLogger
+//            checkCtx(ctx => expect(ctx.config).toEqual(expectedCtx.config))
+        ], [
+            (ctx, next) => {
+                ctx.logger.info('This is a DEBUG message')
+                console.log('This is a DEBUG message')
+                next(null, {})
+            }
+        ], (err, results) => {
+            console.log('Final results:', err, results)
+        })
     })
 
     it('#start - call sync executive function', (done) => {
@@ -94,7 +116,6 @@ describe('npac', () => {
         })
     })
 
-
     it('#start - call async job', (done) => {
 
         app.start([
@@ -106,4 +127,45 @@ describe('npac', () => {
             done()
         })
     })
+
+    it('#start - call sync job that uses logger', (done) => {
+
+        app.start([
+            addLogger,
+            {
+                addSync: (ctx, args) => {
+                    const result = args.a + args.b
+                    ctx.logger.info(`addSync(${args.a}, ${args.b}) => ${result}`)
+                    return result
+                }
+            },
+        ], [
+            app.makeCallSync({ name: 'addSync', args: { a: 1, b: 1 } })
+        ], (err, result) => {
+            expect(result).toEqual([2])
+            done()
+        })
+    })
+
+
+    it('#start - call async job that uses logger', (done) => {
+
+        app.start([
+            addLogger,
+            {
+                add: (ctx, args, cb) => {
+                    const result = args.a + args.b
+                    ctx.logger.info(`add(${args.a}, ${args.b}) => ${result}`)
+                    cb(null, result)
+                }
+            },
+        ], [
+            app.makeCall({ name: 'add', args: { a: 1, b: 1 } })
+        ], (err, result) => {
+            expect(result).toEqual([2])
+            done()
+        })
+
+    })
+
 })

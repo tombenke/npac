@@ -47,7 +47,7 @@ const makeTransport = config => transConfig => {
  */
 const makeLogger = (config) => createLogger({
     level: config.logger.level,
-    transports: _.map(config.logger.transports, makeTransport(config))
+    transports: _.map(config.logger.transports, makeTransport(_.merge({}, config, { level: config.logger.level})))
 })
 
 /**
