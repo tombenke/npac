@@ -13,7 +13,7 @@ This module provides a framework for applications to:
 - make application life-cycle management (startup, shutdown, signal handling),
 - provide built-in, configurable logging and monitoring capabilities.
 
-Read the [API documentation](https://tombenke.github.io/npac/index.html)
+Read the [API documentation](https://tombenke.github.io/npac/)
 for further details on how to use this library.
 
 
