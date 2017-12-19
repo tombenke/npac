@@ -56,10 +56,10 @@ var initialCtx = {
 };var setupAdapters = function setupAdapters(ctx) {
     var adapters = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
     return function (endCb) {
-        ctx.logger.info('App is starting up...');
+        // ctx.logger.debug('App is starting up...', ctx, adapters)
         _async2.default.reduce(adapters, ctx, function (memoCtx, adapter, callback) {
             if (_lodash2.default.isFunction(adapter)) {
-                memoCtx.logger.debug('Call adapter registration function');
+                // memoCtx.logger.debug('Call adapter registration function')
                 adapter(memoCtx, function (err) {
                     var ctxExtension = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
 
@@ -69,16 +69,16 @@ var initialCtx = {
                     } else {
                         // Merge the adapter extensions to the context
                         if (_lodash2.default.isNull(ctxExtension)) {
-                            memoCtx.logger.debug('Adapter extensions is null. Do not merge.');
+                            // memoCtx.logger.debug('Adapter extensions is null. Do not merge.')
                             callback(null, memoCtx);
                         } else {
-                            memoCtx.logger.debug('Merge adapter extensions to the context: ', ctxExtension);
+                            // memoCtx.logger.debug('Merge adapter extensions to the context: ', ctxExtension)
                             callback(null, _lodash2.default.merge({}, memoCtx, ctxExtension));
                         }
                     }
                 });
             } else {
-                memoCtx.logger.debug('Merge adapter object to ctx');
+                // memoCtx.logger.debug('Merge adapter object to ctx')
                 callback(null, _lodash2.default.merge({}, memoCtx, adapter));
             }
         }, function (err, resultCtx) {
@@ -104,15 +104,15 @@ var initialCtx = {
  */
 var runJobs = function runJobs(jobs) {
     return function (ctx, endCb) {
-        ctx.logger.info('App runs the jobs...');
+        // ctx.logger.debug('App runs the jobs...')
         _async2.default.mapSeries(jobs, function (job, callback) {
             if (_lodash2.default.isFunction(job)) {
-                ctx.logger.debug('Call job function');
+                // ctx.logger.debug('Call job function')
                 job(ctx, function (err, result) {
                     if (err) {
                         ctx.logger.error('Job call failed', err);
                     } else {
-                        ctx.logger.debug('Job call completed', result);
+                        // ctx.logger.debug('Job call completed', result)
                     }
                     callback(err, result);
                 });

@@ -38,10 +38,10 @@ const initialCtx = {
  * @function
  */
 const setupAdapters = (ctx, adapters=[]) => endCb => {
-    ctx.logger.info('App is starting up...')
+    // ctx.logger.debug('App is starting up...', ctx, adapters)
     async.reduce(adapters, ctx, (memoCtx, adapter, callback) => {
         if (_.isFunction(adapter)) {
-            memoCtx.logger.debug('Call adapter registration function')
+            // memoCtx.logger.debug('Call adapter registration function')
             adapter(memoCtx, (err, ctxExtension=null) => {
                 if (err) {
                     memoCtx.logger.error('Adapter registration function returned: ', err)
@@ -49,16 +49,16 @@ const setupAdapters = (ctx, adapters=[]) => endCb => {
                 } else {
                     // Merge the adapter extensions to the context
                     if (_.isNull(ctxExtension)) {
-                        memoCtx.logger.debug('Adapter extensions is null. Do not merge.')
+                        // memoCtx.logger.debug('Adapter extensions is null. Do not merge.')
                         callback(null, memoCtx)
                     } else {
-                        memoCtx.logger.debug('Merge adapter extensions to the context: ', ctxExtension)
+                        // memoCtx.logger.debug('Merge adapter extensions to the context: ', ctxExtension)
                         callback(null, _.merge({}, memoCtx, ctxExtension))
                     }
                 }
             })
         } else {
-            memoCtx.logger.debug('Merge adapter object to ctx')
+            // memoCtx.logger.debug('Merge adapter object to ctx')
             callback(null, _.merge({}, memoCtx, adapter))
         }
     }, function(err, resultCtx) {
@@ -82,15 +82,15 @@ const setupAdapters = (ctx, adapters=[]) => endCb => {
  * @function
  */
 const runJobs = jobs => (ctx, endCb) => {
-    ctx.logger.info('App runs the jobs...')
+    // ctx.logger.debug('App runs the jobs...')
     async.mapSeries(jobs, (job, callback) => {
         if (_.isFunction(job)) {
-            ctx.logger.debug('Call job function')
+            // ctx.logger.debug('Call job function')
             job(ctx, (err, result) => {
                 if (err) {
                     ctx.logger.error('Job call failed', err)
                 } else {
-                    ctx.logger.debug('Job call completed', result)
+                    // ctx.logger.debug('Job call completed', result)
                 }
                 callback(err, result)
             })
