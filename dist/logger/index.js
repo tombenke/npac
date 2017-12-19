@@ -76,7 +76,7 @@ var makeTransport = function makeTransport(config) {
 var makeLogger = function makeLogger(config) {
     return (0, _winston.createLogger)({
         level: config.logger.level,
-        transports: _lodash2.default.map(config.logger.transports, makeTransport(config))
+        transports: _lodash2.default.map(config.logger.transports, makeTransport(_lodash2.default.merge({}, config, { level: config.logger.level })))
     });
 };
 

@@ -43,7 +43,7 @@ var makeCall = exports.makeCall = function makeCall(jobDesc) {
 
     return function (ctx, responseCb) {
         ctx.logger.debug('execute: ', jobDesc);
-        var job = _lodash2.default.hasIn(ctx, jobDesc.name) ? ctx[jobDesc.name] : execNotDefined;
+        var job = _lodash2.default.hasIn(ctx, jobDesc.name) ? ctx[jobDesc.name] : jobNotDefined;
         var args = jobDesc.args || {};
         job(ctx, args, responseCb);
     };
