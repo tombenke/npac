@@ -42,7 +42,7 @@ It is not an implementation of the classic hexagonal architecture pattern.
 It does not necessarily follow the MVC pattern, dependency layering, or other strict regulation of 
 classic PoA or onion  architectures.
 
-`npac= is not about abstraction layering, but it is about the independence of connected modules 
+`npac` is not about abstraction layering, but it is about the independence of connected modules 
 that an application is made of and built upon by composition.
 
 Obviously it is worth to keep the one-directional dependency structure,
@@ -61,7 +61,7 @@ Keep the logic in a headless module which provides a universal interface,
 and make this working from several places, such as test code, UI, CLI, other parts of the system 
 via mediator modules (that may use messaging, etc.).
 
-![layers](layers.png)
+![layers](images/layers.png)
 
 Practically every application is made of the following parts:
 
@@ -149,7 +149,7 @@ An application, that is built upon `npac`, is made of the following components:
 
 ## The lifecycle of an npac application
 
-![lifecycle](lifecycle.png)
+![lifecycle](images/lifecycle.png)
 
 1. __startup__
 
@@ -165,7 +165,7 @@ An application, that is built upon `npac`, is made of the following components:
 
    Gracefully shuts-down the jobs and adapters, then exit.
 
-![setupAdapters](setupAdapters.png)
+![setupAdapters](images/setupAdapters.png)
 
-![runJobs](runJobs.png)
+![runJobs](images/runJobs.png)
 
