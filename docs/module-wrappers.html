@@ -137,6 +137,208 @@
     
 
     
+    <h4 class="name" id=".runJob"><span class="type-signature">(static) </span>runJob<span class="signature">(config, executives, jobDesc, cb)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Run an asynchronous executive function in a plain container</p>
+<p>The function builds a container that provides only <code>config</code>, <code>logger</code>
+and the executives given as a parameter, then executes the synchronous job,
+that is defined by the <code>jobDesc</code> parameter.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>config</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The configuration parameters of the container.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>executives</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The executives, that must contain at least the async job function that is referred by the <code>jobDesc</code> argument.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>jobDesc</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The job <code>{ name: {String}, args: {Object} }</code> descriptor object.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>cb</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>An error-first callback function, will be called with th re final results of container run.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
     <h4 class="name" id=".runJobSync"><span class="type-signature">(static) </span>runJobSync<span class="signature">(config, executives, jobDesc, cb)</span><span class="type-signature"></span></h4>
     
 

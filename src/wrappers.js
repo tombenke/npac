@@ -18,6 +18,7 @@ const buildAndRun = (config, executives, jobDesc, jobFun, cb) => {
         executives
     ], [ jobFun(jobDesc) ], cb)
 }
+
 /**
  * Run a synchronous executive function in a plain container
  *
@@ -35,5 +36,19 @@ const buildAndRun = (config, executives, jobDesc, jobFun, cb) => {
 export const runJobSync = (config, executives, jobDesc, cb) =>
     buildAndRun(config, executives, jobDesc, makeCallSync, cb)
 
+/**
+ * Run an asynchronous executive function in a plain container
+ *
+ * The function builds a container that provides only `config`, `logger`
+ * and the executives given as a parameter, then executes the synchronous job,
+ * that is defined by the `jobDesc` parameter.
+ *
+ * @arg {Object} config - The configuration parameters of the container.
+ * @arg {Object} executives - The executives, that must contain at least the async job function that is referred by the `jobDesc` argument.
+ * @arg {Object} jobDesc - The job `{ name: {String}, args: {Object} }` descriptor object.
+ * @arg {Function} cb - An error-first callback function, will be called with th re final results of container run.
+ *
+ * @function
+ */
 export const runJob = (config, executives, jobDesc, cb) =>
     buildAndRun(config, executives, jobDesc, makeCall, cb)
