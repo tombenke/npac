@@ -21,14 +21,14 @@
         <y:ProxyAutoBoundsNode>
           <y:Realizers active="0">
             <y:GroupNode>
-              <y:Geometry height="82.36071304493095" width="229.93994803199655" x="350.57018065550346" y="421.44268347753365"/>
+              <y:Geometry height="82.36071304493095" width="204.89235200000007" x="350.57018065550346" y="421.44268347753365"/>
               <y:Fill color="#F5F5F5" transparent="false"/>
               <y:BorderStyle color="#000000" type="dashed" width="1.0"/>
-              <y:NodeLabel alignment="right" autoSizePolicy="node_width" backgroundColor="#EBEBEB" borderDistance="0.0" fontFamily="Dialog" fontSize="15" fontStyle="plain" hasLineColor="false" height="21.4609375" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="t" textColor="#000000" verticalTextPosition="bottom" visible="true" width="229.93994803199655" x="0.0" y="0.0">runJobs</y:NodeLabel>
+              <y:NodeLabel alignment="right" autoSizePolicy="node_width" backgroundColor="#EBEBEB" borderDistance="0.0" fontFamily="Dialog" fontSize="15" fontStyle="plain" hasLineColor="false" height="21.4609375" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="t" textColor="#000000" verticalTextPosition="bottom" visible="true" width="204.89235200000007" x="0.0" y="0.0">run = runJobs()</y:NodeLabel>
               <y:Shape type="roundrectangle"/>
               <y:State closed="false" closedHeight="50.0" closedWidth="50.0" innerGraphDisplayEnabled="false"/>
               <y:Insets bottom="15" bottomF="15.0" left="15" leftF="15.0" right="15" rightF="15.0" top="15" topF="15.0"/>
-              <y:BorderInsets bottom="0" bottomF="0.0" left="4" leftF="3.9837240319964167" right="0" rightF="0.0" top="0" topF="0.0"/>
+              <y:BorderInsets bottom="0" bottomF="0.0" left="0" leftF="0.0" right="0" rightF="0.0" top="0" topF="0.0"/>
             </y:GroupNode>
             <y:GroupNode>
               <y:Geometry height="50.0" width="50.0" x="617.0774880000006" y="322.45720174999997"/>
@@ -48,7 +48,7 @@
           <data key="d5"/>
           <data key="d6">
             <y:GenericNode configuration="ShinyPlateNode3">
-              <y:Geometry height="30.0" width="52.340032000000065" x="369.5539046874999" y="457.90362097753365"/>
+              <y:Geometry height="30.0" width="52.340032000000065" x="365.57018065550346" y="457.90362097753365"/>
               <y:Fill color="#FF9900" transparent="false"/>
               <y:BorderStyle hasColor="false" type="line" width="1.0"/>
               <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="17.96875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="35.927734375" x="8.206148812500032" y="6.015625">job_1<y:LabelModel>
@@ -65,7 +65,7 @@
           <data key="d5"/>
           <data key="d6">
             <y:GenericNode configuration="ShinyPlateNode3">
-              <y:Geometry height="30.0" width="52.340032000000065" x="430.8300646874999" y="458.8033965224646"/>
+              <y:Geometry height="30.0" width="52.340032000000065" x="426.84634065550347" y="458.8033965224646"/>
               <y:Fill color="#FF9900" transparent="false"/>
               <y:BorderStyle hasColor="false" type="line" width="1.0"/>
               <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="17.96875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="35.927734375" x="8.206148812500032" y="6.015625">job_2<y:LabelModel>
@@ -82,7 +82,7 @@
           <data key="d5"/>
           <data key="d6">
             <y:GenericNode configuration="ShinyPlateNode3">
-              <y:Geometry height="30.0" width="52.340032000000065" x="513.1700966875" y="458.8033965224646"/>
+              <y:Geometry height="30.0" width="52.340032000000065" x="488.1225006555035" y="458.8033965224646"/>
               <y:Fill color="#FF9900" transparent="false"/>
               <y:BorderStyle hasColor="false" type="line" width="1.0"/>
               <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="17.96875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="35.8984375" x="8.220797250000032" y="6.015625">job_n<y:LabelModel>
@@ -107,7 +107,7 @@
               <y:Geometry height="82.36071304493095" width="264.45862400000016" x="-18.814657905503623" y="421.44268347753365"/>
               <y:Fill color="#F5F5F5" transparent="false"/>
               <y:BorderStyle color="#000000" type="dashed" width="1.0"/>
-              <y:NodeLabel alignment="right" autoSizePolicy="node_width" backgroundColor="#EBEBEB" borderDistance="0.0" fontFamily="Dialog" fontSize="15" fontStyle="plain" hasLineColor="false" height="21.4609375" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="t" textColor="#000000" verticalTextPosition="bottom" visible="true" width="264.45862400000016" x="0.0" y="0.0">setupAdapters</y:NodeLabel>
+              <y:NodeLabel alignment="right" autoSizePolicy="node_width" backgroundColor="#EBEBEB" borderDistance="0.0" fontFamily="Dialog" fontSize="15" fontStyle="plain" hasLineColor="false" height="21.4609375" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="t" textColor="#000000" verticalTextPosition="bottom" visible="true" width="264.45862400000016" x="0.0" y="0.0">startup = setupAdapters()</y:NodeLabel>
               <y:Shape type="roundrectangle"/>
               <y:State closed="false" closedHeight="50.0" closedWidth="50.0" innerGraphDisplayEnabled="false"/>
               <y:Insets bottom="15" bottomF="15.0" left="15" leftF="15.0" right="15" rightF="15.0" top="15" topF="15.0"/>
@@ -184,7 +184,7 @@
       <data key="d5"/>
       <data key="d6">
         <y:GenericNode configuration="ShinyPlateNode">
-          <y:Geometry height="62.4864" width="69.13363200000009" x="598.4064199680034" y="429.3356799999997"/>
+          <y:Geometry height="62.4864" width="69.13363200000009" x="693.2400000000001" y="431.37983999999915"/>
           <y:Fill color="#C0C0C0" transparent="false"/>
           <y:BorderStyle hasColor="false" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="17.96875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="44.46484375" x="12.334394125000017" y="22.258825">results<y:LabelModel>
@@ -241,6 +241,37 @@ context<y:LabelModel>
           </y:StyleProperties>
         </y:GenericNode>
       </data>
+    </node>
+    <node id="n5" yfiles.foldertype="group">
+      <data key="d4"/>
+      <data key="d5"/>
+      <data key="d6">
+        <y:ProxyAutoBoundsNode>
+          <y:Realizers active="0">
+            <y:GroupNode>
+              <y:Geometry height="82.36071304493095" width="98.73994803199662" x="573.358823936007" y="419.39852347753424"/>
+              <y:Fill hasColor="false" transparent="false"/>
+              <y:BorderStyle color="#000000" type="dashed" width="1.0"/>
+              <y:NodeLabel alignment="right" autoSizePolicy="node_width" backgroundColor="#EBEBEB" borderDistance="0.0" fontFamily="Dialog" fontSize="15" fontStyle="plain" hasLineColor="false" height="21.4609375" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="t" textColor="#000000" verticalTextPosition="bottom" visible="true" width="98.73994803199662" x="0.0" y="0.0">shutdown</y:NodeLabel>
+              <y:Shape type="roundrectangle"/>
+              <y:State closed="false" closedHeight="50.0" closedWidth="50.0" innerGraphDisplayEnabled="false"/>
+              <y:Insets bottom="15" bottomF="15.0" left="15" leftF="15.0" right="15" rightF="15.0" top="15" topF="15.0"/>
+              <y:BorderInsets bottom="0" bottomF="0.0" left="4" leftF="3.9837240319964167" right="0" rightF="0.0" top="0" topF="0.0"/>
+            </y:GroupNode>
+            <y:GroupNode>
+              <y:Geometry height="50.0" width="50.0" x="617.0774880000006" y="322.45720174999997"/>
+              <y:Fill color="#F5F5F5" transparent="false"/>
+              <y:BorderStyle color="#000000" type="dashed" width="1.0"/>
+              <y:NodeLabel alignment="right" autoSizePolicy="node_width" backgroundColor="#EBEBEB" borderDistance="0.0" fontFamily="Dialog" fontSize="15" fontStyle="plain" hasLineColor="false" height="21.4609375" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="t" textColor="#000000" verticalTextPosition="bottom" visible="true" width="50.0" x="0.0" y="0.0">1</y:NodeLabel>
+              <y:Shape type="roundrectangle"/>
+              <y:State closed="false" closedHeight="50.0" closedWidth="50.0" innerGraphDisplayEnabled="false"/>
+              <y:Insets bottom="15" bottomF="15.0" left="15" leftF="15.0" right="15" rightF="15.0" top="15" topF="15.0"/>
+              <y:BorderInsets bottom="0" bottomF="0.0" left="0" leftF="0.0" right="0" rightF="0.0" top="0" topF="0.0"/>
+            </y:GroupNode>
+          </y:Realizers>
+        </y:ProxyAutoBoundsNode>
+      </data>
+      <graph edgedefault="directed" id="n5:"/>
     </node>
     <edge id="e0" source="n4" target="n1">
       <data key="d9"/>

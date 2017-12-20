@@ -163,7 +163,7 @@ An application, that is built upon `npac`, is made of the following components:
 
 ## The lifecycle of an npac application
 
-![lifecycle](images/lifecycle.png)
+An `npac` application's lifecycle has three phases:
 
 1. __startup__
 
@@ -179,7 +179,77 @@ An application, that is built upon `npac`, is made of the following components:
 
    Gracefully shuts-down the jobs and adapters, then exit.
 
+![lifecycle](images/lifecycle.png)
+
+## The startup phase
+
+When you implement an `npac` application you have to define the adapters to use,
+and the jobs to run by the container.
+
+You need to create one array for the adapters and one for the jobs,
+then you should call the `npac.start(adapters, jobs, cb)` function with the arrays you created.
+The last parameter of the `start()` function is an error-first callback,
+with `(error: {Object}, results: {Array})` signature, where `error` is null, in case of successful execution,
+or an `Error` object, in case of failure. The `results` is an array of the results of the jobs called during the run phase.
+
+The `npac.start()` function first calls the `npac.startupAdapters()` function that is the startup phase,
+and after that, it calls the `npac.runJobs()` function that is the run phase.
+
+The purpose of the startup phase is to create the context for the jobs in the run phase.
+
+The context is made of adapter objects. They must be added to the context one-by-one.
+They can be added to the context via listing them in the adapters array, that will be processed by the
+`startupAdapters()` function. This function is a reducer, which starts with an initial context object,
+then iterates through the adapters array, and processes each item.
+
+The items of the adapters array can be either an adapter object,
+or a so called adapter-function with the `(context: {Object}, callback: {Function})` signature.
+The callback is an error-first function, with `(error: {Object}, contextExtension: {Object})` signature.
+
+This adapter-function must call this callback function with a object,
+that wants to merge with the actual context.
+
+This way each iteration on the adapters return with an object, that structurally looks like the context,
+but contains only those properties, that the given adapter wants to add to the context as an extension.
+Then the `npac.startupAdapters()` function merges this context extension to the current version of context
+that is accumulated by this reduce process.
+
+In case an item of the adapters array is not a function but it is an object,
+then it s handled as the contextExtension itself, and will be merged with the context.
+
+At the end of the process the outcome is the final version of the context.
+The following figure demonstrates the execution of the reduce process.
+
 ![setupAdapters](images/setupAdapters.png)
 
+In each step the adapter function can access to those APIs that are previously merged with the context,
+so the order of adapters in the array may matters.
+
+Important note: The adapter functions can use, the context, and modify it, by merging new content into it,
+which takes effect during execution that follows the call of the adapter-function.
+
+The whole process begins with a minimal context that holds a `config` property with the absolute minimum configuration parameters.
+Since the adapters themselves might need configuration parameters, the best way to start the adapters array is to put an
+adapter object, named `config` to the very first position.
+
+## The run phase
+
+The run phase uses the final context, and calls the job functions listed in the jobs array.
+
+The job functions can not alter the context, but fully access to it.
+The job function signature is `(context: {Object}, callback: {Function})`,
+where `context` is the final context, created during the startup process, and `callback` is an error-first
+function with the `(error: {Object}, result: {Object})` signature. The `result` argument of the callback
+must contain the result of the job execution, that will be appended to the list of results of the application.
+
+The next figure demonstrates the execution of the run phase.
+
 ![runJobs](images/runJobs.png)
+
+## The shutdown phase
+
+The signal handling and graceful shutdown feature is not implemented yet.
+
+The application is simply exits after finished the execution of jobs.
+
 
