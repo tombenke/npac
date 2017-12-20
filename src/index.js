@@ -2,6 +2,7 @@ import { start } from './core'
 import { makeConfig, mergeConfig } from './config/'
 import { addLogger } from './logger/'
 import { makeCall, makeCallSync } from './job/'
+import { runJob, runJobSync } from './wrappers'
 
 module.exports = {
     start,
@@ -13,5 +14,9 @@ module.exports = {
 
     // jobs
     makeCall,
-    makeCallSync
+    makeCallSync,
+
+    // wrappers
+    runJob,
+    runJobSync
 }

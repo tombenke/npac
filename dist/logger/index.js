@@ -7,6 +7,11 @@
  * @module logger
  */
 
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.addLogger = undefined;
+
 var _lodash = require('lodash');
 
 var _lodash2 = _interopRequireDefault(_lodash);
@@ -90,12 +95,8 @@ var makeLogger = function makeLogger(config) {
  *
  * @function
  */
-var addLogger = function addLogger(ctx, next) {
+var addLogger = exports.addLogger = function addLogger(ctx, next) {
     var loggerConfig = _lodash2.default.merge({}, _defaultConfig2.default, ctx.config);
     //console.log('addLogger: ', JSON.stringify(loggerConfig, null, ' '))
     next(null, { logger: makeLogger(loggerConfig) });
-};
-
-module.exports = {
-    addLogger: addLogger
 };

@@ -8,6 +8,8 @@ var _logger = require('./logger/');
 
 var _job = require('./job/');
 
+var _wrappers = require('./wrappers');
+
 module.exports = {
     start: _core.start,
 
@@ -18,5 +20,9 @@ module.exports = {
 
     // jobs
     makeCall: _job.makeCall,
-    makeCallSync: _job.makeCallSync
+    makeCallSync: _job.makeCallSync,
+
+    // wrappers
+    runJob: _wrappers.runJob,
+    runJobSync: _wrappers.runJobSync
 };

@@ -60,12 +60,8 @@ const makeLogger = (config) => createLogger({
  *
  * @function
  */
-const addLogger = (ctx, next) => {
+export const addLogger = (ctx, next) => {
     const loggerConfig = _.merge({}, defaultConfig, ctx.config)
     //console.log('addLogger: ', JSON.stringify(loggerConfig, null, ' '))
     next(null, { logger: makeLogger(loggerConfig) })
-}
-
-module.exports = {
-    addLogger
 }

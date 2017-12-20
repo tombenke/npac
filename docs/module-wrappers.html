@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Module: logger</title>
+    <title>JSDoc: Module: wrappers</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Module: logger</h1>
+    <h1 class="page-title">Module: wrappers</h1>
 
     
 
@@ -38,7 +38,7 @@
     <div class="container-overview">
     
         
-            <div class="description"><p>Logger module for npac</p></div>
+            <div class="description"><p>Application wrapper functions for typical use cases with npac</p></div>
         
 
         
@@ -137,7 +137,7 @@
     
 
     
-    <h4 class="name" id=".addLogger"><span class="type-signature">(static) </span>addLogger<span class="signature">(ctx, next)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id=".runJobSync"><span class="type-signature">(static) </span>runJobSync<span class="signature">(config, executives, jobDesc, cb)</span><span class="type-signature"></span></h4>
     
 
     
@@ -145,163 +145,10 @@
 
 
 <div class="description">
-    <p>Create an adapter function that adds a default logger to the context.</p>
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>ctx</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>The actual context</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>next</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Error-first callback function to pass the result partial context extended with the logger.</p>
-<p>see also: the <code>npac.startup</code> process description.</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="~makeLogger"><span class="type-signature">(inner) </span>makeLogger<span class="signature">(config)</span><span class="type-signature"> &rarr; {Object}</span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    <p>Make a logger described by the <code>config</code> parameters.</p>
-<p>This adapter uses the winston logger library.
-It uses the default levels: <code>error: 0, warn: 1, info: 2, verbose: 3, debug: 4, silly: 5</code></p>
+    <p>Run a synchronous executive function in a plain container</p>
+<p>The function builds a container that provides only <code>config</code>, <code>logger</code>
+and the executives given as a parameter, then executes the synchronous job,
+that is defined by the <code>jobDesc</code> parameter.</p>
 </div>
 
 
@@ -353,7 +200,76 @@ It uses the default levels: <code>error: 0, warn: 1, info: 2, verbose: 3, debug:
 
             
 
-            <td class="description last"><p>The configuration of the logger</p></td>
+            <td class="description last"><p>The configuration parameters of the container.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>executives</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The executives, that must contain at least the sync job function that is referred by the <code>jobDesc</code> argument.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>jobDesc</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The job <code>{ name: {String}, args: {Object} }</code> descriptor object.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>cb</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>An error-first callback function, will be called with th re final results of container run.</p></td>
         </tr>
 
     
@@ -412,30 +328,6 @@ It uses the default levels: <code>error: 0, warn: 1, info: 2, verbose: 3, debug:
 
 
 
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    <ul>
-<li>The logger object</li>
-</ul>
-</div>
-
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">Object</span>
-
-
-    </dd>
-</dl>
-
-    
 
 
 
