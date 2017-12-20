@@ -76,7 +76,7 @@ Practically every application is made of the following parts:
 - Business-logic modules.
 
   They hold the business logic functions, and use infrastructural modules, such as repositories, 
-  communication, logging, onitoring, etc.
+  communication, logging, monitoring, etc.
 
 - Infrastructure modules.
    - These modules are responsible to mediate between the business logic,
@@ -124,15 +124,15 @@ An application, that is built upon `npac`, is made of the following components:
   These are modules, that implement the functionalities of the application.
 
   They can be categorized into two groups:
-    - __mediators__:
+    - __Mediators__:
       These modules hold no business logic, but may communicate with external services.
 
-      for example:
-        - central configuration module
-        - data stores
-        - dispatcher (patrun)
-        - http(s) server
-        - microservice container
+      For example:
+        - central configuration module,
+        - data stores,
+        - dispatcher ([patrun](https://www.npmjs.com/package/patrun)),
+        - http(s) server,
+        - microservice container.
         
       They do not call business logic directly through the API reacheable via the context,
       but may communicate with business modules, if they were registered to them.
@@ -144,20 +144,22 @@ An application, that is built upon `npac`, is made of the following components:
       It always exists, and may uses external resources to gain config info.
       Its responsibility to provide configuration info to all of the modules exist in the container.
       
-    - __executives__:
-      These modules may use other business logic modules and/or infrastructure modules through their APIs provided via the context.
-      for example:
-        - micro service implementations
-        - functions, operators
+    - __Executives__:
+      These modules may use other business logic modules and/or infrastructure modules through 
+      their APIs provided via the context.
 
-  Every adapter has access to the context.
+      For example:
+        - micro service implementations,
+        - functions, operators.
+
+  Every adapter has access to the whole context.
 
 - __Jobs__:
   These are simple functions that represent the main process of the application.
 
   They call executives and in some cases may also call mediators as well, such as config and logging, etc.
 
-  Every job has access to the context.
+  Every job has access to the whole context.
 
 ## The lifecycle of an npac application
 
