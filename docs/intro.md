@@ -3,12 +3,12 @@
 
 ## Goals and Principles
 
-The goals of writing `npac` are:
+The goals of writing `npac` are to:
 
 - minimize the boilerplate code required by an application,
 - makes possible each parts of a system easily unit-testable, even the whole application as a unit too,
 - provide reusable architecture templates for typical applications that conforms to the [12 factors](https://12factor.net) directives,
-- to make high level system components easily composeable.
+- make high level system components easily composable.
 
 With `npac` you can build systems out of loosely coupled, high cohesion components by composition.
 
@@ -35,7 +35,7 @@ their implementation.
 - Some adapters, which required for a typical application, such as configuration management, logging and lifecycle management.
 - Some wrapper functions that makes simple to create and run an `npac` based application.
 
-## What npac is not
+## What `npac` is not
 
 It is not an implementation of the classic hexagonal architecture pattern.
 
@@ -47,7 +47,7 @@ that an application is made of and built upon by composition.
 
 Obviously it is worth to keep the one-directional dependency structure,
 and data isolation rules in case of the design and implementation of individual modules built into the application,
-but and `npac` application itself is focusing on to easily integrate very high-level system components
+but an `npac` application itself is focusing on to easily integrate very high-level system components
 on a flexible way.
 
 `npac` applies some elements of the PoA philosophy, but it is very much an unopinionated solution,
@@ -65,7 +65,7 @@ via mediator modules (that may use messaging, etc.).
 
 Practically every application is made of the following parts:
 
-- an interface, through which its execution is controlled (parameterized, started and stopped),
+- An interface, through which its execution is controlled (parameterized, started and stopped).
 
 - [Configuration](https://12factor.net/config) info, coming from:
    - built-in defaults,
@@ -73,16 +73,28 @@ Practically every application is made of the following parts:
    - config file,
    - CLI or GUI parameters.
 
-- Business-logic modules. They hold the business logic functions, and use infrastructural modules, such as repositories, communication, logging, onitoring, etc.
+- Business-logic modules.
 
-- infrastructural modules
-   - These modules are responsible to mediate between the business logic, and the backing services.
-        <https://12factor.net/backing-services>
+  They hold the business logic functions, and use infrastructural modules, such as repositories, 
+  communication, logging, onitoring, etc.
+
+- Infrastructure modules.
+   - These modules are responsible to mediate between the business logic,
+     and [the backing services](https://12factor.net/backing-services).
    - They provide an internal API, that acts as a facade towards the business calls.
-   - These modules can be classified by the API they provide. For example: there can be a generic API defined for communication among micro services, using content pattern matching, or another API for repositories. These repository APIs may vary on the given class of stores it mediates for, such as an API optimal for relational repositories, another for blob stores, or graph stores, etc.
-   - The specific backing services, as resources are hidden from the business logic, and the module must not contain business related code, only generic type of code. The configuration of resources provide the backing services are delivered through the central configuration module of the architecture.
-   - A typical, frequently used infrastructural module is added for logging, which is typically forwards the logs toward backing-services, based on the configuration, and provides a generic API for the other modules, independent of the logger module it uses for implementatiton.
-        <https://12factor.net/logs>
+   - These modules can be classified by the API they provide.
+     For example: there can be a generic API defined for communication among micro services,
+     using content pattern matching, or another API for repositories.
+     These repository APIs may vary on the given class of stores it mediates for,
+     such as an API optimal for relational repositories, another for blob stores, or graph stores, etc.
+   - The specific backing services, as resources are hidden from the business logic,
+     and the module must not contain business related code, only generic type of code.
+     The configuration of resources provide the backing services are delivered through
+     the central configuration module of the architecture.
+   - A typical, frequently used infrastructural module is added for [logging](https://12factor.net/logs),
+     which is typically forwards the logs toward backing-services, based on the configuration,
+     and provides a generic API for the other modules,
+     independent of the logger module it uses for implementatiton.
 
 - Job(s), or main process(es)
    - The app is executed in the execution environment as [one or more processes](https://12factor.net/processes).
