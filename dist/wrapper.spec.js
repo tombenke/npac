@@ -47,25 +47,4 @@ describe('wrappers', function () {
             done();
         });
     });
-    /*
-        it('#start - call async job that uses logger', (done) => {
-    
-            app.start([
-                addLogger,
-                {
-                    add: (ctx, args, cb) => {
-                        const result = args.a + args.b
-                        ctx.logger.info(`add(${args.a}, ${args.b}) => ${result}`)
-                        cb(null, result)
-                    }
-                },
-            ], [
-                app.makeCall({ name: 'add', args: { a: 1, b: 1 } })
-            ], (err, result) => {
-                expect(result).toEqual([2])
-                done()
-            })
-    
-        })
-    */
 }); //import _ from 'lodash'
