@@ -10,7 +10,8 @@ var npacDefaultConfig = {
     app: {
         name: _package2.default.name,
         version: _package2.default.version
-    }
+    },
+    NODE_ENV: process.env.NODE_ENV || 'development'
 };
 
 module.exports = npacDefaultConfig;
