@@ -44,12 +44,25 @@ describe('config', () => {
         })
     })
 
+    it('#addLogger - with console transport', (done) => {
+        const ctx = mergeJsonFilesSync([
+            'src/logger/fixtures/ctxDefault.yml',
+            'src/logger/fixtures/consoleTransport.yml'
+        ])
+        console.log('ctx: ', JSON.stringify(ctx, null, '  '))
+        addLogger(ctx, (err, ctxExtension) => {
+            expect(err).toEqual(null)
+            writeLog(ctxExtension)
+            done()
+        })
+    })
+
     it('#addLogger - with console and file transports', (done) => {
         const ctx = mergeJsonFilesSync([
             'src/logger/fixtures/ctxDefault.yml',
             'src/logger/fixtures/consoleAndFileTransport.yml'
         ])
-        //console.log('ctx: ', JSON.stringify(ctx, null, '  '))
+//        console.log('ctx: ', JSON.stringify(ctx, null, '  '))
         addLogger(ctx, (err, ctxExtension) => {
             expect(err).toEqual(null)
             writeLog(ctxExtension)

@@ -4,19 +4,22 @@
 #   logger:
 #       level: info                   # error | warn | info | verbose | debug | silly
 #       transports:
-#         - type: console           # console | file | http
-#           filename: output.log    # used only if `type is file`
-#           level: debug
-#           format: text            # text | json
-#         - ...
+#           <name>:                     # properties vary depending on the 'type'
+#               type: console           # console | file | http, etc.
+#               filename: output.log    # used only if `type is file`
+#               level: debug
+#               format: text            # text | json
+#               ...
 config:
     logger:
         level: 'debug'
         transports:
-            - type: console # console | file | http
-              level: 'debug'
-              format: 'text' # text | json
-            - type: file
-              filename: ./tmp/output.log
-              level: 'debug'
-              format: 'json'
+            console:
+                type: console # console | file | http
+                level: 'debug'
+                format: 'text' # text | json
+            file:
+                type: file
+                filename: ./tmp/output.log
+                level: 'debug'
+                format: 'json'

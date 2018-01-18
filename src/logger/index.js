@@ -11,11 +11,13 @@ import defaultConfig from './defaultConfig'
 import { createLogger, format, transports } from 'winston'
 const { combine, timestamp, label, printf, colorize, json } = format
 
+const logPlainFormat = printf(info => (`${info.level}: ${info.message}`))
 const logFormat = printf(info => (`${info.timestamp} [${info.label}] ${info.level}: ${info.message}`))
 const appLabel = (config) => ({ label: `${config.app.name}@${config.app.version}` })
+const textPlainFormatter = config => combine(colorize(), logPlainFormat)
 const textFormatter = config => combine(label(appLabel(config)), timestamp(), colorize(), logFormat)
 const jsonFormatter = config => combine(label(appLabel(config)), timestamp(), json())
-const makeFormatter = (config, format) => format === 'json' ? jsonFormatter(config) : textFormatter(config)
+const makeFormatter = (config, format) => format === 'json' ? jsonFormatter(config) : (format === 'textPlain') ? textPlainFormatter(config) : textFormatter(config) 
 
 const makeTransport = config => transConfig => {
     //console.log('makeTransport: ', config, transConfig)

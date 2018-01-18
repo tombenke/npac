@@ -1,8 +1,10 @@
 module.exports = {
     logger: {
-        transports: [{
-            type: 'console',
-            format: 'text'
-        }]
+        transports: {
+                console: {
+                type: 'console',
+                format: 'text'
+            }
+        }
     }
 }

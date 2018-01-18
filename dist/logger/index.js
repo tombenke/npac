@@ -32,11 +32,17 @@ var combine = _winston.format.combine,
     json = _winston.format.json;
 
 
+var logPlainFormat = printf(function (info) {
+    return info.level + ': ' + info.message;
+});
 var logFormat = printf(function (info) {
     return info.timestamp + ' [' + info.label + '] ' + info.level + ': ' + info.message;
 });
 var appLabel = function appLabel(config) {
     return { label: config.app.name + '@' + config.app.version };
+};
+var textPlainFormatter = function textPlainFormatter(config) {
+    return combine(colorize(), logPlainFormat);
 };
 var textFormatter = function textFormatter(config) {
     return combine(label(appLabel(config)), timestamp(), colorize(), logFormat);
@@ -45,7 +51,7 @@ var jsonFormatter = function jsonFormatter(config) {
     return combine(label(appLabel(config)), timestamp(), json());
 };
 var makeFormatter = function makeFormatter(config, format) {
-    return format === 'json' ? jsonFormatter(config) : textFormatter(config);
+    return format === 'json' ? jsonFormatter(config) : format === 'textPlain' ? textPlainFormatter(config) : textFormatter(config);
 };
 
 var makeTransport = function makeTransport(config) {

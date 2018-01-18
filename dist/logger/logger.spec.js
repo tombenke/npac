@@ -62,9 +62,19 @@ describe('config', function () {
         });
     });
 
+    it('#addLogger - with console transport', function (done) {
+        var ctx = (0, _datafile.mergeJsonFilesSync)(['src/logger/fixtures/ctxDefault.yml', 'src/logger/fixtures/consoleTransport.yml']);
+        console.log('ctx: ', JSON.stringify(ctx, null, '  '));
+        (0, _index.addLogger)(ctx, function (err, ctxExtension) {
+            (0, _expect2.default)(err).toEqual(null);
+            writeLog(ctxExtension);
+            done();
+        });
+    });
+
     it('#addLogger - with console and file transports', function (done) {
         var ctx = (0, _datafile.mergeJsonFilesSync)(['src/logger/fixtures/ctxDefault.yml', 'src/logger/fixtures/consoleAndFileTransport.yml']);
-        //console.log('ctx: ', JSON.stringify(ctx, null, '  '))
+        //        console.log('ctx: ', JSON.stringify(ctx, null, '  '))
         (0, _index.addLogger)(ctx, function (err, ctxExtension) {
             (0, _expect2.default)(err).toEqual(null);
             writeLog(ctxExtension);

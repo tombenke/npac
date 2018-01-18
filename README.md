@@ -64,6 +64,8 @@ Gain test coverage report:
 - [The Clean Architecture](https://8thlight.com/blog/uncle-bob/2012/08/13/the-clean-architecture.html)
 - [Clean Architecture design in NodeJS](https://solidgeargroup.com/clean-architecture-in-nodejs)
 - [Ports-And-Adapters / Hexagonal Architecture by Garfixia software Architectures](http://www.dossier-andreas.net/software_architecture/ports_and_adapters.html)
+- [Node.js Best Practices](https://github.com/i0natan/nodebestpractices)
+- [Checklist: Node.JS production best practices](http://goldbergyoni.com/checklist-best-practice-of-node-js-in-production/)
 
 ---
 
