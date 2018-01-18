@@ -5,7 +5,7 @@ module.exports = {
         transports: {
             console: {
                 type: 'console',
-                format: 'text'
+                format: 'textPlain'
             }
         }
     }
