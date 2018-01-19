@@ -19,7 +19,7 @@ const executives = {
     }
 }
 
-describe('config', () => {
+describe('job', () => {
     const ctxOrig = loadJsonFileSync('src/config/fixtures/ctxOrig.yml')
         const ctx = _.merge({}, ctxOrig, { logger: console }, executives)
 

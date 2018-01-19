@@ -15,7 +15,10 @@ This module provides a framework for applications to:
 
 Read first the [documentation](docs/intro.md) to understand how it works.
 
-Study the [API documentation](https://tombenke.github.io/npac/) and the unit tests
+Study the [npac-example-cli](https://github.com/tombenke/npac-example-cli) example project,
+which demonstrates how to use npac to implement a simple command line utility.
+
+See the [API documentation](https://tombenke.github.io/npac/api/index.html) and the unit tests
 for further details on how to use this library.
 
 ## Installation

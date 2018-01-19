@@ -11,6 +11,8 @@ The goals of writing `npac` are to:
 - make high level system components easily composable.
 
 With `npac` you can build systems out of loosely coupled, high cohesion components by composition.
+The application code contains mostly configuration info, module dependencies, and some glue code that is unique in case of every application.
+All the other code is situated in component modules.
 
 You can leverage the advantages of the the separation of concerns principle.
 In this context, separation of concerns primarily means to separate infrastructure related code
@@ -97,6 +99,8 @@ Practically every application is made of the following parts:
      independent of the logger module it uses for implementatiton.
 
 - Job(s), or main process(es)
+   - In principle, jobs also belongs to the business-logic category, but they plays a specific role.
+     They form the _"backbone"_ of the features of the business logic.
    - The app is executed in the execution environment as [one or more processes](https://12factor.net/processes).
    - These processes may need some parameter to run, and also they need to access to the modules of 
      business logic, and to the infrastructure modules (directly, or indirectly through 
@@ -106,7 +110,7 @@ Practically every application is made of the following parts:
      may also used, and these should use the same codebase, and configuration without duplicating the code.
 
 - Life-cycle manager functions
-   - Application processes are that [disposable](https://12factor.net/disposability).
+   - Application processes are [disposable](https://12factor.net/disposability).
      They should minimize their startup time, and could be gracefully shut down
      when they receive a SIGTERM signal from the process manager.
    - There must be functions that are responsible for the controlled, and standard way of startup
@@ -127,7 +131,7 @@ An application, that is built upon `npac`, is made of the following components:
     - __Mediators__:
       These modules hold no business logic, but may communicate with external services.
 
-      For example:
+      Examples for mediator modules:
         - central configuration module,
         - data stores,
         - dispatcher ([patrun](https://www.npmjs.com/package/patrun)),
@@ -140,10 +144,10 @@ An application, that is built upon `npac`, is made of the following components:
       external micro service implementation modules, that hold the business logic, 
       and were registered to cooperate with the framework.
 
-      There is a special modiator type module, which is called __config__.
+      There is a special mediator type module, which is called __config__.
       It always exists, and may uses external resources to gain config info.
       Its responsibility to provide configuration info to all of the modules exist in the container.
-      
+
     - __Executives__:
       These modules may use other business logic modules and/or infrastructure modules through 
       their APIs provided via the context.
@@ -152,14 +156,18 @@ An application, that is built upon `npac`, is made of the following components:
         - micro service implementations,
         - functions, operators.
 
-  Every adapter has access to the whole context.
+  _Note: Every adapter has access to the whole context._
 
 - __Jobs__:
   These are simple functions that represent the main process of the application.
 
   They call executives and in some cases may also call mediators as well, such as config and logging, etc.
 
-  Every job has access to the whole context.
+  In most of the cases an application applies only one job, that is the main function of the application.
+  Another typical use-case when the application can be started from the command line,
+  and accepts several commands, then each command can be implemented and executed as a job.
+
+  _Note: Every job has access to the whole context._
 
 ## The lifecycle of an npac application
 
@@ -189,7 +197,7 @@ and the jobs to run by the container.
 You need to create one array for the adapters and one for the jobs,
 then you should call the `npac.start(adapters, jobs, cb)` function with the arrays you created.
 The last parameter of the `start()` function is an error-first callback,
-with `(error: {Object}, results: {Array})` signature, where `error` is null, in case of successful execution,
+with `(error: Object, results: Array)` signature, where `error` is null, in case of successful execution,
 or an `Error` object, in case of failure. The `results` is an array of the results of the jobs called during the run phase.
 
 The `npac.start()` function first calls the `npac.startupAdapters()` function that is the startup phase,
@@ -203,8 +211,8 @@ They can be added to the context via listing them in the adapters array, that wi
 then iterates through the adapters array, and processes each item.
 
 The items of the adapters array can be either an adapter object,
-or a so called adapter-function with the `(context: {Object}, callback: {Function})` signature.
-The callback is an error-first function, with `(error: {Object}, contextExtension: {Object})` signature.
+or a so called adapter-function with the `(context: Object, callback: Function)` signature.
+The callback is an error-first function, with `(error: Object, contextExtension: Object)` signature.
 
 This adapter-function must call this callback function with a object,
 that wants to merge with the actual context.
@@ -215,7 +223,7 @@ Then the `npac.startupAdapters()` function merges this context extension to the 
 that is accumulated by this reduce process.
 
 In case an item of the adapters array is not a function but it is an object,
-then it s handled as the contextExtension itself, and will be merged with the context.
+then it is handled as the contextExtension itself, and will be merged with the context.
 
 At the end of the process the outcome is the final version of the context.
 The following figure demonstrates the execution of the reduce process.
@@ -237,9 +245,9 @@ adapter object, named `config` to the very first position.
 The run phase uses the final context, and calls the job functions listed in the jobs array.
 
 The job functions can not alter the context, but fully access to it.
-The job function signature is `(context: {Object}, callback: {Function})`,
+The job function signature is `(context: Object, callback: Function)`,
 where `context` is the final context, created during the startup process, and `callback` is an error-first
-function with the `(error: {Object}, result: {Object})` signature. The `result` argument of the callback
+function with the `(error: Object, result: Object)` signature. The `result` argument of the callback
 must contain the result of the job execution, that will be appended to the list of results of the application.
 
 The next figure demonstrates the execution of the run phase.
@@ -250,6 +258,4 @@ The next figure demonstrates the execution of the run phase.
 
 The signal handling and graceful shutdown feature is not implemented yet.
 
-The application is simply exits after finished the execution of jobs.
-
-
+The application simply exits after finished the execution of jobs.

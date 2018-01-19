@@ -29,7 +29,7 @@ var executives = {
     }
 };
 
-describe('config', function () {
+describe('job', function () {
     var ctxOrig = (0, _datafile.loadJsonFileSync)('src/config/fixtures/ctxOrig.yml');
     var ctx = _lodash2.default.merge({}, ctxOrig, { logger: console }, executives);
 
