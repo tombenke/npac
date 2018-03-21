@@ -1,7 +1,7 @@
 {
   "name": "npac",
   "description": "A lightweight Ports and Adapters Container for Node",
-  "version": "1.3.2",
+  "version": "2.0.0",
   "tags": [
     "es6",
     "module",
