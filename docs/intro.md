@@ -256,6 +256,41 @@ The next figure demonstrates the execution of the run phase.
 
 ## The shutdown phase
 
-The signal handling and graceful shutdown feature is not implemented yet.
+The container registers an event handler for the following signals:
+`SIGTERM`, `SIGINT`, `SIGHUP`, `SIGUSR1`, `SIGUSR2`.
+If any of these events occurs, the container starts the shutdown process,
+which means the calling of the so called terminator functions of the adapters that
+are defined as `terminators` array parameter of the `start()` function.
 
-The application simply exits after finished the execution of jobs.
+The shutdown phase uses the final context, and calls the terminator functions listed in the array.
+
+The terminator functions are similar to the job functions.
+Their signature is `(context: Object, callback: Function)`,
+where `context` is the final context, created during the startup process,
+and `callback` is an error-first function with the `(error: Object, result: Object)` signature.
+The terminator functions can not alter the context, but fully access to it.
+
+The application exits after finished the execution of terminator functions.
+
+## Health-check
+
+__Note:__: This feature is only planned, and not implemented yet!
+
+This features makes possible to check the liveness and readiness of the container and its adapters.
+
+The application is alive if it runs, and can response to the incoming requests of an external 
+livenessProbe, but not necessarily ready to provide other services.
+For example during the startup phase the adapters of the application might not be able to serve their clients.
+When each adapter is finished the startup process and get prepared to work, then the application arrives its ready state.
+
+The npac container provides an internal API function, called `isReady()`.
+It returns `true` if the whole application, including its every adapter is ready to provide its services.
+Otherwise it returns with `false`. By default its return value is `false` 
+if the application has not finished the startup process, or it has started the shutdown process.
+If the application is in the run mode, the `isReady()` asks every adapter if they are ready,
+calling their health-check function with the same name, so every adapter has to implement an `isReady()` function.
+The `container.isReady()` returns with `true` only in case every `adapter.isReady()` has returned with `true`.
+
+If the application wants to inform an external agent (e.g. kubernetes load balancer) via a REST endpoint,
+then an adapter has to be registered that will listen for, and responds to the incoming health-check calls.
+

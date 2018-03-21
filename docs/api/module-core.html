@@ -137,7 +137,7 @@
     
 
     
-    <h4 class="name" id=".start"><span class="type-signature">(static) </span>start<span class="signature">(adapters, jobs, endCb)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id=".start"><span class="type-signature">(static) </span>start<span class="signature">(adapters, jobs, terminators, endCb)</span><span class="type-signature"></span></h4>
     
 
     
@@ -234,6 +234,32 @@ with the results of the call as a second parameters.</p></td>
 
         <tr>
             
+                <td class="name"><code>terminators</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The list of terminator functions to execute during the shutdown phase.
+Default: <code>[]</code>. Every terminator function must have the following signature:
+<code>(ctx: {Object}, cb: {Function})</code>, where <code>ctx</code> is the context object,
+and <code>cb</code> is an error-first callback, with the results of the call as a second parameters.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
                 <td class="name"><code>endCb</code></td>
             
 
@@ -252,6 +278,159 @@ with the results of the call as a second parameters.</p></td>
 
             <td class="description last"><p>An error-first callback to call with the result of the call,
 when the function finished. Default: <code>null</code>.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="~prepareForTermination"><span class="type-signature">(inner) </span>prepareForTermination<span class="signature">(terminators, endCb)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Prepare for termination</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>terminators</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The array of terminators functions</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>endCb</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>An error-first callback function to call when the shutdown process finished.</p></td>
         </tr>
 
     

@@ -96,7 +96,8 @@ describe('npac', function () {
             ctx.logger.info('This is a DEBUG message');
             console.log('This is a DEBUG message');
             next(null, {});
-        }], function (err, results) {
+        }], [], // No terminators defined
+        function (err, results) {
             console.log('Final results:', err, results);
         });
     });
@@ -109,7 +110,8 @@ describe('npac', function () {
             var result = ctx.addSync(ctx, 1, 1);
             (0, _expect2.default)(result).toEqual(2);
             cb(null, result);
-        }], done);
+        }], [], // No terminators defined
+        done);
     });
 
     it('#start - call async executive function', function (done) {
@@ -121,14 +123,16 @@ describe('npac', function () {
                 (0, _expect2.default)(result).toEqual(2);
                 cb(null, result);
             });
-        }], done);
+        }], [], // No terminators defined
+        done);
     });
 
     it('#start - call sync job', function (done) {
 
         _index2.default.start([{ addSync: function addSync(ctx, args) {
                 return args.a + args.b;
-            } }], [_index2.default.makeCallSync({ name: 'addSync', args: { a: 1, b: 1 } })], function (err, result) {
+            } }], [_index2.default.makeCallSync({ name: 'addSync', args: { a: 1, b: 1 } })], [], // No terminators defined
+        function (err, result) {
             (0, _expect2.default)(result).toEqual([2]);
             done();
         });
@@ -138,7 +142,8 @@ describe('npac', function () {
 
         _index2.default.start([{ add: function add(ctx, args, cb) {
                 return cb(null, args.a + args.b);
-            } }], [_index2.default.makeCall({ name: 'add', args: { a: 1, b: 1 } })], function (err, result) {
+            } }], [_index2.default.makeCall({ name: 'add', args: { a: 1, b: 1 } })], [], // No terminators defined
+        function (err, result) {
             (0, _expect2.default)(result).toEqual([2]);
             done();
         });
@@ -152,7 +157,8 @@ describe('npac', function () {
                 ctx.logger.info('addSync(' + args.a + ', ' + args.b + ') => ' + result);
                 return result;
             }
-        }], [_index2.default.makeCallSync({ name: 'addSync', args: { a: 1, b: 1 } })], function (err, result) {
+        }], [_index2.default.makeCallSync({ name: 'addSync', args: { a: 1, b: 1 } })], [], // No terminators defined
+        function (err, result) {
             (0, _expect2.default)(result).toEqual([2]);
             done();
         });
@@ -166,7 +172,8 @@ describe('npac', function () {
                 ctx.logger.info('add(' + args.a + ', ' + args.b + ') => ' + result);
                 cb(null, result);
             }
-        }], [_index2.default.makeCall({ name: 'add', args: { a: 1, b: 1 } })], function (err, result) {
+        }], [_index2.default.makeCall({ name: 'add', args: { a: 1, b: 1 } })], [], // No terminators defined
+        function (err, result) {
             (0, _expect2.default)(result).toEqual([2]);
             done();
         });

@@ -72,7 +72,9 @@ describe('npac', () => {
                 console.log('This is a DEBUG message')
                 next(null, {})
             }
-        ], (err, results) => {
+        ],
+        [], // No terminators defined
+        (err, results) => {
             console.log('Final results:', err, results)
         })
     })
@@ -87,7 +89,9 @@ describe('npac', () => {
                 expect(result).toEqual(2)
                 cb(null, result)
             }
-        ], done)
+        ],
+        [], // No terminators defined
+        done)
     })
 
     it('#start - call async executive function', (done) => {
@@ -101,7 +105,9 @@ describe('npac', () => {
                     cb(null, result)
                 })
             }
-        ], done)
+        ],
+        [], // No terminators defined
+        done)
     })
 
     it('#start - call sync job', (done) => {
@@ -110,7 +116,9 @@ describe('npac', () => {
             { addSync: (ctx, args) => args.a + args.b },
         ], [
             app.makeCallSync({ name: 'addSync', args: { a: 1, b: 1 } })
-        ], (err, result) => {
+        ],
+        [], // No terminators defined
+        (err, result) => {
             expect(result).toEqual([2])
             done()
         })
@@ -122,7 +130,9 @@ describe('npac', () => {
             { add: (ctx, args, cb) => cb(null, args.a + args.b) },
         ], [
             app.makeCall({ name: 'add', args: { a: 1, b: 1 } })
-        ], (err, result) => {
+        ],
+        [], // No terminators defined
+        (err, result) => {
             expect(result).toEqual([2])
             done()
         })
@@ -141,7 +151,9 @@ describe('npac', () => {
             },
         ], [
             app.makeCallSync({ name: 'addSync', args: { a: 1, b: 1 } })
-        ], (err, result) => {
+        ],
+        [], // No terminators defined
+        (err, result) => {
             expect(result).toEqual([2])
             done()
         })
@@ -161,11 +173,11 @@ describe('npac', () => {
             },
         ], [
             app.makeCall({ name: 'add', args: { a: 1, b: 1 } })
-        ], (err, result) => {
+        ],
+        [], // No terminators defined
+        (err, result) => {
             expect(result).toEqual([2])
             done()
         })
-
     })
-
 })

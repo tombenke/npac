@@ -16,7 +16,7 @@ const buildAndRun = (config, executives, jobDesc, jobFun, cb) => {
         mergeConfig(config),
         addLogger,
         executives
-    ], [ jobFun(jobDesc) ], cb)
+    ], [ jobFun(jobDesc) ], [], cb)
 }
 
 /**

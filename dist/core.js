@@ -87,6 +87,52 @@ var initialCtx = {
     };
 };
 
+var shutDown = function shutDown(ctx, terminators) {
+    return function (signal) {
+        // wasSigterm = true
+        ctx.logger.debug('App starts the shutdown process...');
+        _async2.default.mapSeries(terminators, function (terminator, callback) {
+            if (_lodash2.default.isFunction(terminator)) {
+                ctx.logger.debug('Call terminator function');
+                terminator(ctx, function (err, result) {
+                    if (err) {
+                        ctx.logger.error('Terminator call failed', err);
+                    } else {
+                        //ctx.logger.debug('Terminator call completed', result)
+                    }
+                    callback(err, result);
+                });
+            } else {
+                ctx.logger.error('Terminator is not a function');
+                callback(null, {});
+            }
+        }, function (err, res) {
+            console.log('shutDown: ', err, res);
+            process.exit(128 + signal);
+        });
+    };
+};
+
+/**
+ * Prepare for termination
+ *
+ * @arg {Array} terminators - The array of terminators functions
+ * @arg {Function} endCb - An error-first callback function to call when the shutdown process finished.
+ *
+ * @function
+ */
+var prepareForTermination = function prepareForTermination() {
+    var terminators = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+    return function (ctx, endCb) {
+        ctx.logger.debug('App is preparing for SIGTERM, SIGINT and SIGHUP ...', terminators);
+        var signals = ['SIGTERM', 'SIGINT', 'SIGHUP', 'SIGUSR1', 'SIGUSR2'];
+        for (var signal in signals) {
+            process.on(signals[signal], shutDown(ctx, terminators));
+        }
+        endCb(null, ctx);
+    };
+};
+
 /**
  * Prepare jobs to run in series.
  *
@@ -139,6 +185,11 @@ var runJobs = function runJobs(jobs) {
  * where `ctx` is the context object, and `cb` is an error-first callback,
  * with the results of the call as a second parameters.
  *
+ * @arg {Array} terminators - The list of terminator functions to execute during the shutdown phase.
+ * Default: `[]`. Every terminator function must have the following signature:
+ * `(ctx: {Object}, cb: {Function})`, where `ctx` is the context object,
+ * and `cb` is an error-first callback, with the results of the call as a second parameters.
+ *
  * @arg {Function} endCb    - An error-first callback to call with the result of the call,
  * when the function finished. Default: `null`.
  *
@@ -147,15 +198,18 @@ var runJobs = function runJobs(jobs) {
 var start = exports.start = function start() {
     var adapters = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
     var jobs = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
-    var endCb = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
+    var terminators = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [];
+    var endCb = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
 
     var errorHandler = function errorHandler(err, results) {
         if (!_lodash2.default.isNull(endCb)) {
+            // There is end callback, so call it either if the process succeeded or failed
             endCb(err, results);
         } else if (!_lodash2.default.isNull(err)) {
+            // There is no end callback, and the process failed, so throw an error
             throw err;
         }
     };
 
-    _async2.default.seq(setupAdapters(initialCtx, adapters), runJobs(jobs))(errorHandler);
+    _async2.default.seq(setupAdapters(initialCtx, adapters), prepareForTermination(terminators), runJobs(jobs))(errorHandler);
 };

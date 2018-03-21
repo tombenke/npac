@@ -22,7 +22,7 @@ var _logger = require('./logger/');
 var _job = require('./job/');
 
 var buildAndRun = function buildAndRun(config, executives, jobDesc, jobFun, cb) {
-    (0, _core.start)([(0, _config.mergeConfig)(config), _logger.addLogger, executives], [jobFun(jobDesc)], cb);
+    (0, _core.start)([(0, _config.mergeConfig)(config), _logger.addLogger, executives], [jobFun(jobDesc)], [], cb);
 };
 
 /**

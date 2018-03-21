@@ -66,6 +66,47 @@ const setupAdapters = (ctx, adapters=[]) => endCb => {
     })
 }
 
+const shutDown = (ctx, terminators) => signal => {
+    // wasSigterm = true
+    ctx.logger.debug('App starts the shutdown process...')
+    async.mapSeries(terminators, (terminator, callback) => {
+        if (_.isFunction(terminator)) {
+            ctx.logger.debug('Call terminator function')
+            terminator(ctx, (err, result) => {
+                if (err) {
+                    ctx.logger.error('Terminator call failed', err)
+                } else {
+                    //ctx.logger.debug('Terminator call completed', result)
+                }
+                callback(err, result)
+            })
+        } else {
+            ctx.logger.error('Terminator is not a function')
+            callback(null, {})
+        }
+    }, (err, res) => {
+        console.log('shutDown: ', err, res)
+        process.exit(128 + signal)
+    })
+}
+
+/**
+ * Prepare for termination
+ *
+ * @arg {Array} terminators - The array of terminators functions
+ * @arg {Function} endCb - An error-first callback function to call when the shutdown process finished.
+ *
+ * @function
+ */
+const prepareForTermination = (terminators=[]) => (ctx, endCb) => {
+    ctx.logger.debug('App is preparing for SIGTERM, SIGINT and SIGHUP ...', terminators)
+    const signals = ['SIGTERM', 'SIGINT', 'SIGHUP', 'SIGUSR1', 'SIGUSR2']
+    for(const signal in signals) {
+        process.on(signals[signal], shutDown(ctx, terminators))
+    }
+    endCb(null, ctx)
+}
+
 /**
  * Prepare jobs to run in series.
  *
@@ -116,22 +157,30 @@ const runJobs = jobs => (ctx, endCb) => {
  * where `ctx` is the context object, and `cb` is an error-first callback,
  * with the results of the call as a second parameters.
  *
+ * @arg {Array} terminators - The list of terminator functions to execute during the shutdown phase.
+ * Default: `[]`. Every terminator function must have the following signature:
+ * `(ctx: {Object}, cb: {Function})`, where `ctx` is the context object,
+ * and `cb` is an error-first callback, with the results of the call as a second parameters.
+ *
  * @arg {Function} endCb    - An error-first callback to call with the result of the call,
  * when the function finished. Default: `null`.
  *
  * @function
  */
-export const start = (adapters=[], jobs=[], endCb=null) => {
+export const start = (adapters=[], jobs=[], terminators=[], endCb=null) => {
     const errorHandler = (err, results) => {
         if (! _.isNull(endCb)) {
+            // There is end callback, so call it either if the process succeeded or failed
             endCb(err, results)
         } else if (! _.isNull(err)) {
+            // There is no end callback, and the process failed, so throw an error
             throw(err)
         }
     }
 
     async.seq(
         setupAdapters(initialCtx, adapters),
+        prepareForTermination(terminators),
         runJobs(jobs)
     )(errorHandler)
 }
