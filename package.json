@@ -69,6 +69,6 @@
   "pre-push": [
     "lint",
     "test",
-    "prepublish"
+    "prepublishOnly"
   ]
 }
