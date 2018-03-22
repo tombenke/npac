@@ -82,11 +82,16 @@ const shutDown = (ctx, terminators) => signal => {
             })
         } else {
             ctx.logger.error('Terminator is not a function')
-            callback(null, {})
+            callback(new Error('Terminator is not a function'), null)
         }
     }, (err, res) => {
-        console.log('shutDown: ', err, res)
-        process.exit(128 + signal)
+        if (err) {
+            ctx.logger.info('Shutdown process failed', err)
+            process.exit(1)
+        } else {
+            ctx.logger.info('Shutdown process successfully finished')
+            process.exit(0)
+        }
     })
 }
 
