@@ -3,6 +3,7 @@ import { makeConfig, mergeConfig } from './config/'
 import { addLogger } from './logger/'
 import { makeCall, makeCallSync } from './job/'
 import { runJob, runJobSync } from './wrappers'
+import { removeSignalHandlers, catchExitSignals, npacStart } from './testHelpers'
 
 module.exports = {
     start,
@@ -18,5 +19,10 @@ module.exports = {
 
     // wrappers
     runJob,
-    runJobSync
+    runJobSync,
+
+    // test helpers
+    removeSignalHandlers,
+    catchExitSignals,
+    npacStart
 }
