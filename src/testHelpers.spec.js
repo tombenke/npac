@@ -1,4 +1,3 @@
-import expect from 'expect'
 import sinon from 'sinon'
 import { mergeConfig } from './config/'
 import { addLogger } from './logger/'
