@@ -37,62 +37,71 @@ const initialCtx = {
  *
  * @function
  */
-const setupAdapters = (ctx, adapters=[]) => endCb => {
+const setupAdapters = (ctx, adapters = []) => endCb => {
     // ctx.logger.debug('App is starting up...', ctx, adapters)
-    async.reduce(adapters, ctx, (memoCtx, adapter, callback) => {
-        if (_.isFunction(adapter)) {
-            // memoCtx.logger.debug('Call adapter registration function')
-            adapter(memoCtx, (err, ctxExtension=null) => {
-                if (err) {
-                    memoCtx.logger.error('Adapter registration function returned: ', err)
-                    callback(err, memoCtx)
-                } else {
-                    // Merge the adapter extensions to the context
-                    if (_.isNull(ctxExtension)) {
-                        // memoCtx.logger.debug('Adapter extensions is null. Do not merge.')
-                        callback(null, memoCtx)
+    async.reduce(
+        adapters,
+        ctx,
+        (memoCtx, adapter, callback) => {
+            if (_.isFunction(adapter)) {
+                // memoCtx.logger.debug('Call adapter registration function')
+                adapter(memoCtx, (err, ctxExtension = null) => {
+                    if (err) {
+                        memoCtx.logger.error('Adapter registration function returned: ', err)
+                        callback(err, memoCtx)
                     } else {
-                        // memoCtx.logger.debug('Merge adapter extensions to the context: ', ctxExtension)
-                        callback(null, _.merge({}, memoCtx, ctxExtension))
+                        // Merge the adapter extensions to the context
+                        if (_.isNull(ctxExtension)) {
+                            // memoCtx.logger.debug('Adapter extensions is null. Do not merge.')
+                            callback(null, memoCtx)
+                        } else {
+                            // memoCtx.logger.debug('Merge adapter extensions to the context: ', ctxExtension)
+                            callback(null, _.merge({}, memoCtx, ctxExtension))
+                        }
                     }
-                }
-            })
-        } else {
-            // memoCtx.logger.debug('Merge adapter object to ctx')
-            callback(null, _.merge({}, memoCtx, adapter))
+                })
+            } else {
+                // memoCtx.logger.debug('Merge adapter object to ctx')
+                callback(null, _.merge({}, memoCtx, adapter))
+            }
+        },
+        function(err, resultCtx) {
+            endCb(err, resultCtx)
         }
-    }, function(err, resultCtx) {
-        endCb(err, resultCtx)
-    })
+    )
 }
 
 const shutDown = (ctx, terminators) => signal => {
     // wasSigterm = true
     ctx.logger.debug('App starts the shutdown process...')
-    async.mapSeries(terminators, (terminator, callback) => {
-        if (_.isFunction(terminator)) {
-            ctx.logger.debug('Call terminator function')
-            terminator(ctx, (err, result) => {
-                if (err) {
-                    ctx.logger.error('Terminator call failed', err)
-                } else {
-                    //ctx.logger.debug('Terminator call completed', result)
-                }
-                callback(err, result)
-            })
-        } else {
-            ctx.logger.error('Terminator is not a function')
-            callback(new Error('Terminator is not a function'), null)
+    async.mapSeries(
+        terminators,
+        (terminator, callback) => {
+            if (_.isFunction(terminator)) {
+                ctx.logger.debug('Call terminator function')
+                terminator(ctx, (err, result) => {
+                    if (err) {
+                        ctx.logger.error('Terminator call failed', err)
+                    } else {
+                        //ctx.logger.debug('Terminator call completed', result)
+                    }
+                    callback(err, result)
+                })
+            } else {
+                ctx.logger.error('Terminator is not a function')
+                callback(new Error('Terminator is not a function'), null)
+            }
+        },
+        (err, res) => {
+            if (err) {
+                ctx.logger.info('Shutdown process failed', err)
+                process.exit(1)
+            } else {
+                ctx.logger.info('Shutdown process successfully finished')
+                process.exit(0)
+            }
         }
-    }, (err, res) => {
-        if (err) {
-            ctx.logger.info('Shutdown process failed', err)
-            process.exit(1)
-        } else {
-            ctx.logger.info('Shutdown process successfully finished')
-            process.exit(0)
-        }
-    })
+    )
 }
 
 /**
@@ -103,10 +112,10 @@ const shutDown = (ctx, terminators) => signal => {
  *
  * @function
  */
-const prepareForTermination = (terminators=[]) => (ctx, endCb) => {
+const prepareForTermination = (terminators = []) => (ctx, endCb) => {
     ctx.logger.debug('App is preparing for SIGTERM, SIGINT and SIGHUP ...', terminators)
     const signals = ['SIGTERM', 'SIGINT', 'SIGHUP', 'SIGUSR1', 'SIGUSR2']
-    for(const signal in signals) {
+    for (const signal in signals) {
         process.on(signals[signal], shutDown(ctx, terminators))
     }
     endCb(null, ctx)
@@ -129,22 +138,26 @@ const prepareForTermination = (terminators=[]) => (ctx, endCb) => {
  */
 const runJobs = jobs => (ctx, endCb) => {
     // ctx.logger.debug('App runs the jobs...')
-    async.mapSeries(jobs, (job, callback) => {
-        if (_.isFunction(job)) {
-            // ctx.logger.debug('Call job function')
-            job(ctx, (err, result) => {
-                if (err) {
-                    ctx.logger.error('Job call failed', err)
-                } else {
-                    // ctx.logger.debug('Job call completed', result)
-                }
-                callback(err, result)
-            })
-        } else {
-            ctx.logger.error('Job is not a function')
-            callback(new Error('Job must be a function'), null)
-        }
-    }, endCb)
+    async.mapSeries(
+        jobs,
+        (job, callback) => {
+            if (_.isFunction(job)) {
+                // ctx.logger.debug('Call job function')
+                job(ctx, (err, result) => {
+                    if (err) {
+                        ctx.logger.error('Job call failed', err)
+                    } else {
+                        // ctx.logger.debug('Job call completed', result)
+                    }
+                    callback(err, result)
+                })
+            } else {
+                ctx.logger.error('Job is not a function')
+                callback(new Error('Job must be a function'), null)
+            }
+        },
+        endCb
+    )
 }
 
 /**
@@ -172,20 +185,16 @@ const runJobs = jobs => (ctx, endCb) => {
  *
  * @function
  */
-export const start = (adapters=[], jobs=[], terminators=[], endCb=null) => {
+export const start = (adapters = [], jobs = [], terminators = [], endCb = null) => {
     const errorHandler = (err, results) => {
-        if (! _.isNull(endCb)) {
+        if (!_.isNull(endCb)) {
             // There is end callback, so call it either if the process succeeded or failed
             endCb(err, results)
-        } else if (! _.isNull(err)) {
+        } else if (!_.isNull(err)) {
             // There is no end callback, and the process failed, so throw an error
-            throw(err)
+            throw err
         }
     }
 
-    async.seq(
-        setupAdapters(initialCtx, adapters),
-        prepareForTermination(terminators),
-        runJobs(jobs)
-    )(errorHandler)
+    async.seq(setupAdapters(initialCtx, adapters), prepareForTermination(terminators), runJobs(jobs))(errorHandler)
 }

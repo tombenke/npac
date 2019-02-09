@@ -22,20 +22,18 @@ before(function(done) {
 
 after(function(done) {
     destCleanup(done)
-//    done()
+    //    done()
 })
 
-
 describe('config', () => {
-
     const writeLog = ctx => {
         ctx.logger.info('Hello logger!')
-        ctx.logger.debug('This is a JSON object', { id: '121324231412', payload: { message: 'Some debug info...' }})
-        ctx.logger.warn('And another JSON object', { id: '724543275671', payload: { message: 'Some warning!' }})
+        ctx.logger.debug('This is a JSON object', { id: '121324231412', payload: { message: 'Some debug info...' } })
+        ctx.logger.warn('And another JSON object', { id: '724543275671', payload: { message: 'Some warning!' } })
         ctx.logger.info('Good Bye logger!')
     }
 
-    it('#addLogger - with defaults config', (done) => {
+    it('#addLogger - with defaults config', done => {
         const ctxDefault = loadJsonFileSync('src/logger/fixtures/ctxDefault.yml')
         addLogger(ctxDefault, (err, ctxExtension) => {
             expect(err).toEqual(null)
@@ -44,7 +42,7 @@ describe('config', () => {
         })
     })
 
-    it('#addLogger - with console transport', (done) => {
+    it('#addLogger - with console transport', done => {
         const ctx = mergeJsonFilesSync([
             'src/logger/fixtures/ctxDefault.yml',
             'src/logger/fixtures/consoleTransport.yml'
@@ -57,12 +55,12 @@ describe('config', () => {
         })
     })
 
-    it('#addLogger - with console and file transports', (done) => {
+    it('#addLogger - with console and file transports', done => {
         const ctx = mergeJsonFilesSync([
             'src/logger/fixtures/ctxDefault.yml',
             'src/logger/fixtures/consoleAndFileTransport.yml'
         ])
-//        console.log('ctx: ', JSON.stringify(ctx, null, '  '))
+        //        console.log('ctx: ', JSON.stringify(ctx, null, '  '))
         addLogger(ctx, (err, ctxExtension) => {
             expect(err).toEqual(null)
             writeLog(ctxExtension)
@@ -70,10 +68,9 @@ describe('config', () => {
                 expect(findFilesSync('./tmp', /.*/)).toEqual(['tmp/output.log'])
                 const logs = loadTextFileSync('tmp/output.log')
                 // TODO: parse and check
-//                console.log('logs', logs)
+                //                console.log('logs', logs)
                 done()
             }, 100)
         })
     })
-
 })

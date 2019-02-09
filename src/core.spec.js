@@ -13,20 +13,23 @@ describe('core', () => {
 
     afterEach(() => {
         const signals = ['SIGTERM', 'SIGINT', 'SIGHUP', 'SIGUSR1', 'SIGUSR2']
-        for(const signal in signals) {
+        for (const signal in signals) {
             process.removeAllListeners(signals[signal])
         }
-        sandbox.restore();
+        sandbox.restore()
     })
 
-    const checkConfig = (expectedConfig) => (ctx, next) => {
-        expect(ctx.config).toBeA('object').toEqual(expectedConfig)
+    const checkConfig = expectedConfig => (ctx, next) => {
+        expect(ctx.config).toBeInstanceOf(Object)
+        expect(ctx.config).toEqual(expectedConfig)
         next(null, ctx)
     }
 
     const testAdapter = {
-        testAdapter: { /* testAdapter API */ },
-        config: { testAdapter: { name: "testAdapter", port: 4444 } }
+        testAdapter: {
+            /* testAdapter API */
+        },
+        config: { testAdapter: { name: 'testAdapter', port: 4444 } }
     }
 
     it('#start - with no args', () => {
@@ -40,78 +43,72 @@ describe('core', () => {
 
     it('#start - check default config with endCallback', () => {
         const expectedConfig = npacDefaultConfig
-        start([checkConfig(expectedConfig)], [], [],
-            (err, results) => expect(err).toEqual(null))
+        start([checkConfig(expectedConfig)], [], [], (err, results) => expect(err).toEqual(null))
     })
 
     it('#start - use config object', () => {
         const expectedConfig = _.merge(npacDefaultConfig, testAdapter.config)
-        start([
-            testAdapter,
-            checkConfig(expectedConfig)
-        ])
+        start([testAdapter, checkConfig(expectedConfig)])
     })
 
     it('#start - use adapter function that returns NO ctxExtension', () => {
         const expectedConfig = _.merge(npacDefaultConfig)
-        start([
-            (ctx, next) => next(null),
-            checkConfig(expectedConfig)
-        ])
+        start([(ctx, next) => next(null), checkConfig(expectedConfig)])
     })
 
     it('#start - use adapter function that returns `null` as ctxExtension', () => {
         const expectedConfig = _.merge(npacDefaultConfig)
-        start([
-            (ctx, next) => next(null, null),
-            checkConfig(expectedConfig)
-        ])
+        start([(ctx, next) => next(null, null), checkConfig(expectedConfig)])
     })
 
     it('#start - use adapter function that returns ctxExtension', () => {
         const expectedConfig = _.merge(npacDefaultConfig, testAdapter.config)
-        start([
-            (ctx, next) => next(null, testAdapter),
-            checkConfig(expectedConfig)
-        ])
+        start([(ctx, next) => next(null, testAdapter), checkConfig(expectedConfig)])
     })
 
     it('#start - use adapter function with exception on error', () => {
         const expectedConfig = _.merge(npacDefaultConfig, testAdapter.config)
         try {
-            start([
-                (ctx, next) => next(new Error("Wrong adapter init")),
-                checkConfig(expectedConfig)
-            ])
+            start([(ctx, next) => next(new Error('Wrong adapter init')), checkConfig(expectedConfig)])
         } catch (err) {
-            expect(err).toEqual('Error: Wrong adapter init')
+            expect(err).toEqual(new Error('Wrong adapter init'))
         }
     })
 
     it('#start - use adapter function with error on callback', () => {
-        start([(ctx, next) => next(new Error("Wrong adapter init"))], [], [],
-            (err, ctx) => expect(err).toEqual('Error: Wrong adapter init'))
+        start([(ctx, next) => next(new Error('Wrong adapter init'))], [], [], (err, ctx) =>
+            expect(err).toEqual(new Error('Wrong adapter init'))
+        )
     })
 
-    it('#start - with job returns error', (done) => {
+    it('#start - with job returns error', done => {
         start([], [(ctx, cb) => cb(new Error('Job returned error'), {})], [], (err, results) => {
-            expect(err).toEqual('Error: Job returned error')
+            expect(err).toEqual(new Error('Job returned error'))
             done()
         })
     })
 
-    it('#start - with job as a non function object', (done) => {
-        start([], [{ /* It should be a function */ }], [], (err, results) => {
-            expect(err).toEqual('Error: Job must be a function')
-            done()
-        })
+    it('#start - with job as a non function object', done => {
+        start(
+            [],
+            [
+                {
+                    /* It should be a function */
+                }
+            ],
+            [],
+            (err, results) => {
+                expect(err).toEqual(new Error('Job must be a function'))
+                done()
+            }
+        )
     })
 
     it('#start - with terminators and shuts down by SIGTERM', done => {
         let terminatorCalls = []
-        sandbox.stub(process, 'exit').callsFake((signal) => {
-            console.log("process.exit:", signal, terminatorCalls)
-            expect(terminatorCalls).toEqual([ 'firstCall', 'secondCall' ])
+        sandbox.stub(process, 'exit').callsFake(signal => {
+            console.log('process.exit:', signal, terminatorCalls)
+            expect(terminatorCalls).toEqual(['firstCall', 'secondCall'])
             done()
         })
         const terminatorFun = order => (ctx, cb) => {
@@ -127,7 +124,7 @@ describe('core', () => {
 
     it('#start - with terminator function that returns with error', done => {
         const termStub = sinon.stub()
-        sandbox.stub(process, 'exit').callsFake((signal) => {
+        sandbox.stub(process, 'exit').callsFake(signal => {
             sinon.assert.called(termStub)
             done()
         })
@@ -142,15 +139,23 @@ describe('core', () => {
         })
     })
 
-    it('#start - with job as a non function object', (done) => {
-        sandbox.stub(process, 'exit').callsFake((signal) => {
+    it('#start - with job as a non function object', done => {
+        sandbox.stub(process, 'exit').callsFake(signal => {
             done()
         })
 
-        start([], [], [{ /* It should be a function */ }], (err, results) => {
-            expect(err).toEqual(null)
-            process.kill(process.pid, 'SIGTERM')
-        })
+        start(
+            [],
+            [],
+            [
+                {
+                    /* It should be a function */
+                }
+            ],
+            (err, results) => {
+                expect(err).toEqual(null)
+                process.kill(process.pid, 'SIGTERM')
+            }
+        )
     })
-
 })

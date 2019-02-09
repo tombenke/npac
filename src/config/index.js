@@ -22,13 +22,13 @@ import { loadJsonFileSync } from 'datafile'
  *
  * @function
  */
-export const makeConfig = (defaults={}, cliConfig={}, configFileProp='configFile') => {
-    const configFileName = _.has(cliConfig, configFileProp) ?
-        cliConfig[configFileProp] :
-        _.has(defaults, configFileProp) ? defaults[configFileProp] : null
-    const configFileContent = _.isNull(configFileName) ?
-        {} :
-        loadJsonFileSync(configFileName, false)
+export const makeConfig = (defaults = {}, cliConfig = {}, configFileProp = 'configFile') => {
+    const configFileName = _.has(cliConfig, configFileProp)
+        ? cliConfig[configFileProp]
+        : _.has(defaults, configFileProp)
+        ? defaults[configFileProp]
+        : null
+    const configFileContent = _.isNull(configFileName) ? {} : loadJsonFileSync(configFileName, false)
     const config = _.mergeWith({}, defaults, configFileContent, cliConfig)
 
     return config
@@ -48,6 +48,6 @@ export const makeConfig = (defaults={}, cliConfig={}, configFileProp='configFile
  *
  * @function
  */
-export const mergeConfig = (config={}) => (ctx, next) => {
+export const mergeConfig = (config = {}) => (ctx, next) => {
     next(null, _.mergeWith({}, ctx, { config: config }))
 }

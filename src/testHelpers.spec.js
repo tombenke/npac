@@ -3,7 +3,6 @@ import { mergeConfig } from './config/'
 import { addLogger } from './logger/'
 import { removeSignalHandlers, catchExitSignals, npacStart } from './testHelpers'
 
-
 describe('adapters/server', () => {
     let sandbox
 
@@ -21,16 +20,11 @@ describe('adapters/server', () => {
         done()
     })
 
-    const adapters = [
-        mergeConfig(config),
-        addLogger,
-    ]
+    const adapters = [mergeConfig(config), addLogger]
 
-    const terminators = [
-    ]
+    const terminators = []
 
     it('#startup, #shutdown', done => {
-
         catchExitSignals(sandbox, done)
 
         const testServer = (container, next) => {

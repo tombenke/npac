@@ -12,11 +12,7 @@ import { addLogger } from './logger/'
 import { makeCall, makeCallSync } from './job/'
 
 const buildAndRun = (config, executives, jobDesc, jobFun, cb) => {
-    start([
-        mergeConfig(config),
-        addLogger,
-        executives
-    ], [ jobFun(jobDesc) ], [], cb)
+    start([mergeConfig(config), addLogger, executives], [jobFun(jobDesc)], [], cb)
 }
 
 /**
@@ -50,5 +46,4 @@ export const runJobSync = (config, executives, jobDesc, cb) =>
  *
  * @function
  */
-export const runJob = (config, executives, jobDesc, cb) =>
-    buildAndRun(config, executives, jobDesc, makeCall, cb)
+export const runJob = (config, executives, jobDesc, cb) => buildAndRun(config, executives, jobDesc, makeCall, cb)
