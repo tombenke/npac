@@ -16,7 +16,7 @@ var removeSignalHandlers = exports.removeSignalHandlers = function removeSignalH
 
 var catchExitSignals = exports.catchExitSignals = function catchExitSignals(sandbox, done) {
     return sandbox.stub(process, 'exit').callsFake(function (signal) {
-        console.log("process.exit", signal);
+        console.log('process.exit', signal);
         done();
     });
 };

@@ -13,9 +13,7 @@ var _wrappers = require('./wrappers');
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 describe('wrappers', function () {
-
     it('#runJobSync - run a sync job in a plain container with logger', function (done) {
-
         var executives = {
             addSync: function addSync(ctx, args) {
                 var result = args.a + args.b;
@@ -32,7 +30,6 @@ describe('wrappers', function () {
     });
 
     it('#runJob - run an asynchronous job in a plain container with logger', function (done) {
-
         var executives = {
             add: function add(ctx, args, cb) {
                 var result = args.a + args.b;

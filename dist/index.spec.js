@@ -49,7 +49,6 @@ var destCleanup = function destCleanup(cb) {
 //})
 
 describe('npac', function () {
-
     before(function (done) {
         destCleanup(function () {
             console.log('Create: ', testDirectory);
@@ -78,7 +77,7 @@ describe('npac', function () {
     });
 
     it('#start - #makeConfig, #mergeConfig', function () {
-        var configToMerge = (0, _config.makeConfig)({ logger: { level: "debug" }, projectPath: "/home/testuser/testproject" });
+        var configToMerge = (0, _config.makeConfig)({ logger: { level: 'debug' }, projectPath: '/home/testuser/testproject' });
         var expectedCtx = { config: _lodash2.default.merge({}, _defaultConfig2.default, configToMerge) };
 
         _index2.default.start([(0, _config.mergeConfig)(configToMerge), checkCtx(function (ctx) {
@@ -87,7 +86,7 @@ describe('npac', function () {
     });
 
     it('#start - #makeConfig, #mergeConfig, #addLogger', function () {
-        var configToMerge = (0, _config.makeConfig)({ logger: { level: "debug" }, projectPath: testDirectory });
+        var configToMerge = (0, _config.makeConfig)({ logger: { level: 'debug' }, projectPath: testDirectory });
         //        const expectedCtx = { config: _.merge({}, npacDefaultConfig, configToMerge ) }
 
         _index2.default.start([(0, _config.mergeConfig)(configToMerge), _logger.addLogger
@@ -103,7 +102,6 @@ describe('npac', function () {
     });
 
     it('#start - call sync executive function', function (done) {
-
         _index2.default.start([{ addSync: function addSync(ctx, a, b) {
                 return a + b;
             } }], [function (ctx, cb) {
@@ -115,7 +113,6 @@ describe('npac', function () {
     });
 
     it('#start - call async executive function', function (done) {
-
         _index2.default.start([{ add: function add(ctx, a, b, cb) {
                 return cb(null, a + b);
             } }], [function (ctx, cb) {
@@ -128,7 +125,6 @@ describe('npac', function () {
     });
 
     it('#start - call sync job', function (done) {
-
         _index2.default.start([{ addSync: function addSync(ctx, args) {
                 return args.a + args.b;
             } }], [_index2.default.makeCallSync({ name: 'addSync', args: { a: 1, b: 1 } })], [], // No terminators defined
@@ -139,7 +135,6 @@ describe('npac', function () {
     });
 
     it('#start - call async job', function (done) {
-
         _index2.default.start([{ add: function add(ctx, args, cb) {
                 return cb(null, args.a + args.b);
             } }], [_index2.default.makeCall({ name: 'add', args: { a: 1, b: 1 } })], [], // No terminators defined
@@ -150,7 +145,6 @@ describe('npac', function () {
     });
 
     it('#start - call sync job that uses logger', function (done) {
-
         _index2.default.start([_logger.addLogger, {
             addSync: function addSync(ctx, args) {
                 var result = args.a + args.b;
@@ -165,7 +159,6 @@ describe('npac', function () {
     });
 
     it('#start - call async job that uses logger', function (done) {
-
         _index2.default.start([_logger.addLogger, {
             add: function add(ctx, args, cb) {
                 var result = args.a + args.b;

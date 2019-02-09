@@ -37,14 +37,17 @@ describe('core', function () {
 
     var checkConfig = function checkConfig(expectedConfig) {
         return function (ctx, next) {
-            (0, _expect2.default)(ctx.config).toBeA('object').toEqual(expectedConfig);
+            (0, _expect2.default)(ctx.config).toBeInstanceOf(Object);
+            (0, _expect2.default)(ctx.config).toEqual(expectedConfig);
             next(null, ctx);
         };
     };
 
     var testAdapter = {
-        testAdapter: {/* testAdapter API */},
-        config: { testAdapter: { name: "testAdapter", port: 4444 } }
+        testAdapter: {
+            /* testAdapter API */
+        },
+        config: { testAdapter: { name: 'testAdapter', port: 4444 } }
     };
 
     it('#start - with no args', function () {
@@ -93,18 +96,18 @@ describe('core', function () {
         var expectedConfig = _lodash2.default.merge(_defaultConfig2.default, testAdapter.config);
         try {
             (0, _core.start)([function (ctx, next) {
-                return next(new Error("Wrong adapter init"));
+                return next(new Error('Wrong adapter init'));
             }, checkConfig(expectedConfig)]);
         } catch (err) {
-            (0, _expect2.default)(err).toEqual('Error: Wrong adapter init');
+            (0, _expect2.default)(err).toEqual(new Error('Wrong adapter init'));
         }
     });
 
     it('#start - use adapter function with error on callback', function () {
         (0, _core.start)([function (ctx, next) {
-            return next(new Error("Wrong adapter init"));
+            return next(new Error('Wrong adapter init'));
         }], [], [], function (err, ctx) {
-            return (0, _expect2.default)(err).toEqual('Error: Wrong adapter init');
+            return (0, _expect2.default)(err).toEqual(new Error('Wrong adapter init'));
         });
     });
 
@@ -112,14 +115,16 @@ describe('core', function () {
         (0, _core.start)([], [function (ctx, cb) {
             return cb(new Error('Job returned error'), {});
         }], [], function (err, results) {
-            (0, _expect2.default)(err).toEqual('Error: Job returned error');
+            (0, _expect2.default)(err).toEqual(new Error('Job returned error'));
             done();
         });
     });
 
     it('#start - with job as a non function object', function (done) {
-        (0, _core.start)([], [{/* It should be a function */}], [], function (err, results) {
-            (0, _expect2.default)(err).toEqual('Error: Job must be a function');
+        (0, _core.start)([], [{
+            /* It should be a function */
+        }], [], function (err, results) {
+            (0, _expect2.default)(err).toEqual(new Error('Job must be a function'));
             done();
         });
     });
@@ -127,7 +132,7 @@ describe('core', function () {
     it('#start - with terminators and shuts down by SIGTERM', function (done) {
         var terminatorCalls = [];
         sandbox.stub(process, 'exit').callsFake(function (signal) {
-            console.log("process.exit:", signal, terminatorCalls);
+            console.log('process.exit:', signal, terminatorCalls);
             (0, _expect2.default)(terminatorCalls).toEqual(['firstCall', 'secondCall']);
             done();
         });
@@ -166,7 +171,9 @@ describe('core', function () {
             done();
         });
 
-        (0, _core.start)([], [], [{/* It should be a function */}], function (err, results) {
+        (0, _core.start)([], [], [{
+            /* It should be a function */
+        }], function (err, results) {
             (0, _expect2.default)(err).toEqual(null);
             process.kill(process.pid, 'SIGTERM');
         });

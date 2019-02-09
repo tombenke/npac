@@ -45,7 +45,6 @@ after(function (done) {
 });
 
 describe('config', function () {
-
     var writeLog = function writeLog(ctx) {
         ctx.logger.info('Hello logger!');
         ctx.logger.debug('This is a JSON object', { id: '121324231412', payload: { message: 'Some debug info...' } });

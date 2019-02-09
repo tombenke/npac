@@ -8,7 +8,7 @@
  */
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 exports.mergeConfig = exports.makeConfig = undefined;
 
@@ -35,15 +35,15 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  * @function
  */
 var makeConfig = exports.makeConfig = function makeConfig() {
-    var defaults = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-    var cliConfig = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-    var configFileProp = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'configFile';
+  var defaults = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+  var cliConfig = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+  var configFileProp = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'configFile';
 
-    var configFileName = _lodash2.default.has(cliConfig, configFileProp) ? cliConfig[configFileProp] : _lodash2.default.has(defaults, configFileProp) ? defaults[configFileProp] : null;
-    var configFileContent = _lodash2.default.isNull(configFileName) ? {} : (0, _datafile.loadJsonFileSync)(configFileName, false);
-    var config = _lodash2.default.mergeWith({}, defaults, configFileContent, cliConfig);
+  var configFileName = _lodash2.default.has(cliConfig, configFileProp) ? cliConfig[configFileProp] : _lodash2.default.has(defaults, configFileProp) ? defaults[configFileProp] : null;
+  var configFileContent = _lodash2.default.isNull(configFileName) ? {} : (0, _datafile.loadJsonFileSync)(configFileName, false);
+  var config = _lodash2.default.mergeWith({}, defaults, configFileContent, cliConfig);
 
-    return config;
+  return config;
 };
 
 /**
@@ -61,8 +61,8 @@ var makeConfig = exports.makeConfig = function makeConfig() {
  * @function
  */
 var mergeConfig = exports.mergeConfig = function mergeConfig() {
-    var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-    return function (ctx, next) {
-        next(null, _lodash2.default.mergeWith({}, ctx, { config: config }));
-    };
+  var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+  return function (ctx, next) {
+    next(null, _lodash2.default.mergeWith({}, ctx, { config: config }));
+  };
 };

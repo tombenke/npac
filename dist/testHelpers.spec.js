@@ -34,7 +34,6 @@ describe('adapters/server', function () {
     var terminators = [];
 
     it('#startup, #shutdown', function (done) {
-
         (0, _testHelpers.catchExitSignals)(sandbox, done);
 
         var testServer = function testServer(container, next) {

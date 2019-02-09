@@ -36,7 +36,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  * @function
  */
 var makeCall = exports.makeCall = function makeCall(jobDesc) {
-
     var jobNotDefined = function jobNotDefined(ctx, args) {
         return ctx.logger.error('job is not defined');
     };
@@ -61,7 +60,6 @@ var makeCall = exports.makeCall = function makeCall(jobDesc) {
  * @function
  */
 var makeCallSync = exports.makeCallSync = function makeCallSync(jobDesc) {
-
     var jobNotDefined = function jobNotDefined(ctx, args) {
         return ctx.logger.error('job is not defined');
     };

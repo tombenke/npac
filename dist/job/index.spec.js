@@ -36,7 +36,7 @@ describe('job', function () {
     it('#makeCallSync - call sync job', function (done) {
         var syncJob = (0, _index.makeCallSync)({ name: 'addSync', args: { a: 1, b: 1 } });
         syncJob(ctx, function (err, result) {
-            (0, _expect2.default)(result).toEqual([2]);
+            (0, _expect2.default)(result).toEqual(2);
             done();
         });
     });
@@ -44,7 +44,7 @@ describe('job', function () {
     it('#makeCall - call async job', function (done) {
         var asyncJob = (0, _index.makeCall)({ name: 'add', args: { a: 1, b: 1 } });
         asyncJob(ctx, function (err, result) {
-            (0, _expect2.default)(result).toEqual([2]);
+            (0, _expect2.default)(result).toEqual(2);
             done();
         });
     });

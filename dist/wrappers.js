@@ -9,7 +9,7 @@
  */
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 exports.runJob = exports.runJobSync = undefined;
 
@@ -22,7 +22,7 @@ var _logger = require('./logger/');
 var _job = require('./job/');
 
 var buildAndRun = function buildAndRun(config, executives, jobDesc, jobFun, cb) {
-    (0, _core.start)([(0, _config.mergeConfig)(config), _logger.addLogger, executives], [jobFun(jobDesc)], [], cb);
+  (0, _core.start)([(0, _config.mergeConfig)(config), _logger.addLogger, executives], [jobFun(jobDesc)], [], cb);
 };
 
 /**
@@ -40,7 +40,7 @@ var buildAndRun = function buildAndRun(config, executives, jobDesc, jobFun, cb) 
  * @function
  */
 var runJobSync = exports.runJobSync = function runJobSync(config, executives, jobDesc, cb) {
-    return buildAndRun(config, executives, jobDesc, _job.makeCallSync, cb);
+  return buildAndRun(config, executives, jobDesc, _job.makeCallSync, cb);
 };
 
 /**
@@ -58,5 +58,5 @@ var runJobSync = exports.runJobSync = function runJobSync(config, executives, jo
  * @function
  */
 var runJob = exports.runJob = function runJob(config, executives, jobDesc, cb) {
-    return buildAndRun(config, executives, jobDesc, _job.makeCall, cb);
+  return buildAndRun(config, executives, jobDesc, _job.makeCall, cb);
 };
