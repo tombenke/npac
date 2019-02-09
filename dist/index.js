@@ -10,6 +10,8 @@ var _job = require('./job/');
 
 var _wrappers = require('./wrappers');
 
+var _testHelpers = require('./testHelpers');
+
 module.exports = {
     start: _core.start,
 
@@ -24,5 +26,10 @@ module.exports = {
 
     // wrappers
     runJob: _wrappers.runJob,
-    runJobSync: _wrappers.runJobSync
+    runJobSync: _wrappers.runJobSync,
+
+    // test helpers
+    removeSignalHandlers: _testHelpers.removeSignalHandlers,
+    catchExitSignals: _testHelpers.catchExitSignals,
+    npacStart: _testHelpers.npacStart
 };
