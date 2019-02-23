@@ -7,22 +7,20 @@ import fs from 'fs'
 import path from 'path'
 import rimraf from 'rimraf'
 
-const destCleanup = function(cb) {
+const destCleanup = cb => {
     const dest = path.resolve('./tmp/')
-    console.log('Remove: ', dest)
     rimraf(dest, cb)
 }
 
-before(function(done) {
-    destCleanup(function() {
+before(done => {
+    destCleanup(() => {
         fs.mkdirSync(path.resolve('./tmp'))
         done()
     })
 })
 
-after(function(done) {
+after(done => {
     destCleanup(done)
-    //    done()
 })
 
 describe('config', () => {

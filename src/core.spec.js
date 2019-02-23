@@ -8,7 +8,7 @@ describe('core', () => {
     let sandbox
 
     beforeEach(() => {
-        sandbox = sinon.sandbox.create({ useFakeTimers: true })
+        sandbox = sinon.createSandbox({})
     })
 
     afterEach(() => {

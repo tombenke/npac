@@ -10,7 +10,7 @@ describe('adapters/server', () => {
 
     beforeEach(done => {
         removeSignalHandlers()
-        sandbox = sinon.sandbox.create({ useFakeTimers: false })
+        sandbox = sinon.createSandbox({})
         done()
     })
 

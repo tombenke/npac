@@ -65,7 +65,7 @@ const setupAdapters = (ctx, adapters = []) => endCb => {
                 callback(null, _.merge({}, memoCtx, adapter))
             }
         },
-        function(err, resultCtx) {
+        (err, resultCtx) => {
             endCb(err, resultCtx)
         }
     )
@@ -137,17 +137,17 @@ const prepareForTermination = (terminators = []) => (ctx, endCb) => {
  * @function
  */
 const runJobs = jobs => (ctx, endCb) => {
-    // ctx.logger.debug('App runs the jobs...')
+    ctx.logger.debug('App runs the jobs...')
     async.mapSeries(
         jobs,
         (job, callback) => {
             if (_.isFunction(job)) {
-                // ctx.logger.debug('Call job function')
+                ctx.logger.debug('Call job function')
                 job(ctx, (err, result) => {
                     if (err) {
                         ctx.logger.error('Job call failed', err)
                     } else {
-                        // ctx.logger.debug('Job call completed', result)
+                        ctx.logger.debug('Job call completed', result)
                     }
                     callback(err, result)
                 })
