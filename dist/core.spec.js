@@ -24,7 +24,7 @@ describe('core', function () {
     var sandbox = void 0;
 
     beforeEach(function () {
-        sandbox = _sinon2.default.sandbox.create({ useFakeTimers: true });
+        sandbox = _sinon2.default.createSandbox({});
     });
 
     afterEach(function () {

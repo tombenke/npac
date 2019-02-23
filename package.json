@@ -25,7 +25,7 @@
   },
   "main": "dist/index.js",
   "dependencies": {
-    "async": "^2.6.1",
+    "async": "^2.6.2",
     "datafile": "^3.2.2",
     "lodash": "^4.17.11",
     "winston": "^3.2.1"
@@ -42,19 +42,19 @@
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-latest": "^6.24.1",
     "babel-register": "^6.26.0",
-    "coveralls": "^3.0.2",
+    "coveralls": "^3.0.3",
     "cross-env": "^5.2.0",
-    "eslint": "^5.13.0",
+    "eslint": "^5.14.1",
     "expect": "^24.1.0",
     "husky": "^1.3.1",
     "istanbul": "1.1.0-alpha.1",
     "jsdoc": "^3.5.3",
-    "mocha": "^5.2.0",
+    "mocha": "^6.0.1",
     "mocha-lcov-reporter": "^1.2.0",
     "pre-push": "^0.1.1",
     "prettier": "^1.16.4",
     "rimraf": "^2.6.3",
-    "sinon": "^7.2.3"
+    "sinon": "^7.2.4"
   },
   "husky": {
     "hooks": {
@@ -73,11 +73,11 @@
     "build": "babel src --presets babel-preset-es2015 --out-dir dist",
     "lint": "eslint src/**.js",
     "prettier": "prettier --single-quote --write 'src/**/*.{js,jsx,ts,tsx,json,css,scss,md}'",
-    "test": "cross-env NODE_ENV=test mocha --recursive --compilers js:babel-register 'src/**/*.spec.js'",
-    "test-single": "cross-env NODE_ENV=test mocha --recursive --compilers js:babel-register --timeout 15000 $1",
+    "test": "cross-env NODE_ENV=test mocha --recursive --require babel-register 'src/**/*.spec.js'",
+    "test-single": "cross-env NODE_ENV=test mocha --recursive --require babel-register --timeout 15000 $1",
     "test:watch": "npm test -- --watch",
-    "coverage": "NODE_ENV=test istanbul cover _mocha -- recursive --compilers js:babel-register --timeout 15000 'src/**/*.spec.js'",
-    "coveralls": "NODE_ENV=test istanbul cover _mocha --report lcovonly -- recursive --compilers js:babel-register --timeout 15000 'src/**/*.spec.js' -R spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage",
+    "coverage": "NODE_ENV=test istanbul cover _mocha -- recursive --require babel-register --timeout 15000 'src/**/*.spec.js'",
+    "coveralls": "NODE_ENV=test istanbul cover _mocha --report lcovonly -- recursive --require babel-register --timeout 15000 'src/**/*.spec.js' -R spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage",
     "docs": "rm -fr ./docs/api/* && jsdoc -c ./.jsdoc.json",
     "prepublishOnly": "npm run lint && npm run test && npm run build && npm run docs",
     "all": "npm run lint && npm run coverage && npm run build && npm run docs"

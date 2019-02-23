@@ -28,7 +28,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var destCleanup = function destCleanup(cb) {
     var dest = _path2.default.resolve('./tmp/');
-    console.log('Remove: ', dest);
     (0, _rimraf2.default)(dest, cb);
 };
 
@@ -41,7 +40,6 @@ before(function (done) {
 
 after(function (done) {
     destCleanup(done);
-    //    done()
 });
 
 describe('config', function () {

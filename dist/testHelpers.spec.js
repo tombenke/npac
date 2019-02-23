@@ -19,7 +19,7 @@ describe('adapters/server', function () {
 
     beforeEach(function (done) {
         (0, _testHelpers.removeSignalHandlers)();
-        sandbox = _sinon2.default.sandbox.create({ useFakeTimers: false });
+        sandbox = _sinon2.default.createSandbox({});
         done();
     });
 

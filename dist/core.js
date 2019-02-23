@@ -155,15 +155,15 @@ var prepareForTermination = function prepareForTermination() {
  */
 var runJobs = function runJobs(jobs) {
     return function (ctx, endCb) {
-        // ctx.logger.debug('App runs the jobs...')
+        ctx.logger.debug('App runs the jobs...');
         _async2.default.mapSeries(jobs, function (job, callback) {
             if (_lodash2.default.isFunction(job)) {
-                // ctx.logger.debug('Call job function')
+                ctx.logger.debug('Call job function');
                 job(ctx, function (err, result) {
                     if (err) {
                         ctx.logger.error('Job call failed', err);
                     } else {
-                        // ctx.logger.debug('Job call completed', result)
+                        ctx.logger.debug('Job call completed', result);
                     }
                     callback(err, result);
                 });
