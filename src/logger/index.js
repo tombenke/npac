@@ -25,7 +25,7 @@ const makeFormatter = (config, format) =>
         : textFormatter(config)
 
 const makeTransport = config => transConfig => {
-    //console.log('makeTransport: ', config, transConfig)
+
     if (transConfig.type === 'file') {
         return new transports.File({
             filename: './tmp/output.log',
@@ -70,6 +70,5 @@ const makeLogger = config =>
  */
 export const addLogger = (ctx, next) => {
     const loggerConfig = _.merge({}, defaultConfig, ctx.config)
-    //console.log('addLogger: ', JSON.stringify(loggerConfig, null, ' '))
     next(null, { logger: makeLogger(loggerConfig) })
 }
