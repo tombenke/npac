@@ -25,7 +25,6 @@ const makeFormatter = (config, format) =>
         : textFormatter(config)
 
 const makeTransport = config => transConfig => {
-
     if (transConfig.type === 'file') {
         return new transports.File({
             filename: './tmp/output.log',
