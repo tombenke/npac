@@ -1,5 +1,7 @@
 'use strict';
 
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 var _lodash = require('lodash');
 
 var _lodash2 = _interopRequireDefault(_lodash);
@@ -8,9 +10,11 @@ var _expect = require('expect');
 
 var _expect2 = _interopRequireDefault(_expect);
 
+var _datafile = require('datafile');
+
 var _index = require('./index');
 
-var _datafile = require('datafile');
+var _fixtures = require('./fixtures/');
 
 var _fs = require('fs');
 
@@ -51,8 +55,7 @@ describe('config', function () {
     };
 
     it('#addLogger - with defaults config', function (done) {
-        var ctxDefault = (0, _datafile.loadJsonFileSync)('src/logger/fixtures/ctxDefault.yml');
-        (0, _index.addLogger)(ctxDefault, function (err, ctxExtension) {
+        (0, _index.addLogger)(_fixtures.ctxDefault, function (err, ctxExtension) {
             (0, _expect2.default)(err).toEqual(null);
             writeLog(ctxExtension);
             done();
@@ -60,9 +63,8 @@ describe('config', function () {
     });
 
     it('#addLogger - with console transport', function (done) {
-        var ctx = (0, _datafile.mergeJsonFilesSync)(['src/logger/fixtures/ctxDefault.yml', 'src/logger/fixtures/consoleTransport.yml']);
-        console.log('ctx: ', JSON.stringify(ctx, null, '  '));
-        (0, _index.addLogger)(ctx, function (err, ctxExtension) {
+        console.log('ctxConsoleTransport: ', JSON.stringify(_fixtures.ctxConsoleTransport, null, '  '));
+        (0, _index.addLogger)(_fixtures.ctxConsoleTransport, function (err, ctxExtension) {
             (0, _expect2.default)(err).toEqual(null);
             writeLog(ctxExtension);
             done();
@@ -70,16 +72,20 @@ describe('config', function () {
     });
 
     it('#addLogger - with console and file transports', function (done) {
-        var ctx = (0, _datafile.mergeJsonFilesSync)(['src/logger/fixtures/ctxDefault.yml', 'src/logger/fixtures/consoleAndFileTransport.yml']);
-        //        console.log('ctx: ', JSON.stringify(ctx, null, '  '))
-        (0, _index.addLogger)(ctx, function (err, ctxExtension) {
+        //        console.log('ctxConsoleAndFileTransport: ', JSON.stringify(ctxConsoleAndFileTransport, null, '  '))
+        (0, _index.addLogger)(_fixtures.ctxConsoleAndFileTransport, function (err, ctxExtension) {
             (0, _expect2.default)(err).toEqual(null);
             writeLog(ctxExtension);
             setTimeout(function () {
                 (0, _expect2.default)((0, _datafile.findFilesSync)('./tmp', /.*/)).toEqual(['tmp/output.log']);
-                var logs = (0, _datafile.loadTextFileSync)('tmp/output.log');
-                // TODO: parse and check
-                //                console.log('logs', logs)
+                var outputLog = (0, _datafile.loadTextFileSync)('tmp/output.log').split('\n').map(function (log) {
+                    if (log !== '') {
+                        return _extends({}, JSON.parse(log), { timestamp: '2019-02-24T15:38:50.778Z' });
+                    }
+                }).filter(function (log) {
+                    return !_lodash2.default.isUndefined(log);
+                });
+                (0, _expect2.default)(outputLog).toEqual(_fixtures.expectedOutputLog);
                 done();
             }, 100);
         });

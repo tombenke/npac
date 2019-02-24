@@ -1,0 +1,11 @@
+config:
+    logger:
+        level: 'debug'
+        transports:
+            console:
+                type: console # console | file | http
+                format: 'text' # text | json
+            file:
+                type: file
+                filename: ./tmp/output.log
+                format: 'json'

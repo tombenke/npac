@@ -291,7 +291,7 @@
     
 
     
-    <h4 class="name" id="~makeLogger"><span class="type-signature">(inner) </span>makeLogger<span class="signature">(config)</span><span class="type-signature"> &rarr; {Object}</span></h4>
+    <h4 class="name" id="~makeWinstonLogger"><span class="type-signature">(inner) </span>makeWinstonLogger<span class="signature">(config)</span><span class="type-signature"> &rarr; {Object}</span></h4>
     
 
     
@@ -299,7 +299,7 @@
 
 
 <div class="description">
-    <p>Make a logger described by the <code>config</code> parameters.</p>
+    <p>Make a winston logger described by the <code>config</code> parameters.</p>
 <p>This adapter uses the winston logger library.
 It uses the default levels: <code>error: 0, warn: 1, info: 2, verbose: 3, debug: 4, silly: 5</code></p>
 </div>
@@ -353,7 +353,8 @@ It uses the default levels: <code>error: 0, warn: 1, info: 2, verbose: 3, debug:
 
             
 
-            <td class="description last"><p>The configuration of the logger</p></td>
+            <td class="description last"><p>The configuration of the logger
+The structure of the config object:</p></td>
         </tr>
 
     

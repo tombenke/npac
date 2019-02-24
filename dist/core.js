@@ -89,16 +89,15 @@ var initialCtx = {
 
 var shutDown = function shutDown(ctx, terminators) {
     return function (signal) {
-        // wasSigterm = true
-        ctx.logger.debug('App starts the shutdown process...');
+        ctx.logger.info('App starts the shutdown process...');
         _async2.default.mapSeries(terminators, function (terminator, callback) {
             if (_lodash2.default.isFunction(terminator)) {
-                ctx.logger.debug('Call terminator function');
+                // ctx.logger.debug('Call terminator function')
                 terminator(ctx, function (err, result) {
                     if (err) {
                         ctx.logger.error('Terminator call failed', err);
                     } else {
-                        //ctx.logger.debug('Terminator call completed', result)
+                        // ctx.logger.debug('Terminator call completed', result)
                     }
                     callback(err, result);
                 });
@@ -108,7 +107,7 @@ var shutDown = function shutDown(ctx, terminators) {
             }
         }, function (err, res) {
             if (err) {
-                ctx.logger.info('Shutdown process failed', err);
+                ctx.logger.error('Shutdown process failed', err);
                 process.exit(1);
             } else {
                 ctx.logger.info('Shutdown process successfully finished');
@@ -129,7 +128,7 @@ var shutDown = function shutDown(ctx, terminators) {
 var prepareForTermination = function prepareForTermination() {
     var terminators = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
     return function (ctx, endCb) {
-        ctx.logger.debug('App is preparing for SIGTERM, SIGINT and SIGHUP ...', terminators);
+        // ctx.logger.debug('App is preparing for SIGTERM, SIGINT and SIGHUP ...', terminators)
         var signals = ['SIGTERM', 'SIGINT', 'SIGHUP', 'SIGUSR1', 'SIGUSR2'];
         for (var signal in signals) {
             process.on(signals[signal], shutDown(ctx, terminators));
@@ -155,15 +154,15 @@ var prepareForTermination = function prepareForTermination() {
  */
 var runJobs = function runJobs(jobs) {
     return function (ctx, endCb) {
-        ctx.logger.debug('App runs the jobs...');
+        ctx.logger.info('App runs the jobs...');
         _async2.default.mapSeries(jobs, function (job, callback) {
             if (_lodash2.default.isFunction(job)) {
-                ctx.logger.debug('Call job function');
+                // ctx.logger.debug('Call job function')
                 job(ctx, function (err, result) {
                     if (err) {
                         ctx.logger.error('Job call failed', err);
                     } else {
-                        ctx.logger.debug('Job call completed', result);
+                        // ctx.logger.debug('Job call completed', result)
                     }
                     callback(err, result);
                 });

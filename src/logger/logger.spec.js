@@ -2,7 +2,14 @@ import _ from 'lodash'
 import expect from 'expect'
 import { loadTextFileSync, findFilesSync } from 'datafile'
 import { addLogger, makeTransport } from './index'
-import { ctxDefault, ctxConsoleTransport, ctxConsoleAndFileTransport, expectedOutputLog } from './fixtures/'
+import {
+    ctxDefault,
+    ctxConsoleTransportDefaultLevel,
+    ctxConsoleTransportDebugLevel,
+    ctxConsoleAndFileTransportDebugLevel,
+    ctxConsoleAndFileTransportDefaultLevel,
+    expectedOutputLog
+} from './fixtures/'
 
 import fs from 'fs'
 import path from 'path'
@@ -41,8 +48,8 @@ describe('config', () => {
     })
 
     it('#addLogger - with console transport', done => {
-        console.log('ctxConsoleTransport: ', JSON.stringify(ctxConsoleTransport, null, '  '))
-        addLogger(ctxConsoleTransport, (err, ctxExtension) => {
+        console.log('ctxConsoleTransportDebugLevel: ', JSON.stringify(ctxConsoleTransportDebugLevel, null, '  '))
+        addLogger(ctxConsoleTransportDebugLevel, (err, ctxExtension) => {
             expect(err).toEqual(null)
             writeLog(ctxExtension)
             done()
@@ -50,8 +57,7 @@ describe('config', () => {
     })
 
     it('#addLogger - with console and file transports', done => {
-        //        console.log('ctxConsoleAndFileTransport: ', JSON.stringify(ctxConsoleAndFileTransport, null, '  '))
-        addLogger(ctxConsoleAndFileTransport, (err, ctxExtension) => {
+        addLogger(ctxConsoleAndFileTransportDebugLevel, (err, ctxExtension) => {
             expect(err).toEqual(null)
             writeLog(ctxExtension)
             setTimeout(() => {
@@ -68,5 +74,87 @@ describe('config', () => {
                 done()
             }, 100)
         })
+    })
+
+    it('#makeTransport - console default level', done => {
+        const config = ctxDefault.config
+        const transConfig = ctxConsoleTransportDefaultLevel.config.logger.transports.console
+        const transport = makeTransport(config)(transConfig)
+        expect(transport.name).toEqual('console')
+        expect(transport.level).toEqual('info')
+        done()
+    })
+
+    it('#makeTransport - console warn level inherited from logger', done => {
+        const config = { ...ctxDefault.config, ...{ logger: { level: 'warn' } } }
+        const transConfig = ctxConsoleTransportDefaultLevel.config.logger.transports.console
+        const transport = makeTransport(config)(transConfig)
+        expect(transport.name).toEqual('console')
+        expect(transport.level).toEqual('warn')
+        done()
+    })
+
+    it('#makeTransport - console debug level', done => {
+        const config = ctxDefault.config
+        const transConfig = ctxConsoleTransportDebugLevel.config.logger.transports.console
+        const transport = makeTransport(config)(transConfig)
+        expect(transport.name).toEqual('console')
+        expect(transport.level).toEqual('debug')
+        done()
+    })
+
+    it('#makeTransport - console and file debug level', done => {
+        const config = ctxDefault.config
+        const consoleTransConfig = ctxConsoleAndFileTransportDebugLevel.config.logger.transports.console
+        const consoleTransport = makeTransport(config)(consoleTransConfig)
+        expect(consoleTransport.name).toEqual('console')
+        expect(consoleTransport.level).toEqual('debug')
+        const fileTransConfig = ctxConsoleAndFileTransportDebugLevel.config.logger.transports.file
+        const fileTransport = makeTransport(config)(fileTransConfig)
+        expect(fileTransport.name).toEqual('file')
+        expect(fileTransport.level).toEqual('debug')
+        done()
+    })
+
+    it('#makeTransport - console and file default level', done => {
+        const config = ctxDefault.config
+        const consoleTransConfig = ctxConsoleAndFileTransportDefaultLevel.config.logger.transports.console
+        const consoleTransport = makeTransport(config)(consoleTransConfig)
+        expect(consoleTransport.name).toEqual('console')
+        expect(consoleTransport.level).toEqual('info')
+        const fileTransConfig = ctxConsoleAndFileTransportDefaultLevel.config.logger.transports.file
+        const fileTransport = makeTransport(config)(fileTransConfig)
+        expect(fileTransport.name).toEqual('file')
+        expect(fileTransport.level).toEqual('info')
+        done()
+    })
+
+    it('#makeTransport - console and file warn level inherited from logger', done => {
+        const config = { ...ctxDefault.config, ...{ logger: { level: 'warn' } } }
+        const consoleTransConfig = ctxConsoleAndFileTransportDefaultLevel.config.logger.transports.console
+        const consoleTransport = makeTransport(config)(consoleTransConfig)
+        expect(consoleTransport.name).toEqual('console')
+        expect(consoleTransport.level).toEqual('warn')
+        const fileTransConfig = ctxConsoleAndFileTransportDefaultLevel.config.logger.transports.file
+        const fileTransport = makeTransport(config)(fileTransConfig)
+        expect(fileTransport.name).toEqual('file')
+        expect(fileTransport.level).toEqual('warn')
+        done()
+    })
+
+    it('#makeTransport - console warn level inherited from logger, file silly level', done => {
+        const config = { ...ctxDefault.config, ...{ logger: { level: 'warn' } } }
+        const consoleTransConfig = ctxConsoleAndFileTransportDefaultLevel.config.logger.transports.console
+        const consoleTransport = makeTransport(config)(consoleTransConfig)
+        expect(consoleTransport.name).toEqual('console')
+        expect(consoleTransport.level).toEqual('warn')
+        const fileTransConfig = {
+            ...ctxConsoleAndFileTransportDefaultLevel.config.logger.transports.file,
+            ...{ level: 'silly' }
+        }
+        const fileTransport = makeTransport(config)(fileTransConfig)
+        expect(fileTransport.name).toEqual('file')
+        expect(fileTransport.level).toEqual('silly')
+        done()
     })
 })

@@ -10,7 +10,7 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.addLogger = undefined;
+exports.addLogger = exports.makeTransport = undefined;
 
 var _lodash = require('lodash');
 
@@ -54,36 +54,37 @@ var makeFormatter = function makeFormatter(config, format) {
     return format === 'json' ? jsonFormatter(config) : format === 'textPlain' ? textPlainFormatter(config) : textFormatter(config);
 };
 
-var makeTransport = function makeTransport(config) {
+var makeTransport = exports.makeTransport = function makeTransport(config) {
     return function (transConfig) {
         if (transConfig.type === 'file') {
             return new _winston.transports.File({
-                filename: './tmp/output.log',
+                filename: _lodash2.default.get(transConfig, 'filename', './output.log'),
                 format: makeFormatter(config, transConfig.format),
-                level: transConfig.level || 'info'
+                level: _lodash2.default.get(transConfig, 'level', _lodash2.default.get(config, 'logger.level', 'info'))
             });
         } else if (transConfig.type === 'console') {
             return new _winston.transports.Console({
                 format: makeFormatter(config, transConfig.format),
-                level: transConfig.level || 'info'
+                level: _lodash2.default.get(transConfig, 'level', _lodash2.default.get(config, 'logger.level', 'info'))
             });
         }
     };
 };
 
 /**
- * Make a logger described by the `config` parameters.
+ * Make a winston logger described by the `config` parameters.
  *
  * This adapter uses the winston logger library.
  * It uses the default levels: `error: 0, warn: 1, info: 2, verbose: 3, debug: 4, silly: 5`
  *
  * @arg {Object} config - The configuration of the logger
+ * The structure of the config object:
  *
  * @return {Object} - The logger object
  *
  * @function
  */
-var makeLogger = function makeLogger(config) {
+var makeWinstonLogger = function makeWinstonLogger(config) {
     return (0, _winston.createLogger)({
         level: config.logger.level,
         transports: _lodash2.default.map(config.logger.transports, makeTransport(_lodash2.default.merge({}, config, { level: config.logger.level })))
@@ -102,5 +103,5 @@ var makeLogger = function makeLogger(config) {
  */
 var addLogger = exports.addLogger = function addLogger(ctx, next) {
     var loggerConfig = _lodash2.default.merge({}, _defaultConfig2.default, ctx.config);
-    next(null, { logger: makeLogger(loggerConfig) });
+    next(null, { logger: makeWinstonLogger(loggerConfig) });
 };

@@ -4,5 +4,4 @@ config:
         transports:
             console:
                 type: console # console | file | http
-                level: 'debug'
                 format: 'textPlain' # text | textPlain | json
