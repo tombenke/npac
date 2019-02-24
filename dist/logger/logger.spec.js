@@ -63,8 +63,8 @@ describe('config', function () {
     });
 
     it('#addLogger - with console transport', function (done) {
-        console.log('ctxConsoleTransport: ', JSON.stringify(_fixtures.ctxConsoleTransport, null, '  '));
-        (0, _index.addLogger)(_fixtures.ctxConsoleTransport, function (err, ctxExtension) {
+        console.log('ctxConsoleTransportDebugLevel: ', JSON.stringify(_fixtures.ctxConsoleTransportDebugLevel, null, '  '));
+        (0, _index.addLogger)(_fixtures.ctxConsoleTransportDebugLevel, function (err, ctxExtension) {
             (0, _expect2.default)(err).toEqual(null);
             writeLog(ctxExtension);
             done();
@@ -72,8 +72,7 @@ describe('config', function () {
     });
 
     it('#addLogger - with console and file transports', function (done) {
-        //        console.log('ctxConsoleAndFileTransport: ', JSON.stringify(ctxConsoleAndFileTransport, null, '  '))
-        (0, _index.addLogger)(_fixtures.ctxConsoleAndFileTransport, function (err, ctxExtension) {
+        (0, _index.addLogger)(_fixtures.ctxConsoleAndFileTransportDebugLevel, function (err, ctxExtension) {
             (0, _expect2.default)(err).toEqual(null);
             writeLog(ctxExtension);
             setTimeout(function () {
@@ -89,5 +88,84 @@ describe('config', function () {
                 done();
             }, 100);
         });
+    });
+
+    it('#makeTransport - console default level', function (done) {
+        var config = _fixtures.ctxDefault.config;
+        var transConfig = _fixtures.ctxConsoleTransportDefaultLevel.config.logger.transports.console;
+        var transport = (0, _index.makeTransport)(config)(transConfig);
+        (0, _expect2.default)(transport.name).toEqual('console');
+        (0, _expect2.default)(transport.level).toEqual('info');
+        done();
+    });
+
+    it('#makeTransport - console warn level inherited from logger', function (done) {
+        var config = _extends({}, _fixtures.ctxDefault.config, { logger: { level: 'warn' } });
+        var transConfig = _fixtures.ctxConsoleTransportDefaultLevel.config.logger.transports.console;
+        var transport = (0, _index.makeTransport)(config)(transConfig);
+        (0, _expect2.default)(transport.name).toEqual('console');
+        (0, _expect2.default)(transport.level).toEqual('warn');
+        done();
+    });
+
+    it('#makeTransport - console debug level', function (done) {
+        var config = _fixtures.ctxDefault.config;
+        var transConfig = _fixtures.ctxConsoleTransportDebugLevel.config.logger.transports.console;
+        var transport = (0, _index.makeTransport)(config)(transConfig);
+        (0, _expect2.default)(transport.name).toEqual('console');
+        (0, _expect2.default)(transport.level).toEqual('debug');
+        done();
+    });
+
+    it('#makeTransport - console and file debug level', function (done) {
+        var config = _fixtures.ctxDefault.config;
+        var consoleTransConfig = _fixtures.ctxConsoleAndFileTransportDebugLevel.config.logger.transports.console;
+        var consoleTransport = (0, _index.makeTransport)(config)(consoleTransConfig);
+        (0, _expect2.default)(consoleTransport.name).toEqual('console');
+        (0, _expect2.default)(consoleTransport.level).toEqual('debug');
+        var fileTransConfig = _fixtures.ctxConsoleAndFileTransportDebugLevel.config.logger.transports.file;
+        var fileTransport = (0, _index.makeTransport)(config)(fileTransConfig);
+        (0, _expect2.default)(fileTransport.name).toEqual('file');
+        (0, _expect2.default)(fileTransport.level).toEqual('debug');
+        done();
+    });
+
+    it('#makeTransport - console and file default level', function (done) {
+        var config = _fixtures.ctxDefault.config;
+        var consoleTransConfig = _fixtures.ctxConsoleAndFileTransportDefaultLevel.config.logger.transports.console;
+        var consoleTransport = (0, _index.makeTransport)(config)(consoleTransConfig);
+        (0, _expect2.default)(consoleTransport.name).toEqual('console');
+        (0, _expect2.default)(consoleTransport.level).toEqual('info');
+        var fileTransConfig = _fixtures.ctxConsoleAndFileTransportDefaultLevel.config.logger.transports.file;
+        var fileTransport = (0, _index.makeTransport)(config)(fileTransConfig);
+        (0, _expect2.default)(fileTransport.name).toEqual('file');
+        (0, _expect2.default)(fileTransport.level).toEqual('info');
+        done();
+    });
+
+    it('#makeTransport - console and file warn level inherited from logger', function (done) {
+        var config = _extends({}, _fixtures.ctxDefault.config, { logger: { level: 'warn' } });
+        var consoleTransConfig = _fixtures.ctxConsoleAndFileTransportDefaultLevel.config.logger.transports.console;
+        var consoleTransport = (0, _index.makeTransport)(config)(consoleTransConfig);
+        (0, _expect2.default)(consoleTransport.name).toEqual('console');
+        (0, _expect2.default)(consoleTransport.level).toEqual('warn');
+        var fileTransConfig = _fixtures.ctxConsoleAndFileTransportDefaultLevel.config.logger.transports.file;
+        var fileTransport = (0, _index.makeTransport)(config)(fileTransConfig);
+        (0, _expect2.default)(fileTransport.name).toEqual('file');
+        (0, _expect2.default)(fileTransport.level).toEqual('warn');
+        done();
+    });
+
+    it('#makeTransport - console warn level inherited from logger, file silly level', function (done) {
+        var config = _extends({}, _fixtures.ctxDefault.config, { logger: { level: 'warn' } });
+        var consoleTransConfig = _fixtures.ctxConsoleAndFileTransportDefaultLevel.config.logger.transports.console;
+        var consoleTransport = (0, _index.makeTransport)(config)(consoleTransConfig);
+        (0, _expect2.default)(consoleTransport.name).toEqual('console');
+        (0, _expect2.default)(consoleTransport.level).toEqual('warn');
+        var fileTransConfig = _extends({}, _fixtures.ctxConsoleAndFileTransportDefaultLevel.config.logger.transports.file, { level: 'silly' });
+        var fileTransport = (0, _index.makeTransport)(config)(fileTransConfig);
+        (0, _expect2.default)(fileTransport.name).toEqual('file');
+        (0, _expect2.default)(fileTransport.level).toEqual('silly');
+        done();
     });
 });
