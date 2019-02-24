@@ -72,18 +72,17 @@ const setupAdapters = (ctx, adapters = []) => endCb => {
 }
 
 const shutDown = (ctx, terminators) => signal => {
-    // wasSigterm = true
-    ctx.logger.debug('App starts the shutdown process...')
+    ctx.logger.info('App starts the shutdown process...')
     async.mapSeries(
         terminators,
         (terminator, callback) => {
             if (_.isFunction(terminator)) {
-                ctx.logger.debug('Call terminator function')
+                // ctx.logger.debug('Call terminator function')
                 terminator(ctx, (err, result) => {
                     if (err) {
                         ctx.logger.error('Terminator call failed', err)
                     } else {
-                        //ctx.logger.debug('Terminator call completed', result)
+                        // ctx.logger.debug('Terminator call completed', result)
                     }
                     callback(err, result)
                 })
@@ -94,7 +93,7 @@ const shutDown = (ctx, terminators) => signal => {
         },
         (err, res) => {
             if (err) {
-                ctx.logger.info('Shutdown process failed', err)
+                ctx.logger.error('Shutdown process failed', err)
                 process.exit(1)
             } else {
                 ctx.logger.info('Shutdown process successfully finished')
@@ -113,7 +112,7 @@ const shutDown = (ctx, terminators) => signal => {
  * @function
  */
 const prepareForTermination = (terminators = []) => (ctx, endCb) => {
-    ctx.logger.debug('App is preparing for SIGTERM, SIGINT and SIGHUP ...', terminators)
+    // ctx.logger.debug('App is preparing for SIGTERM, SIGINT and SIGHUP ...', terminators)
     const signals = ['SIGTERM', 'SIGINT', 'SIGHUP', 'SIGUSR1', 'SIGUSR2']
     for (const signal in signals) {
         process.on(signals[signal], shutDown(ctx, terminators))
@@ -137,17 +136,17 @@ const prepareForTermination = (terminators = []) => (ctx, endCb) => {
  * @function
  */
 const runJobs = jobs => (ctx, endCb) => {
-    ctx.logger.debug('App runs the jobs...')
+    ctx.logger.info('App runs the jobs...')
     async.mapSeries(
         jobs,
         (job, callback) => {
             if (_.isFunction(job)) {
-                ctx.logger.debug('Call job function')
+                // ctx.logger.debug('Call job function')
                 job(ctx, (err, result) => {
                     if (err) {
                         ctx.logger.error('Job call failed', err)
                     } else {
-                        ctx.logger.debug('Job call completed', result)
+                        // ctx.logger.debug('Job call completed', result)
                     }
                     callback(err, result)
                 })

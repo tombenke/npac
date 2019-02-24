@@ -1,7 +1,8 @@
 import _ from 'lodash'
 import expect from 'expect'
-import { addLogger } from './index'
-import { loadJsonFileSync, loadTextFileSync, findFilesSync, mergeJsonFilesSync } from 'datafile'
+import { loadTextFileSync, findFilesSync } from 'datafile'
+import { addLogger, makeTransport } from './index'
+import { ctxDefault, ctxConsoleTransport, ctxConsoleAndFileTransport, expectedOutputLog } from './fixtures/'
 
 import fs from 'fs'
 import path from 'path'
@@ -32,7 +33,6 @@ describe('config', () => {
     }
 
     it('#addLogger - with defaults config', done => {
-        const ctxDefault = loadJsonFileSync('src/logger/fixtures/ctxDefault.yml')
         addLogger(ctxDefault, (err, ctxExtension) => {
             expect(err).toEqual(null)
             writeLog(ctxExtension)
@@ -41,12 +41,8 @@ describe('config', () => {
     })
 
     it('#addLogger - with console transport', done => {
-        const ctx = mergeJsonFilesSync([
-            'src/logger/fixtures/ctxDefault.yml',
-            'src/logger/fixtures/consoleTransport.yml'
-        ])
-        console.log('ctx: ', JSON.stringify(ctx, null, '  '))
-        addLogger(ctx, (err, ctxExtension) => {
+        console.log('ctxConsoleTransport: ', JSON.stringify(ctxConsoleTransport, null, '  '))
+        addLogger(ctxConsoleTransport, (err, ctxExtension) => {
             expect(err).toEqual(null)
             writeLog(ctxExtension)
             done()
@@ -54,19 +50,21 @@ describe('config', () => {
     })
 
     it('#addLogger - with console and file transports', done => {
-        const ctx = mergeJsonFilesSync([
-            'src/logger/fixtures/ctxDefault.yml',
-            'src/logger/fixtures/consoleAndFileTransport.yml'
-        ])
-        //        console.log('ctx: ', JSON.stringify(ctx, null, '  '))
-        addLogger(ctx, (err, ctxExtension) => {
+        //        console.log('ctxConsoleAndFileTransport: ', JSON.stringify(ctxConsoleAndFileTransport, null, '  '))
+        addLogger(ctxConsoleAndFileTransport, (err, ctxExtension) => {
             expect(err).toEqual(null)
             writeLog(ctxExtension)
             setTimeout(() => {
                 expect(findFilesSync('./tmp', /.*/)).toEqual(['tmp/output.log'])
-                const logs = loadTextFileSync('tmp/output.log')
-                // TODO: parse and check
-                //                console.log('logs', logs)
+                const outputLog = loadTextFileSync('tmp/output.log')
+                    .split('\n')
+                    .map(log => {
+                        if (log !== '') {
+                            return { ...JSON.parse(log), ...{ timestamp: '2019-02-24T15:38:50.778Z' } }
+                        }
+                    })
+                    .filter(log => !_.isUndefined(log))
+                expect(outputLog).toEqual(expectedOutputLog)
                 done()
             }, 100)
         })

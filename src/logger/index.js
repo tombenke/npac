@@ -24,34 +24,35 @@ const makeFormatter = (config, format) =>
         ? textPlainFormatter(config)
         : textFormatter(config)
 
-const makeTransport = config => transConfig => {
+export const makeTransport = config => transConfig => {
     if (transConfig.type === 'file') {
         return new transports.File({
-            filename: './tmp/output.log',
+            filename: _.get(transConfig, 'filename', './output.log'),
             format: makeFormatter(config, transConfig.format),
-            level: transConfig.level || 'info'
+            level: _.get(transConfig, 'level', _.get(config, 'logger.level', 'info'))
         })
     } else if (transConfig.type === 'console') {
         return new transports.Console({
             format: makeFormatter(config, transConfig.format),
-            level: transConfig.level || 'info'
+            level: _.get(transConfig, 'level', _.get(config, 'logger.level', 'info'))
         })
     }
 }
 
 /**
- * Make a logger described by the `config` parameters.
+ * Make a winston logger described by the `config` parameters.
  *
  * This adapter uses the winston logger library.
  * It uses the default levels: `error: 0, warn: 1, info: 2, verbose: 3, debug: 4, silly: 5`
  *
  * @arg {Object} config - The configuration of the logger
+ * The structure of the config object:
  *
  * @return {Object} - The logger object
  *
  * @function
  */
-const makeLogger = config =>
+const makeWinstonLogger = config =>
     createLogger({
         level: config.logger.level,
         transports: _.map(config.logger.transports, makeTransport(_.merge({}, config, { level: config.logger.level })))
@@ -69,5 +70,5 @@ const makeLogger = config =>
  */
 export const addLogger = (ctx, next) => {
     const loggerConfig = _.merge({}, defaultConfig, ctx.config)
-    next(null, { logger: makeLogger(loggerConfig) })
+    next(null, { logger: makeWinstonLogger(loggerConfig) })
 }
