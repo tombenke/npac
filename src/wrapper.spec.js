@@ -4,7 +4,7 @@ import npacDefaultConfig from './defaultConfig'
 import { runJob, runJobSync } from './wrappers'
 
 describe('wrappers', () => {
-    it('#runJobSync - run a sync job in a plain container with logger', done => {
+    it('#runJobSync - run a sync job in a plain container with logger', (done) => {
         const executives = {
             addSync: (ctx, args) => {
                 const result = args.a + args.b
@@ -20,7 +20,7 @@ describe('wrappers', () => {
         })
     })
 
-    it('#runJob - run an asynchronous job in a plain container with logger', done => {
+    it('#runJob - run an asynchronous job in a plain container with logger', (done) => {
         const executives = {
             add: (ctx, args, cb) => {
                 const result = args.a + args.b

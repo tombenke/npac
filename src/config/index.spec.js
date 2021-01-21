@@ -42,7 +42,7 @@ describe('config', () => {
         expect(makeConfig(defaults, cliConfigWithConfigFileName, 'configFileName')).toEqual(expectedConfig)
     })
 
-    it('#mergeConfig - with no args', done => {
+    it('#mergeConfig - with no args', (done) => {
         const expectedConfig = ctxOrig
         const adapterFun = mergeConfig()
         adapterFun(ctxOrig, (err, result) => {
@@ -51,7 +51,7 @@ describe('config', () => {
         })
     })
 
-    it('#mergeConfig - with defaults', done => {
+    it('#mergeConfig - with defaults', (done) => {
         const expectedConfig = ctxPlusDefaults
         const adapterFun = mergeConfig(defaults)
         adapterFun(ctxOrig, (err, result) => {

@@ -8,7 +8,7 @@ export const removeSignalHandlers = () => {
 }
 
 export const catchExitSignals = (sandbox, done) =>
-    sandbox.stub(process, 'exit').callsFake(signal => {
+    sandbox.stub(process, 'exit').callsFake((signal) => {
         console.log('process.exit', signal)
         done()
     })

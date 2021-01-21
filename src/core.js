@@ -37,7 +37,7 @@ const initialCtx = {
  *
  * @function
  */
-const setupAdapters = (ctx, adapters = []) => endCb => {
+const setupAdapters = (ctx, adapters = []) => (endCb) => {
     // ctx.logger.debug('App is starting up...', ctx, adapters)
     async.reduce(
         adapters,
@@ -71,7 +71,7 @@ const setupAdapters = (ctx, adapters = []) => endCb => {
     )
 }
 
-const shutDown = (ctx, terminators) => signal => {
+const shutDown = (ctx, terminators) => (signal) => {
     ctx.logger.info('App starts the shutdown process...')
     async.mapSeries(
         terminators,
@@ -135,7 +135,7 @@ const prepareForTermination = (terminators = []) => (ctx, endCb) => {
  *
  * @function
  */
-const runJobs = jobs => (ctx, endCb) => {
+const runJobs = (jobs) => (ctx, endCb) => {
     ctx.logger.info('App runs the jobs...')
     async.mapSeries(
         jobs,

@@ -19,7 +19,7 @@ describe('core', () => {
         sandbox.restore()
     })
 
-    const checkConfig = expectedConfig => (ctx, next) => {
+    const checkConfig = (expectedConfig) => (ctx, next) => {
         expect(ctx.config).toBeInstanceOf(Object)
         expect(ctx.config).toEqual(expectedConfig)
         next(null, ctx)
@@ -81,14 +81,14 @@ describe('core', () => {
         )
     })
 
-    it('#start - with job returns error', done => {
+    it('#start - with job returns error', (done) => {
         start([], [(ctx, cb) => cb(new Error('Job returned error'), {})], [], (err, results) => {
             expect(err).toEqual(new Error('Job returned error'))
             done()
         })
     })
 
-    it('#start - with job as a non function object', done => {
+    it('#start - with job as a non function object', (done) => {
         start(
             [],
             [
@@ -104,14 +104,14 @@ describe('core', () => {
         )
     })
 
-    it('#start - with terminators and shuts down by SIGTERM', done => {
+    it('#start - with terminators and shuts down by SIGTERM', (done) => {
         let terminatorCalls = []
-        sandbox.stub(process, 'exit').callsFake(signal => {
+        sandbox.stub(process, 'exit').callsFake((signal) => {
             console.log('process.exit:', signal, terminatorCalls)
             expect(terminatorCalls).toEqual(['firstCall', 'secondCall'])
             done()
         })
-        const terminatorFun = order => (ctx, cb) => {
+        const terminatorFun = (order) => (ctx, cb) => {
             terminatorCalls.push(order)
             cb(null, null)
         }
@@ -122,9 +122,9 @@ describe('core', () => {
         })
     })
 
-    it('#start - with terminator function that returns with error', done => {
+    it('#start - with terminator function that returns with error', (done) => {
         const termStub = sinon.stub()
-        sandbox.stub(process, 'exit').callsFake(signal => {
+        sandbox.stub(process, 'exit').callsFake((signal) => {
             sinon.assert.called(termStub)
             done()
         })
@@ -139,8 +139,8 @@ describe('core', () => {
         })
     })
 
-    it('#start - with job as a non function object', done => {
-        sandbox.stub(process, 'exit').callsFake(signal => {
+    it('#start - with job as a non function object', (done) => {
+        sandbox.stub(process, 'exit').callsFake((signal) => {
             done()
         })
 

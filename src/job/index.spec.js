@@ -21,7 +21,7 @@ describe('job', () => {
     const ctxOrig = loadJsonFileSync('src/config/fixtures/ctxOrig.yml')
     const ctx = _.merge({}, ctxOrig, { logger: console }, executives)
 
-    it('#makeCallSync - call sync job', done => {
+    it('#makeCallSync - call sync job', (done) => {
         const syncJob = makeCallSync({ name: 'addSync', args: { a: 1, b: 1 } })
         syncJob(ctx, (err, result) => {
             expect(result).toEqual(2)
@@ -29,7 +29,7 @@ describe('job', () => {
         })
     })
 
-    it('#makeCall - call async job', done => {
+    it('#makeCall - call async job', (done) => {
         const asyncJob = makeCall({ name: 'add', args: { a: 1, b: 1 } })
         asyncJob(ctx, (err, result) => {
             expect(result).toEqual(2)

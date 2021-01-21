@@ -11,12 +11,12 @@ import defaultConfig from './defaultConfig'
 import { createLogger, format, transports } from 'winston'
 const { combine, timestamp, label, printf, colorize, json } = format
 
-const logPlainFormat = printf(info => `${info.level}: ${info.message}`)
-const logFormat = printf(info => `${info.timestamp} [${info.label}] ${info.level}: ${info.message}`)
-const appLabel = config => ({ label: `${config.app.name}@${config.app.version}` })
-const textPlainFormatter = config => combine(colorize(), logPlainFormat)
-const textFormatter = config => combine(label(appLabel(config)), timestamp(), colorize(), logFormat)
-const jsonFormatter = config => combine(label(appLabel(config)), timestamp(), json())
+const logPlainFormat = printf((info) => `${info.level}: ${info.message}`)
+const logFormat = printf((info) => `${info.timestamp} [${info.label}] ${info.level}: ${info.message}`)
+const appLabel = (config) => ({ label: `${config.app.name}@${config.app.version}` })
+const textPlainFormatter = (config) => combine(colorize(), logPlainFormat)
+const textFormatter = (config) => combine(label(appLabel(config)), timestamp(), colorize(), logFormat)
+const jsonFormatter = (config) => combine(label(appLabel(config)), timestamp(), json())
 const makeFormatter = (config, format) =>
     format === 'json'
         ? jsonFormatter(config)
@@ -24,7 +24,7 @@ const makeFormatter = (config, format) =>
         ? textPlainFormatter(config)
         : textFormatter(config)
 
-export const makeTransport = config => transConfig => {
+export const makeTransport = (config) => (transConfig) => {
     if (transConfig.type === 'file') {
         return new transports.File({
             filename: _.get(transConfig, 'filename', './output.log'),
@@ -52,7 +52,7 @@ export const makeTransport = config => transConfig => {
  *
  * @function
  */
-const makeWinstonLogger = config =>
+const makeWinstonLogger = (config) =>
     createLogger({
         level: config.logger.level,
         transports: _.map(config.logger.transports, makeTransport(_.merge({}, config, { level: config.logger.level })))

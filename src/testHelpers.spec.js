@@ -8,13 +8,13 @@ describe('adapters/server', () => {
 
     const config = {} //_.merge({})
 
-    beforeEach(done => {
+    beforeEach((done) => {
         removeSignalHandlers()
         sandbox = sinon.createSandbox({})
         done()
     })
 
-    afterEach(done => {
+    afterEach((done) => {
         removeSignalHandlers()
         sandbox.restore()
         done()
@@ -24,7 +24,7 @@ describe('adapters/server', () => {
 
     const terminators = []
 
-    it('#startup, #shutdown', done => {
+    it('#startup, #shutdown', (done) => {
         catchExitSignals(sandbox, done)
 
         const testServer = (container, next) => {

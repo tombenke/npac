@@ -24,7 +24,7 @@ import _ from 'lodash'
  *
  * @function
  */
-export const makeCall = jobDesc => {
+export const makeCall = (jobDesc) => {
     const jobNotDefined = (ctx, args) => ctx.logger.error('job is not defined')
 
     return (ctx, responseCb) => {
@@ -46,7 +46,7 @@ export const makeCall = jobDesc => {
  *
  * @function
  */
-export const makeCallSync = jobDesc => {
+export const makeCallSync = (jobDesc) => {
     const jobNotDefined = (ctx, args) => ctx.logger.error('job is not defined')
 
     return (ctx, responseCb) => {
