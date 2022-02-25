@@ -46,20 +46,13 @@
     "cross-env": "^7.0.3",
     "eslint": "^8.9.0",
     "expect": "^27.5.1",
-    "husky": "^7.0.4",
     "istanbul": "1.1.0-alpha.1",
     "jsdoc": "^3.6.10",
     "mocha": "^9.2.1",
     "mocha-lcov-reporter": "^1.2.0",
-    "pre-push": "^0.1.1",
     "prettier": "^2.5.1",
     "rimraf": "^3.0.2",
     "sinon": "^13.0.1"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run prettier && npm run lint && npm run docs && npm run test && npm run build"
-    }
   },
   "prettier": {
     "printWidth": 120,
@@ -81,10 +74,5 @@
     "docs": "rm -fr ./docs/api/* && jsdoc -c ./.jsdoc.json",
     "prepublishOnly": "npm run lint && npm run test && npm run build && npm run docs",
     "all": "npm run lint && npm run coverage && npm run build && npm run docs"
-  },
-  "pre-push": [
-    "lint",
-    "test",
-    "prepublishOnly"
-  ]
+  }
 }
