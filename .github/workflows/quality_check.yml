@@ -1,0 +1,30 @@
+name: Quality Check
+
+on:
+  push:
+    branches:
+      - "*" # matches every branch
+      - "*/*" # matches every branch containing a single '/'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up task tool
+        uses: arduino/setup-task@v1
+
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Setup test environment
+        run: task install
+
+      - name: Validate the source files
+        run: task lint
+
+      - name: Run unit-tests
+        run: task test
+
+      - name: Build the package
+        run: task build
+

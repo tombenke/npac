@@ -1,0 +1,79 @@
+# https://taskfile.dev
+
+version: 3
+
+vars:
+  GIT_HOOKS_DIR:
+    sh: sh -c 'echo "$(pwd)/.git/hooks"'
+
+env:
+
+tasks:
+  default:
+    desc: Executes all the tests then build the binary
+    cmds:
+      - task: lint
+      - task: test
+      - task: docs
+
+  format:
+    desc: Autoformat the source files
+    cmds:
+      - npm run prettier
+
+  test:
+    desc: Run all the tests
+    cmds:
+      - task: format
+      - npm run test
+
+  coverage:
+    desc: Test coverage
+    cmds:
+      - npm run coverage
+
+  lint:
+    desc: Run linter
+    cmds:
+      - npm run lint
+
+  build:
+    desc: Build
+    cmds:
+      - task: clean
+      - npm run build
+
+  publish:
+    desc: Publish the package
+    cmds:
+      - npm publish
+
+  pre-commit:
+    desc: Runs the QA tasks from a git pre-commit hook
+    cmds:
+      - task: lint
+      - task: coverage
+
+  install-git-hooks:
+    desc: Install git hooks
+    cmds:
+      - echo -e "#!/bin/bash\ntask pre-commit" > {{.GIT_HOOKS_DIR}}/pre-commit
+      - chmod ug+x {{.GIT_HOOKS_DIR}}/pre-commit
+
+  install:
+    desc: Install the package and its dependencies
+    cmds:
+      - npm install
+      - npm audit fix --force || echo "Install complete"
+      - task: install-git-hooks
+
+  docs:
+    desc: Generate the documentation
+    cmds:
+      - npm run docs
+
+  clean:
+    desc: Clean temporary files and folders
+    cmds:
+      - rm dist/* -fr
+      - rm docs/* -fr

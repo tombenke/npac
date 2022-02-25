@@ -1,9 +1,8 @@
 # npac
 
+[![Quality Check](https://github.com/tombenke/npac/actions/workflows/quality_check.yml/badge.svg)](https://github.com/tombenke/npac/actions/workflows/quality_check.yml)
 [![stable](http://badges.github.io/stability-badges/dist/stable.svg)](http://github.com/badges/stability-badges)
 [![npm version][npm-badge]][npm-url]
-[![Build Status][travis-badge]][travis-url]
-[![Coveralls][BadgeCoveralls]][Coveralls]
 
 `npac` is a lightweight Ports and Adapters Container for applications running on Node.js platform.
 
@@ -77,8 +76,4 @@ by the [kickoff](https://github.com/tombenke/kickoff) utility.
 
 [npm-badge]: https://badge.fury.io/js/npac.svg
 [npm-url]: https://badge.fury.io/js/npac
-[travis-badge]: https://api.travis-ci.org/tombenke/npac.svg
-[travis-url]: https://travis-ci.org/tombenke/npac
-[Coveralls]: https://coveralls.io/github/tombenke/npac?branch=master
-[BadgeCoveralls]: https://coveralls.io/repos/github/tombenke/npac/badge.svg?branch=master
 
