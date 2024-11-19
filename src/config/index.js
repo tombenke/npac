@@ -48,6 +48,8 @@ export const makeConfig = (defaults = {}, cliConfig = {}, configFileProp = 'conf
  *
  * @function
  */
-export const mergeConfig = (config = {}) => (ctx, next) => {
-    next(null, _.mergeWith({}, ctx, { config: config }))
-}
+export const mergeConfig =
+    (config = {}) =>
+    (ctx, next) => {
+        next(null, _.mergeWith({}, ctx, { config: config }))
+    }

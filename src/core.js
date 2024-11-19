@@ -37,39 +37,41 @@ const initialCtx = {
  *
  * @function
  */
-const setupAdapters = (ctx, adapters = []) => (endCb) => {
-    // ctx.logger.debug('App is starting up...', ctx, adapters)
-    async.reduce(
-        adapters,
-        ctx,
-        (memoCtx, adapter, callback) => {
-            if (_.isFunction(adapter)) {
-                // memoCtx.logger.debug('Call adapter registration function')
-                adapter(memoCtx, (err, ctxExtension = null) => {
-                    if (err) {
-                        memoCtx.logger.error('Adapter registration function returned: ', err)
-                        callback(err, memoCtx)
-                    } else {
-                        // Merge the adapter extensions to the context
-                        if (_.isNull(ctxExtension)) {
-                            // memoCtx.logger.debug('Adapter extensions is null. Do not merge.')
-                            callback(null, memoCtx)
+const setupAdapters =
+    (ctx, adapters = []) =>
+    (endCb) => {
+        // ctx.logger.debug('App is starting up...', ctx, adapters)
+        async.reduce(
+            adapters,
+            ctx,
+            (memoCtx, adapter, callback) => {
+                if (_.isFunction(adapter)) {
+                    // memoCtx.logger.debug('Call adapter registration function')
+                    adapter(memoCtx, (err, ctxExtension = null) => {
+                        if (err) {
+                            memoCtx.logger.error('Adapter registration function returned: ', err)
+                            callback(err, memoCtx)
                         } else {
-                            // memoCtx.logger.debug('Merge adapter extensions to the context: ', ctxExtension)
-                            callback(null, _.merge({}, memoCtx, ctxExtension))
+                            // Merge the adapter extensions to the context
+                            if (_.isNull(ctxExtension)) {
+                                // memoCtx.logger.debug('Adapter extensions is null. Do not merge.')
+                                callback(null, memoCtx)
+                            } else {
+                                // memoCtx.logger.debug('Merge adapter extensions to the context: ', ctxExtension)
+                                callback(null, _.merge({}, memoCtx, ctxExtension))
+                            }
                         }
-                    }
-                })
-            } else {
-                // memoCtx.logger.debug('Merge adapter object to ctx')
-                callback(null, _.merge({}, memoCtx, adapter))
+                    })
+                } else {
+                    // memoCtx.logger.debug('Merge adapter object to ctx')
+                    callback(null, _.merge({}, memoCtx, adapter))
+                }
+            },
+            (err, resultCtx) => {
+                endCb(err, resultCtx)
             }
-        },
-        (err, resultCtx) => {
-            endCb(err, resultCtx)
-        }
-    )
-}
+        )
+    }
 
 const shutDown = (ctx, terminators) => (signal) => {
     ctx.logger.info('App starts the shutdown process...')
@@ -111,14 +113,16 @@ const shutDown = (ctx, terminators) => (signal) => {
  *
  * @function
  */
-const prepareForTermination = (terminators = []) => (ctx, endCb) => {
-    // ctx.logger.debug('App is preparing for SIGTERM, SIGINT and SIGHUP ...', terminators)
-    const signals = ['SIGTERM', 'SIGINT', 'SIGHUP', 'SIGUSR1', 'SIGUSR2']
-    for (const signal in signals) {
-        process.on(signals[signal], shutDown(ctx, terminators))
+const prepareForTermination =
+    (terminators = []) =>
+    (ctx, endCb) => {
+        // ctx.logger.debug('App is preparing for SIGTERM, SIGINT and SIGHUP ...', terminators)
+        const signals = ['SIGTERM', 'SIGINT', 'SIGHUP', 'SIGUSR1', 'SIGUSR2']
+        for (const signal in signals) {
+            process.on(signals[signal], shutDown(ctx, terminators))
+        }
+        endCb(null, ctx)
     }
-    endCb(null, ctx)
-}
 
 /**
  * Prepare jobs to run in series.
