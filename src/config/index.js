@@ -26,8 +26,8 @@ export const makeConfig = (defaults = {}, cliConfig = {}, configFileProp = 'conf
     const configFileName = _.has(cliConfig, configFileProp)
         ? cliConfig[configFileProp]
         : _.has(defaults, configFileProp)
-        ? defaults[configFileProp]
-        : null
+          ? defaults[configFileProp]
+          : null
     const configFileContent = _.isNull(configFileName) ? {} : loadJsonFileSync(configFileName, false)
     const config = _.mergeWith({}, defaults, configFileContent, cliConfig)
 

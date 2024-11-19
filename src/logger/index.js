@@ -21,8 +21,8 @@ const makeFormatter = (config, format) =>
     format === 'json'
         ? jsonFormatter(config)
         : format === 'textPlain'
-        ? textPlainFormatter(config)
-        : textFormatter(config)
+          ? textPlainFormatter(config)
+          : textFormatter(config)
 
 export const makeTransport = (config) => (transConfig) => {
     if (transConfig.type === 'file') {
