@@ -30,15 +30,14 @@ var _path2 = _interopRequireDefault(_path);
 
 var _rimraf = require('rimraf');
 
-var _rimraf2 = _interopRequireDefault(_rimraf);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var testDirectory = _path2.default.resolve('./tmp');
 var destCleanup = function destCleanup(cb) {
     var dest = testDirectory;
     console.log('Remove: ', dest);
-    (0, _rimraf2.default)(dest, cb);
+    (0, _rimraf.rimrafSync)(dest);
+    cb();
 };
 
 //    const { cliConfig, command } = cli.parse(defaults)
