@@ -13,11 +13,12 @@ import {
 
 import fs from 'fs'
 import path from 'path'
-import rimraf from 'rimraf'
+import { rimrafSync } from 'rimraf'
 
 const destCleanup = (cb) => {
     const dest = path.resolve('./tmp/')
-    rimraf(dest, cb)
+    rimrafSync(dest)
+    cb()
 }
 
 before((done) => {

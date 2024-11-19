@@ -7,13 +7,14 @@ import { addLogger } from './logger/'
 
 import fs from 'fs'
 import path from 'path'
-import rimraf from 'rimraf'
+import { rimrafSync } from 'rimraf'
 
 const testDirectory = path.resolve('./tmp')
 const destCleanup = function (cb) {
     const dest = testDirectory
     console.log('Remove: ', dest)
-    rimraf(dest, cb)
+    rimrafSync(dest)
+    cb()
 }
 
 //    const { cliConfig, command } = cli.parse(defaults)
