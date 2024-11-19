@@ -28,7 +28,7 @@
     "async": "^3.2.6",
     "datafile": "^3.4.8",
     "lodash": "^4.17.21",
-    "winston": "^3.6.0"
+    "winston": "^3.17.0"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
