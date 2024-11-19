@@ -55,7 +55,7 @@
     "mocha-lcov-reporter": "^1.2.0",
     "prettier": "^3.3.3",
     "rimraf": "^6.0.1",
-    "sinon": "^13.0.1"
+    "sinon": "^19.0.2"
   },
   "prettier": {
     "printWidth": 120,
